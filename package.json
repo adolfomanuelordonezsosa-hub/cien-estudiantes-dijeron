@@ -1,0 +1,15 @@
+{
+  "name": "cien-estudiantes-dijeron",
+  "version": "1.0.0",
+  "description": "Juego multijugador '100 estudiantes dijeron' sobre riesgo por lluvias (El Niño) en las colonias de Tijuana y BC — OCUN UABC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "mongodb": "^6.8.0"
+  }
+}

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a2c2b">
+<title>100 estudiantes dijeron</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/estilo.css">
+<style>
+  body { min-height: 100dvh; }
+  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .9rem 1rem; position: sticky; top: 0; background: rgba(42,44,43,.92); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .barra .yo { font-size: .85rem; text-align: right; line-height: 1.25; }
+  .barra .yo b { color: var(--menta); }
+  .barra .pts { font-weight: 800; color: var(--naranja); }
+  main { max-width: 520px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+  h1.gis { font-size: clamp(2.2rem, 11vw, 3.2rem); line-height: 1; margin: .6rem 0 .3rem; }
+  h1 .cien { color: var(--menta); display: block; font-size: 1.6em; }
+  .sub { color: var(--gis-tenue); margin: 0 0 1rem; }
+  .pregunta { font-size: 1.25rem; font-weight: 700; line-height: 1.35; margin: .3rem 0 1rem; }
+  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--menta); font-weight: 700; }
+  .aviso { font-size: .78rem; color: var(--gis-tenue); margin-top: 1rem; line-height: 1.45; }
+  .error { background: rgba(232,96,76,.15); border: 1px solid rgba(232,96,76,.5); color: #ffd9d2; padding: .7rem .9rem; border-radius: 10px; margin-top: .8rem; font-size: .92rem; }
+  .bloque-q { margin-bottom: 1.2rem; }
+  .bloque-q .num { display: inline-grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--menta); color: var(--tinta); font-weight: 800; margin-right: .4rem; font-size: .9rem; }
+  .tachas { display: flex; gap: .5rem; justify-content: center; margin: .6rem 0 1rem; }
+  .tachas span { font: 700 2.2rem 'Cabin Sketch', cursive; width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(243,240,230,.25); color: rgba(243,240,230,.2); }
+  .tachas span.on { color: var(--rojo); border-color: var(--rojo); background: rgba(232,96,76,.12); }
+  .mini-tablero { display: grid; gap: .45rem; margin: 1rem 0; }
+  .casilla { display: flex; align-items: center; gap: .6rem; padding: .6rem .8rem; border-radius: 10px; border: 2px solid rgba(155,232,201,.25); min-height: 2.9rem; }
+  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(155,232,201,.15); color: var(--menta); flex: none; }
+  .casilla .t { flex: 1; font-weight: 700; }
+  .casilla .p { font-weight: 800; color: var(--naranja); }
+  .casilla.mia { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
+  .casilla.mia .n { background: var(--tinta); color: var(--menta); }
+  .casilla.mia .p { color: var(--naranja-osc); }
+  .casilla.pantalla { border-style: dashed; opacity: .7; }
+  .casilla.pantalla .t::after { content: ' · revelada'; font-weight: 500; font-size: .75rem; color: var(--gis-tenue); }
+  .fila-envio { display: flex; gap: .5rem; }
+  .fila-envio input { flex: 1; font-size: 1.1rem; }
+  .feedback { min-height: 3rem; margin-top: .8rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; text-align: center; font-size: 1.05rem; }
+  .feedback.ok { background: var(--menta); color: var(--tinta); animation: aparecer .3s both; }
+  .feedback.mal { background: rgba(232,96,76,.18); color: #ffd4cc; border: 1px solid rgba(232,96,76,.5); animation: sacudir .35s both; }
+  .feedback.info { background: rgba(255,255,255,.07); color: var(--gis); }
+  @keyframes sacudir { 0%,100%{transform:none} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .grande { font: 700 4.5rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1; }
+  .ilustracion { font-size: 3.5rem; text-align: center; margin: 1rem 0 .4rem; }
+  .ranking-lista { list-style: none; padding: 0; margin: 1rem 0 0; }
+  .ranking-lista li { display: flex; justify-content: space-between; padding: .55rem .2rem; border-bottom: 1px dashed rgba(255,255,255,.12); }
+  .ranking-lista li.yo { color: var(--menta); font-weight: 700; }
+  .salir { background: none; border: 0; color: var(--gis-tenue); text-decoration: underline; font: inherit; font-size: .8rem; cursor: pointer; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header class="barra">
+  <span class="pastilla">OCUN · UABC</span>
+  <div class="yo oculto" id="hdrYo"><b id="hdrNombre"></b><br><span class="pts" id="hdrPuntos">0</span> pts · lugar <span id="hdrPos">–</span></div>
+</header>
+
+<main>
+  <!-- REGISTRO -->
+  <section id="vRegistro" class="oculto aparece">
+    <h1 class="gis"><span class="cien">100</span>estudiantes dijeron…</h1>
+    <p class="sub">Cuando El Niño toca la puerta. ¿Qué tanto sabes de las lluvias en tu colonia?</p>
+    <form id="fRegistro" class="tarjeta" autocomplete="off">
+      <label for="rNombre">Tu nombre o apodo</label>
+      <input id="rNombre" maxlength="30" required placeholder="Ej. Ana G.">
+      <label for="rCarrera">Carrera</label>
+      <input id="rCarrera" list="dlCarreras" maxlength="60" placeholder="Ej. Ingeniería Industrial">
+      <label for="rColonia">¿En qué colonia vives?</label>
+      <input id="rColonia" list="dlColonias" maxlength="60" placeholder="Escribe tu colonia">
+      <div id="rEquipoWrap" class="oculto">
+        <label for="rEquipo">Equipo</label>
+        <select id="rEquipo"></select>
+      </div>
+      <button class="btn naranja ancho" style="margin-top:1.2rem" type="submit">¡Entrar al juego!</button>
+      <div id="rError" class="error oculto"></div>
+      <p class="aviso">Tus respuestas son anónimas para el análisis del proyecto OCUN (UABC): solo usamos tu apodo para el marcador y tu colonia y carrera para las estadísticas.</p>
+    </form>
+  </section>
+
+  <!-- ESPERA / MENSAJES -->
+  <section id="vMensaje" class="oculto aparece centro">
+    <div class="ilustracion" id="mIcono">☁️</div>
+    <h2 class="gis" id="mTitulo" style="font-size:2rem;margin:.2rem 0"></h2>
+    <p class="tenue" id="mTexto"></p>
+    <div id="mExtra"></div>
+  </section>
+
+  <!-- ENCUESTA -->
+  <section id="vEncuesta" class="oculto aparece">
+    <div class="etiqueta">Encuesta</div>
+    <h2 class="gis" style="font-size:2rem;margin:.3rem 0 .2rem">Preguntamos a 100 estudiantes…</h2>
+    <p class="tenue" style="margin-top:0">Contesta lo primero que se te venga a la mente. No hay respuestas incorrectas.</p>
+    <form id="fEncuesta" autocomplete="off"></form>
+    <div id="eError" class="error oculto"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="vJuego" class="oculto aparece">
+    <div class="etiqueta" id="jNumero"></div>
+    <p class="pregunta" id="jPregunta"></p>
+    <p class="tenue" style="margin:-.4rem 0 .4rem;font-size:.9rem">Adivina las respuestas más populares de la encuesta.</p>
+    <div class="tachas" id="jTachas"></div>
+    <form id="fAdivinar" class="fila-envio" autocomplete="off">
+      <input id="jInput" maxlength="80" placeholder="Tu respuesta…" enterkeyhint="send">
+      <button class="btn naranja" type="submit" id="jBtn">Va</button>
+    </form>
+    <div class="feedback info" id="jFeedback">Tienes 3 oportunidades. ¡Suerte!</div>
+    <div class="mini-tablero" id="jTablero"></div>
+    <p class="tenue centro" style="font-size:.85rem">Puntos en esta pregunta: <b id="jPuntosQ">0</b></p>
+  </section>
+
+  <div class="centro"><button class="salir oculto" id="btnSalir">¿No eres tú? Cambiar de jugador</button></div>
+</main>
+
+<datalist id="dlCarreras"></datalist>
+<datalist id="dlColonias"></datalist>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const leer = k => { try { return localStorage.getItem('ced_' + k); } catch { return null; } };
+  const guardar = (k, v) => { try { v == null ? localStorage.removeItem('ced_' + k) : localStorage.setItem('ced_' + k, v); } catch { /* sin almacenamiento */ } };
+  const vibrar = p => { try { navigator.vibrate && navigator.vibrate(p); } catch { /* */ } };
+
+  let pid = leer('pid');
+  let yo = null, s = null, info = null, clave = '', enviando = false;
+  const vistas = ['vRegistro', 'vMensaje', 'vEncuesta', 'vJuego'];
+
+  async function api(url, body) {
+    const r = await fetch(url, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { cache: 'no-store' });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { const e = new Error(d.error || 'Algo salió mal'); e.status = r.status; e.datos = d; throw e; }
+    return d;
+  }
+  function mostrar(id) { for (const v of vistas) $('#' + v).classList.toggle('oculto', v !== id); }
+  function mensaje(icono, titulo, texto, extra = '') {
+    $('#mIcono').textContent = icono; $('#mTitulo').textContent = titulo; $('#mTexto').textContent = texto; $('#mExtra').innerHTML = extra;
+    mostrar('vMensaje');
+  }
+  function olvidar() { pid = null; yo = null; guardar('pid', null); render(); }
+
+  async function cargarInfo() {
+    try {
+      info = await api('/api/info');
+      $('#dlCarreras').innerHTML = info.carreras.map(c => `<option value="${esc(c)}">`).join('');
+      $('#dlColonias').innerHTML = info.colonias.map(c => `<option value="${esc(c)}">`).join('');
+      const eq = info.equipos || [];
+      $('#rEquipoWrap').classList.toggle('oculto', !eq.length);
+      $('#rEquipo').innerHTML = '<option value="">Elige tu equipo…</option>' + eq.map(e => `<option>${esc(e)}</option>`).join('');
+    } catch { /* se reintenta al reconectar */ }
+  }
+  async function refrescarYo() {
+    if (!pid) return;
+    try { yo = await api('/api/yo?pid=' + encodeURIComponent(pid)); }
+    catch (e) { if (e.status === 404) { olvidar(); return; } }
+    render();
+  }
+
+  function header() {
+    $('#hdrYo').classList.toggle('oculto', !yo);
+    $('#btnSalir').classList.toggle('oculto', !yo);
+    if (!yo) return;
+    $('#hdrNombre').textContent = yo.nombre + (yo.equipo ? ' · ' + yo.equipo : '');
+    $('#hdrPuntos').textContent = yo.puntos;
+    $('#hdrPos').textContent = yo.posicion + ' de ' + yo.totalJugadores;
+  }
+
+  function render() {
+    header();
+    if (!pid || !yo) { mostrar('vRegistro'); return; }
+    if (!s) { mensaje('⏳', 'Conectando…', 'Un momento.'); return; }
+    const f = s.fase;
+    if (f === 'lobby') {
+      mensaje('🌧️', '¡Ya estás dentro!', 'Mira la pantalla grande: en un momento empezamos.');
+    } else if (f === 'encuesta') {
+      const pendientes = yo.encuesta.filter(q => !q.respondida);
+      if (!pendientes.length) mensaje('🙌', '¡Gracias!', 'Tus respuestas ya cuentan para el tablero. Espera a que empiece el juego.');
+      else if ($('#vEncuesta').classList.contains('oculto') || $('#fEncuesta').dataset.ids !== pendientes.map(q => q.id).join(',')) pintarEncuesta(pendientes);
+    } else if (f === 'juego') {
+      if (!s.tablero || !yo.juego) mensaje('🧮', 'Preparando el tablero…', 'El conductor está por lanzar la pregunta.');
+      else pintarJuego();
+    } else if (f === 'comparar') {
+      const c = s.comparacion;
+      let extra = '';
+      if (c && !c.tipoLibre && c.hayHistorico) extra = `<div class="tarjeta" style="margin-top:1rem"><div class="grande">${c.aciertos}/${c.n}</div><p>respuestas de los estudiantes están entre las colonias con más reportes históricos.</p></div>`;
+      mensaje('🔍', '¿Acertaron o fue pura percepción?', 'Mira la pantalla: comparamos lo que dijeron los estudiantes con el histórico real de las lluvias.', extra);
+    } else if (f === 'ranking') {
+      const lista = (s.ranking || []).map((r, i) => `<li class="${r.nombre === yo.nombre && r.puntos === yo.puntos ? 'yo' : ''}"><span>${i + 1}. ${esc(r.nombre)}</span><b>${r.puntos}</b></li>`).join('');
+      mensaje('🏆', `Quedaste en el lugar ${yo.posicion}`, `Hiciste ${yo.puntos} puntos. ¡Gracias por jugar y por informarte!`,
+        `<ul class="ranking-lista">${lista}</ul><p class="aviso">Sigue al Chismógrafo del Niño para enterarte de cómo va la lluvia en tu colonia.</p>`);
+    }
+  }
+
+  function pintarEncuesta(pendientes) {
+    const f = $('#fEncuesta');
+    f.dataset.ids = pendientes.map(q => q.id).join(',');
+    f.innerHTML = pendientes.map((q, i) => `
+      <div class="bloque-q tarjeta">
+        <label for="e_${esc(q.id)}" style="margin-top:0;color:var(--gis);font-size:1rem;line-height:1.4"><span class="num">${i + 1}</span>${esc(q.texto)}</label>
+        <input id="e_${esc(q.id)}" name="${esc(q.id)}" maxlength="80" required ${q.tipo === 'colonia' ? 'list="dlColonias" placeholder="Escribe una colonia"' : 'placeholder="Tu respuesta"'}>
+      </div>`).join('') + '<button class="btn naranja ancho" type="submit">Enviar respuestas</button>';
+    $('#eError').classList.add('oculto');
+    mostrar('vEncuesta');
+  }
+
+  function pintarJuego() {
+    const j = yo.juego;
+    $('#jNumero').textContent = `Pregunta ${s.pregunta.numero} de ${s.pregunta.total}`;
+    $('#jPregunta').textContent = s.pregunta.texto;
+    $('#jTachas').innerHTML = Array.from({ length: j.maxTachas }, (_, i) => `<span class="${i < j.tachas ? 'on' : ''}">✕</span>`).join('');
+    const mias = new Map(j.encontradas.map(e => [e.indice, e]));
+    $('#jTablero').innerHTML = s.tablero.map((c, i) => {
+      const m = mias.get(i);
+      if (m) return `<div class="casilla mia"><span class="n">${i + 1}</span><span class="t">${esc(m.texto)}</span><span class="p">${m.puntos}</span></div>`;
+      if (c.revelada) return `<div class="casilla pantalla"><span class="n">${i + 1}</span><span class="t">${esc(c.texto)}</span><span class="p">${c.puntos}</span></div>`;
+      return `<div class="casilla"><span class="n">${i + 1}</span><span class="t tenue">?</span></div>`;
+    }).join('');
+    $('#jPuntosQ').textContent = j.puntos;
+    const agotado = j.tachas >= j.maxTachas;
+    const completo = j.encontradas.length + s.tablero.filter((c, i) => c.revelada && !mias.has(i)).length >= s.tablero.length;
+    $('#jInput').disabled = $('#jBtn').disabled = agotado || completo || enviando;
+    if (agotado) feedback('mal', 'Se acabaron tus 3 oportunidades. ¡Mira el tablero en la pantalla!', false);
+    else if (completo) feedback('ok', '¡Tablero completo! Espera la siguiente pregunta.', false);
+    mostrar('vJuego');
+  }
+  function feedback(tipo, texto, animar = true) {
+    const el = $('#jFeedback');
+    el.className = 'feedback ' + tipo;
+    if (animar) { void el.offsetWidth; }
+    el.textContent = texto;
+  }
+
+  // ---- eventos de formularios
+  $('#fRegistro').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const err = $('#rError'); err.classList.add('oculto');
+    try {
+      yo = await api('/api/unirse', { nombre: $('#rNombre').value, carrera: $('#rCarrera').value, colonia: $('#rColonia').value, equipo: $('#rEquipo').value });
+      pid = yo.pid; guardar('pid', pid);
+      render();
+    } catch (e) { err.textContent = e.message; err.classList.remove('oculto'); }
+  });
+  $('#fEncuesta').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const datos = {};
+    for (const inp of ev.target.querySelectorAll('input')) datos[inp.name] = inp.value;
+    try {
+      const r = await api('/api/encuesta', { pid, respuestas: datos });
+      yo = r.mio; vibrar(60); render();
+    } catch (e) {
+      if (e.status === 404) return olvidar();
+      $('#eError').textContent = e.message; $('#eError').classList.remove('oculto');
+    }
+  });
+  $('#fAdivinar').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const input = $('#jInput');
+    const texto = input.value.trim();
+    if (!texto || enviando) return;
+    enviando = true; $('#jBtn').disabled = true;
+    try {
+      const r = await api('/api/adivinar', { pid, texto });
+      yo = r.mio;
+      const x = r.resultado;
+      if (x.tipo === 'acierto') { feedback('ok', `¡Está en el tablero! "${x.texto}" +${x.puntos}`); vibrar(90); }
+      else if (x.tipo === 'tache') { feedback('mal', `✕ No está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); }
+      else if (x.tipo === 'repetida') feedback('info', `"${x.texto}" ya la tenías. Intenta otra.`);
+      else if (x.tipo === 'revelada') feedback('info', `"${x.texto}" ya se reveló en la pantalla. Intenta otra.`);
+      input.value = '';
+    } catch (e) {
+      if (e.status === 404) { enviando = false; return olvidar(); }
+      if (e.datos && e.datos.mio) yo = e.datos.mio;
+      feedback('info', e.message);
+    }
+    enviando = false;
+    render();
+    if (!$('#jInput').disabled) $('#jInput').focus();
+  });
+  $('#btnSalir').addEventListener('click', () => { if (confirm('¿Salir y registrar a otra persona en este celular?')) olvidar(); });
+
+  // ---- tiempo real
+  function conectar() {
+    const es = new EventSource('/eventos?rol=jugador');
+    es.addEventListener('estado', ev => {
+      s = JSON.parse(ev.data);
+      document.title = s.titulo;
+      const nueva = `${s.fase}|${s.pregunta && s.pregunta.id}|${s.versionTablero}`;
+      if (nueva !== clave) { clave = nueva; if (s.fase === 'lobby' || s.fase === 'encuesta') cargarInfo(); refrescarYo(); }
+      else render();
+    });
+    es.onerror = () => { /* EventSource reintenta solo */ };
+  }
+
+  cargarInfo().then(() => { if (pid) refrescarYo(); else render(); });
+  conectar();
+})();
+</script>
+</body>
+</html>

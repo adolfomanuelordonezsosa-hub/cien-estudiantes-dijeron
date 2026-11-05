@@ -194,8 +194,14 @@
     $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
     $('#anuncio').classList.remove('oculto');
     n.lugar === 1 ? sfx.fanfarria() : sfx.ding();
-    if (n.lugar === 1) await clip('primero', `¡Tenemos nuevo primer lugar! ${n.nombre}, con ${n.puntos} puntos.`);
-    else await clip('top', `¡${n.nombre} entra al top diez en el lugar ${n.lugar}, con ${n.puntos} puntos!`);
+    // Primero suena la grabación del equipo; luego la voz del navegador dice lo que cambia (nombre, lugar y puntos)
+    if (n.lugar === 1) {
+      if (audios.primero) { await clip('primero', ''); await Voz.decir(`${n.nombre}, con ${n.puntos} puntos.`); }
+      else await Voz.decir(`¡Tenemos nuevo primer lugar! ${n.nombre}, con ${n.puntos} puntos.`);
+    } else {
+      if (audios.top) { await clip('top', ''); await Voz.decir(`${n.nombre}, lugar ${n.lugar}, con ${n.puntos} puntos.`); }
+      else await Voz.decir(`¡${n.nombre} entra al top diez en el lugar ${n.lugar}, con ${n.puntos} puntos!`);
+    }
     await espera(1800);
     $('#anuncio').classList.add('oculto');
   }

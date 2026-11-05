@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pantalla · 100 estudiantes dijeron</title>
+<title>Ranking · 100 estudiantes dijeron</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,186 +11,85 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   html, body { height: 100%; overflow: hidden; }
-  body { font-size: clamp(14px, 1.15vw, 24px); }
-  .escena { position: absolute; inset: 0; padding: 2.2vw 3vw; display: flex; flex-direction: column; }
-  .top { display: flex; justify-content: space-between; align-items: center; }
-  .top .marca { font: 700 1.6em 'Cabin Sketch', cursive; color: var(--gis-tenue); }
-  .qr { background: #fff; padding: .6em; border-radius: 12px; display: inline-block; line-height: 0; }
-  .qr img, .qr canvas { display: block; }
-  .url { font-weight: 700; color: var(--menta); word-break: break-all; }
-
-  /* LOBBY */
-  #eLobby .centro-grid { flex: 1; display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 4vw; }
-  .titulo-cien { font: 700 15vw/0.85 'Cabin Sketch', cursive; color: var(--menta); margin: 0; text-shadow: 0 0 1px rgba(255,255,255,.4); }
-  .titulo-dijeron { font: 700 5.6vw/1 'Cabin Sketch', cursive; margin: .1em 0 .3em; }
-  .lema { font-size: 1.5em; color: var(--gis-tenue); max-width: 28em; line-height: 1.4; }
-  .unete { text-align: center; }
-  .unete h3 { font: 700 2.4em 'Cabin Sketch', cursive; margin: 0 0 .4em; }
-  .contador { margin-top: 1em; font-size: 1.4em; }
-  .contador b { font: 700 2em 'Cabin Sketch', cursive; color: var(--naranja); display: block; line-height: 1; }
+  body { font-size: clamp(13px, 1.1vw, 24px); }
+  .escena { position: absolute; inset: 0; padding: 2vw 3vw; display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5vw; }
   .gotas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-  .gotas i { position: absolute; top: -5vh; width: 3px; height: 2.2vh; border-radius: 3px; background: var(--menta); opacity: .55; animation: caer linear infinite; }
-  @keyframes caer { to { transform: translateY(112vh); } }
-  .escena > *:not(.gotas) { position: relative; z-index: 1; }
+  .gotas i { position: absolute; top: -5vh; width: 3px; height: 2.2vh; border-radius: 3px; background: var(--menta); opacity: .45; animation: caer linear infinite; }
+  @keyframes caer { to { transform: translateY(112vh) rotate(12deg); } }
+  .col { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 0; }
+  .titulo-cien { font: 700 11vw/0.85 'Cabin Sketch', cursive; color: var(--menta); margin: .3em 0 0; }
+  .titulo-dijeron { font: 700 4.4vw/1 'Cabin Sketch', cursive; margin: .05em 0 .3em; }
+  .lema { font-size: 1.35em; color: var(--gis-tenue); line-height: 1.4; margin: 0 0 1em; }
+  .unete { display: flex; gap: 1.6vw; align-items: center; margin-top: auto; }
+  .qr { background: #fff; padding: .6em; border-radius: 14px; line-height: 0; flex: none; }
+  .unete h3 { font: 700 2.3em 'Cabin Sketch', cursive; margin: 0 0 .2em; }
+  .url { font-weight: 700; color: var(--menta); font-size: 1.15em; word-break: break-all; }
+  .stats { display: flex; gap: 1vw; margin-top: 1.2vw; }
+  .stats div { background: rgba(0,0,0,.22); border-radius: 12px; padding: .6em 1em; }
+  .stats b { font: 700 2.2em 'Cabin Sketch', cursive; color: var(--naranja); display: block; line-height: 1; }
+  .stats span { font-size: .85em; color: var(--gis-tenue); }
 
-  /* ENCUESTA */
-  #eEncuesta .cuerpo { flex: 1; display: grid; grid-template-columns: 1.3fr 1fr; gap: 4vw; align-items: center; }
-  .progreso { height: 2.4em; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; border: 2px solid rgba(155,232,201,.4); margin: 1em 0 .5em; }
-  .progreso div { height: 100%; background: linear-gradient(90deg, var(--verde), var(--menta)); width: 0; transition: width .6s ease; }
-  .lista-q { list-style: none; padding: 0; margin: 1.4em 0 0; display: grid; gap: .7em; }
-  .lista-q li { display: flex; gap: .8em; align-items: baseline; font-size: 1.1em; }
-  .lista-q b { color: var(--naranja); min-width: 3.2em; text-align: right; }
+  .panel { background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 1.4vw 1.8vw; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .panel h2 { font: 700 3.4em 'Cabin Sketch', cursive; margin: 0; color: var(--menta); line-height: 1; }
+  .panel .sub { color: var(--gis-tenue); margin: .2em 0 .8em; font-size: 1.05em; }
+  .filas { display: grid; gap: .5vh; flex: 1; min-height: 0; grid-template-rows: repeat(10, minmax(0, 1fr)); }
+  .fila { display: grid; grid-template-columns: 3.2em 1fr 5em 5.5em; align-items: center; gap: 1em; padding: 0 1em; border-radius: 12px; background: rgba(36,38,37,.9); border: 2px solid rgba(155,232,201,.18); font-size: min(1.3em, 2.3vh); min-height: 0; overflow: hidden; }
+  .fila .lugar { font: 700 1.5em 'Cabin Sketch', cursive; text-align: center; color: var(--gis-tenue); }
+  .fila .nom { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fila .nom small { display: block; font-weight: 500; font-size: .62em; color: var(--gis-tenue); }
+  .fila .pts { font: 700 1.5em 'Cabin Sketch', cursive; color: var(--naranja); text-align: right; }
+  .fila .tiempo { text-align: right; color: var(--gis-tenue); font-variant-numeric: tabular-nums; }
+  .fila.l1 { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
+  .fila.l1 .lugar, .fila.l1 .tiempo, .fila.l1 small { color: var(--tinta); }
+  .fila.l1 .pts { color: var(--naranja-osc); }
+  .fila.l2 { border-color: var(--verde); } .fila.l3 { border-color: var(--naranja); }
+  .fila.nueva { animation: entra 1.4s ease; }
+  @keyframes entra { 0% { transform: scale(1.06); box-shadow: 0 0 0 6px var(--naranja); } 100% { transform: none; box-shadow: none; } }
+  .vacio { color: var(--gis-tenue); font-size: 1.6em; margin-top: 2em; text-align: center; }
 
-  /* JUEGO */
-  #eJuego .cab { display: flex; align-items: flex-start; justify-content: space-between; gap: 2vw; }
-  #eJuego .cab .preg { font: 700 2.5em/1.12 'Cabin Sketch', cursive; margin: .2em 0 0; max-width: 32em; }
-  #eJuego .cab .num { font-weight: 700; color: var(--menta); letter-spacing: .08em; text-transform: uppercase; font-size: .95em; }
-  #eJuego .cuerpo { flex: 1; display: grid; grid-template-columns: 1fr 19em; gap: 2.4vw; margin-top: 1.6vw; min-height: 0; }
-  .tablero { display: grid; grid-auto-flow: column; gap: 1vw 1.4vw; align-content: start; }
-  .slot { perspective: 1200px; height: 6.4vw; min-height: 70px; }
-  .slot .giro { position: relative; width: 100%; height: 100%; transition: transform .8s cubic-bezier(.3,1.4,.5,1); transform-style: preserve-3d; }
-  .slot.rev .giro { transform: rotateX(180deg); }
-  .cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; display: flex; align-items: center; padding: 0 1.4vw; box-shadow: var(--sombra); }
-  .frente { background: rgba(255,255,255,.04); border: 3px solid rgba(155,232,201,.55); justify-content: space-between; }
-  .frente .circ { width: 3.6vw; height: 3.6vw; min-width: 44px; min-height: 44px; border-radius: 50%; background: var(--menta); color: var(--tinta); display: grid; place-items: center; font: 700 2.1vw 'Cabin Sketch', cursive; border: 3px solid var(--tinta); box-shadow: 0 0 0 3px var(--menta); }
-  .frente .halladas { font-size: .95em; color: var(--gis-tenue); }
-  .frente .halladas b { color: var(--naranja); font-size: 1.25em; }
-  .atras { transform: rotateX(180deg); background: var(--menta); color: var(--tinta); border: 3px solid #d9fff0; gap: 1vw; padding-right: 0; overflow: hidden; }
-  .atras .txt { flex: 1; font: 800 1.95vw/1.05 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: .01em; }
-  .atras .pts { align-self: stretch; width: 6.4vw; display: grid; place-items: center; background: var(--naranja); color: #2b1505; font: 700 2.8vw 'Cabin Sketch', cursive; border-left: 3px solid var(--tinta); }
-  .slot.recien .atras { animation: brillo 1.2s ease; }
-  @keyframes brillo { 0% { filter: brightness(1.8); } 100% { filter: none; } }
-  .lateral { display: flex; flex-direction: column; gap: 1.2vw; min-height: 0; }
-  .panel { background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 1em 1.1em; }
-  .panel h4 { margin: 0 0 .6em; font: 700 1.5em 'Cabin Sketch', cursive; color: var(--menta); }
-  .rank { list-style: none; margin: 0; padding: 0; counter-reset: r; }
-  .rank li { display: flex; justify-content: space-between; gap: .6em; padding: .28em 0; border-bottom: 1px dashed rgba(255,255,255,.1); counter-increment: r; }
-  .rank li::before { content: counter(r) '.'; color: var(--gis-tenue); width: 1.6em; }
-  .rank li span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .rank li b { color: var(--naranja); }
-  .feed { list-style: none; margin: 0; padding: 0; font-size: .92em; }
-  .feed li { padding: .3em 0; animation: aparecer .4s both; }
-  .feed li b { color: var(--menta); }
-  .esquina-qr { display: flex; gap: .8em; align-items: center; font-size: .9em; }
+  #anuncio { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(20,22,21,.82); text-align: center; }
+  #anuncio .caja { animation: golpe .5s cubic-bezier(.3,1.5,.5,1) both; }
+  #anuncio .k { font: 700 3vw 'Cabin Sketch', cursive; color: var(--menta); }
+  #anuncio .n { font: 700 8vw/1 'Cabin Sketch', cursive; margin: .1em 0; }
+  #anuncio .p { font-size: 2.2vw; color: var(--naranja); font-weight: 800; }
+  @keyframes golpe { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
 
-  /* TACHE */
-  #tache { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(20,10,8,.55); z-index: 50; pointer-events: none; }
-  #tache div { display: flex; gap: 2vw; }
-  #tache span { font: 700 22vw/1 'Cabin Sketch', cursive; color: var(--rojo); text-shadow: 0 0 40px rgba(232,96,76,.6); animation: golpe .35s cubic-bezier(.3,1.6,.5,1) both; }
-  @keyframes golpe { from { transform: scale(2.4) rotate(-12deg); opacity: 0; } to { transform: none; opacity: 1; } }
-
-  /* COMPARAR */
-  #eComparar .cuerpo { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; margin-top: 1.5vw; }
-  .col-comp h3 { font: 700 2em 'Cabin Sketch', cursive; margin: 0 0 .5em; }
-  .fila-comp { display: flex; align-items: center; gap: .8em; padding: .7em .9em; border-radius: 12px; margin-bottom: .55em; background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.08); font-size: 1.15em; animation: aparecer .5s both; }
-  .fila-comp .ic { font-size: 1.3em; width: 1.4em; text-align: center; }
-  .fila-comp .t { flex: 1; font-weight: 700; }
-  .fila-comp .v { color: var(--gis-tenue); font-size: .85em; text-align: right; }
-  .fila-comp.si { border-color: var(--verde); background: rgba(85,187,146,.14); }
-  .fila-comp.no { opacity: .78; }
-  .veredicto { text-align: center; margin-top: 1vw; font: 700 2.2em 'Cabin Sketch', cursive; }
-  .veredicto b { color: var(--naranja); }
-
-  /* RANKING */
-  #eRanking .podio { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 2.5vw; padding-bottom: 2vw; }
-  .escalon { text-align: center; width: 18vw; animation: aparecer .6s both; }
-  .escalon .nombre { font: 700 2.3em 'Cabin Sketch', cursive; margin-bottom: .2em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .escalon .puntos { color: var(--naranja); font-weight: 800; font-size: 1.4em; margin-bottom: .4em; }
-  .escalon .bloque { border-radius: 14px 14px 0 0; display: grid; place-items: center; font: 700 6vw 'Cabin Sketch', cursive; color: var(--tinta); }
-  .e1 .bloque { height: 24vh; background: var(--menta); } .e2 .bloque { height: 17vh; background: var(--verde); } .e3 .bloque { height: 12vh; background: var(--naranja); }
-  .e1 { animation-delay: .6s; } .e3 { animation-delay: .3s; }
-  .equipos-fila { display: flex; justify-content: center; gap: 2vw; margin-top: 1vw; }
-  .equipos-fila .panel { text-align: center; min-width: 12em; }
-  .equipos-fila b { font: 700 2.6em 'Cabin Sketch', cursive; color: var(--naranja); display: block; }
-
-  /* activar sonido y ajustes */
-  #activar { position: fixed; inset: 0; background: rgba(15,16,16,.88); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; }
+  #activar { position: fixed; inset: 0; background: rgba(15,16,16,.9); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; }
   #activar h2 { font: 700 4vw 'Cabin Sketch', cursive; margin: 0 0 .3em; }
   #engrane { position: fixed; right: 1vw; bottom: 1vw; z-index: 60; background: rgba(0,0,0,.35); border: 0; color: var(--gis-tenue); border-radius: 50%; width: 2.6em; height: 2.6em; cursor: pointer; font-size: 1.1em; opacity: .35; }
   #engrane:hover { opacity: 1; }
   #ajustes { position: fixed; right: 1vw; bottom: 4.5em; width: 24em; z-index: 61; background: #222423; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 1em; font-size: 14px; box-shadow: var(--sombra); }
-  #ajustes .fila { display: flex; gap: .5em; margin-top: .8em; }
+  #ajustes .fila-b { display: flex; gap: .5em; margin-top: .8em; }
   .estado-con { position: fixed; left: 1vw; bottom: 1vw; font-size: 12px; color: var(--gis-tenue); opacity: .6; z-index: 60; }
 </style>
 </head>
 <body>
-<div id="activar">
-  <div>
-    <h2>Toca la pantalla para empezar</h2>
-    <p class="tenue" style="font-size:1.4em">Esto activa la voz del conductor y los efectos de sonido.</p>
-  </div>
-</div>
+<div id="activar"><div><h2>Toca la pantalla para empezar</h2><p class="tenue" style="font-size:1.4em">Esto activa la voz del conductor y los sonidos.</p></div></div>
 
-<section id="eLobby" class="escena oculto">
+<section class="escena">
   <div class="gotas" id="gotas"></div>
-  <div class="top"><span class="pastilla">OCUN · Emprendimiento y liderazgo</span><span class="marca">Cuando El Niño toca la puerta</span></div>
-  <div class="centro-grid">
-    <div>
-      <h1 class="titulo-cien">100</h1>
-      <div class="titulo-dijeron">estudiantes dijeron…</div>
-      <p class="lema">¿Qué colonias creen los estudiantes de la UABC que caerán con las próximas lluvias? Juega desde tu celular y compite con tu predicción.</p>
-    </div>
+  <div class="col">
+    <span class="pastilla" style="align-self:flex-start">OCUN · Cuando El Niño toca la puerta</span>
+    <h1 class="titulo-cien">100</h1>
+    <div class="titulo-dijeron">estudiantes dijeron…</div>
+    <p class="lema">¿Sabes qué colonias de Tijuana han sufrido más con las lluvias? Las respuestas salen de los <b id="nRep">reportes reales</b>. Juega desde tu celular y entra al Top 10.</p>
     <div class="unete">
-      <h3>¡Únete desde tu celular!</h3>
-      <div class="qr" id="qrGrande"></div>
-      <p class="url" id="urlGrande"></p>
-      <div class="contador"><b id="lobbyJugadores">0</b>jugadores conectados</div>
+      <div class="qr" id="qr"></div>
+      <div><h3>¡Escanea y juega!</h3><div class="url" id="url"></div>
+        <div class="stats"><div><b id="sJugando">0</b><span>jugando ahora</span></div><div><b id="sTerm">0</b><span>partidas jugadas</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="panel">
+      <h2>🏆 Top 10</h2>
+      <p class="sub">Más puntos gana. Si hay empate, gana el más rápido.</p>
+      <div class="filas" id="filas"></div>
     </div>
   </div>
 </section>
 
-<section id="eEncuesta" class="escena oculto">
-  <div class="top"><span class="pastilla">Encuesta en vivo</span><span class="marca">100 estudiantes dijeron…</span></div>
-  <div class="cuerpo">
-    <div>
-      <h1 class="gis" style="font-size:4.2em;margin:0;line-height:1">Preguntamos a <span style="color:var(--menta)" id="encMeta">100</span> estudiantes…</h1>
-      <div class="progreso"><div id="encBarra"></div></div>
-      <p style="font-size:1.6em;margin:.2em 0"><b id="encN" style="color:var(--naranja)">0</b> estudiantes ya respondieron</p>
-      <ul class="lista-q" id="encLista"></ul>
-    </div>
-    <div class="unete" style="text-align:center">
-      <h3 class="gis" style="font-size:2.4em;margin:0 0 .4em">Responde aquí</h3>
-      <div class="qr" id="qrEnc"></div>
-      <p class="url" id="urlEnc"></p>
-    </div>
-  </div>
-</section>
-
-<section id="eJuego" class="escena oculto">
-  <div class="cab">
-    <div>
-      <div class="num" id="jNum"></div>
-      <h2 class="preg" id="jPreg"></h2>
-    </div>
-    <div class="esquina-qr"><div class="qr" id="qrJuego"></div><div>Juega desde<br><span class="url" id="urlJuego"></span></div></div>
-  </div>
-  <div class="cuerpo">
-    <div class="tablero" id="tablero"></div>
-    <div class="lateral">
-      <div class="panel"><h4>Los que más saben</h4><ol class="rank" id="jRank"></ol></div>
-      <div class="panel oculto" id="jEquiposPanel"><h4>Equipos</h4><ol class="rank" id="jEquipos"></ol></div>
-      <div class="panel" style="flex:1;min-height:0;overflow:hidden"><h4>En vivo</h4><ul class="feed" id="feed"></ul></div>
-    </div>
-  </div>
-</section>
-
-<section id="eComparar" class="escena oculto">
-  <div class="top"><span class="pastilla">¿Acertaron o fue pura percepción?</span><span class="marca" id="cPreg"></span></div>
-  <div class="cuerpo">
-    <div class="col-comp"><h3>🗣️ Lo que dijeron los estudiantes</h3><div id="cEst"></div></div>
-    <div class="col-comp"><h3>📊 Lo que dice el histórico</h3><div id="cHist"></div></div>
-  </div>
-  <div class="veredicto" id="cVeredicto"></div>
-</section>
-
-<section id="eRanking" class="escena oculto">
-  <div class="top"><span class="pastilla">Resultados</span><span class="marca">Informar también puede ser divertido</span></div>
-  <h1 class="gis centro" style="font-size:4.4em;margin:.3em 0 0">¡Los que más saben de su colonia!</h1>
-  <div class="equipos-fila" id="rEquipos"></div>
-  <div class="podio" id="podio"></div>
-</section>
-
-<div id="tache" class="oculto"><div id="tacheX"></div></div>
+<div id="anuncio" class="oculto"><div class="caja"><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div></div></div>
 
 <button id="engrane" title="Ajustes de voz">⚙</button>
 <div id="ajustes" class="oculto">
@@ -200,7 +99,7 @@
   <label for="velVoz">Velocidad</label>
   <input type="range" id="velVoz" min="0.7" max="1.4" step="0.05" value="1.02">
   <p class="tenue" id="audiosInfo" style="font-size:12px"></p>
-  <div class="fila"><button class="btn chico" id="probarVoz">Probar voz</button><button class="btn chico fantasma" id="pantallaCompleta">Pantalla completa</button></div>
+  <div class="fila-b"><button class="btn chico" id="probarVoz">Probar voz</button><button class="btn chico fantasma" id="pantallaCompleta">Pantalla completa</button></div>
 </div>
 <div class="estado-con" id="estadoCon">Conectando…</div>
 
@@ -211,36 +110,27 @@
   const leer = k => { try { return localStorage.getItem('ced_tv_' + k); } catch { return null; } };
   const guardar = (k, v) => { try { localStorage.setItem('ced_tv_' + k, v); } catch { /* */ } };
   const espera = ms => new Promise(r => setTimeout(r, ms));
+  const tiempo = ms => ms == null ? '–' : ms >= 60000 ? Math.floor(ms / 60000) + ':' + String(Math.floor(ms / 1000) % 60).padStart(2, '0') : (ms / 1000).toFixed(1) + ' s';
   const URL_JUEGO = location.origin + '/';
-
-  let s = null, prev = null, sonido = false, audios = {}, tableroVer = null;
-  const pendientes = new Set();
-  const recien = new Set();
+  let sonido = false, audios = {}, ultimoTop = [], recientes = new Set();
   let cola = Promise.resolve();
   const enCola = fn => (cola = cola.then(fn).catch(() => {}));
 
-  // ---------- efectos (generados, sin música de terceros)
+  // ---------- sonidos generados
   const sfx = {
     ctx: null,
-    listo() {
-      if (!sonido) return false;
-      if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (this.ctx.state === 'suspended') this.ctx.resume();
-      return true;
-    },
-    tono(f, t0, d, tipo = 'sine', vol = .25) {
+    listo() { if (!sonido) return false; if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); if (this.ctx.state === 'suspended') this.ctx.resume(); return true; },
+    tono(f, t0, d, tipo = 'triangle', vol = .2) {
       const c = this.ctx, o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
       o.type = tipo; o.frequency.value = f;
-      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+      g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
       o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .05);
     },
-    ding() { if (!this.listo()) return; this.tono(784, 0, .4); this.tono(1175, .1, .5); this.tono(1568, .2, .8, 'triangle', .15); },
-    buzzer() { if (!this.listo()) return; this.tono(92, 0, .9, 'sawtooth', .2); this.tono(97, 0, .9, 'square', .1); },
-    pop() { if (!this.listo()) return; this.tono(990, 0, .12, 'triangle', .12); },
-    fanfarria() { if (!this.listo()) return; [523, 659, 784, 1047].forEach((f, i) => this.tono(f, i * .14, .5, 'triangle', .18)); }
+    fanfarria() { if (!this.listo()) return; [523, 659, 784, 1047].forEach((f, i) => this.tono(f, i * .14, .55)); },
+    ding() { if (!this.listo()) return; this.tono(784, 0, .4, 'sine', .25); this.tono(1175, .1, .6, 'sine', .2); }
   };
 
-  // ---------- voz del conductor (voz del navegador o grabaciones del equipo en /audio)
+  // ---------- voz
   const Voz = {
     voz: null, vel: Number(leer('vel')) || 1.02,
     cargar() {
@@ -256,192 +146,70 @@
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(texto);
         if (this.voz) { u.voice = this.voz; u.lang = this.voz.lang; } else u.lang = 'es-MX';
-        u.rate = this.vel; u.pitch = 0.9;
+        u.rate = this.vel; u.pitch = .9;
         let listo = false; const fin = () => { if (!listo) { listo = true; ok(); } };
-        u.onend = fin; u.onerror = fin;
-        setTimeout(fin, 1500 + texto.length * 110);
+        u.onend = fin; u.onerror = fin; setTimeout(fin, 1500 + texto.length * 110);
         speechSynthesis.speak(u);
       });
     }
   };
-  function clip(nombre, textoAlterno) {
+  function clip(nombre, alterno) {
     if (!sonido) return Promise.resolve();
     const src = audios[nombre];
-    if (!src) return Voz.decir(textoAlterno);
+    if (!src) return Voz.decir(alterno);
     return new Promise(ok => {
       const a = new Audio(src);
       let listo = false; const fin = () => { if (!listo) { listo = true; ok(); } };
-      a.onended = fin; a.onerror = () => { Voz.decir(textoAlterno).then(fin); };
-      a.play().catch(() => Voz.decir(textoAlterno).then(fin));
+      a.onended = fin; a.onerror = () => Voz.decir(alterno).then(fin);
+      a.play().catch(() => Voz.decir(alterno).then(fin));
       setTimeout(fin, 15000);
     });
   }
 
-  // ---------- QR
-  function qr(el, tam) {
-    el.innerHTML = '';
+  // ---------- pantalla
+  function pintarQR() {
+    const el = $('#qr'); el.innerHTML = '';
+    const tam = Math.round(Math.min(innerWidth, innerHeight) * .26);
     if (window.QRCode) new QRCode(el, { text: URL_JUEGO, width: tam, height: tam, colorDark: '#1d2120', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-    else el.style.display = 'none';
+    $('#url').textContent = URL_JUEGO.replace(/^https?:\/\//, '').replace(/\/$/, '');
   }
-  const tamQR = f => Math.round(Math.min(innerWidth, innerHeight) * f);
-  function pintarQRs() {
-    qr($('#qrGrande'), tamQR(.36)); qr($('#qrEnc'), tamQR(.34)); qr($('#qrJuego'), tamQR(.11));
-    for (const id of ['#urlGrande', '#urlEnc', '#urlJuego']) $(id).textContent = URL_JUEGO.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  $('#gotas').innerHTML = Array.from({ length: 40 }, () => `<i style="left:${Math.random() * 100}%;animation-duration:${(1.4 + Math.random() * 2).toFixed(2)}s;animation-delay:-${(Math.random() * 3).toFixed(2)}s"></i>`).join('');
+
+  function pintar(d) {
+    $('#sJugando').textContent = d.stats.jugando;
+    $('#sTerm').textContent = d.stats.terminadas;
+    const med = ['🥇', '🥈', '🥉'];
+    $('#filas').innerHTML = d.top.length ? d.top.map(r => `
+      <div class="fila l${r.lugar} ${recientes.has(r.id) ? 'nueva' : ''}">
+        <span class="lugar">${med[r.lugar - 1] || r.lugar}</span>
+        <span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span>
+        <span class="pts">${r.puntos}</span>
+        <span class="tiempo">${tiempo(r.ms)}</span>
+      </div>`).join('') : '<p class="vacio">Todavía nadie termina. ¡Escanea el código y sé el primero!</p>';
   }
 
-  // ---------- lluvia de fondo
-  (function gotas() {
-    const g = $('#gotas');
-    g.innerHTML = Array.from({ length: 40 }, () => `<i style="left:${Math.random() * 100}%;animation-duration:${(1.4 + Math.random() * 2).toFixed(2)}s;animation-delay:-${(Math.random() * 3).toFixed(2)}s;transform:rotate(12deg)"></i>`).join('');
-  })();
-
-  // ---------- render
-  const escenas = { lobby: '#eLobby', encuesta: '#eEncuesta', juego: '#eJuego', comparar: '#eComparar', ranking: '#eRanking' };
-  function render() {
-    if (!s) return;
-    for (const [f, sel] of Object.entries(escenas)) $(sel).classList.toggle('oculto', f !== s.fase);
-    if (s.fase === 'lobby') $('#lobbyJugadores').textContent = s.stats.jugadores;
-    if (s.fase === 'encuesta') pintarEncuesta();
-    if (s.fase === 'juego') pintarJuego();
-    if (s.fase === 'comparar') pintarComparar();
-    if (s.fase === 'ranking') pintarRanking();
-  }
-  function pintarEncuesta() {
-    $('#encMeta').textContent = s.meta;
-    $('#encN').textContent = s.stats.encuestados;
-    $('#encBarra').style.width = Math.min(100, s.stats.encuestados / s.meta * 100) + '%';
-    $('#encLista').innerHTML = s.preguntas.map(p => `<li><b>${p.respuestas}</b><span>${esc(p.texto)}</span></li>`).join('');
-  }
-  function pintarJuego() {
-    const q = s.pregunta;
-    $('#jNum').textContent = q ? `Pregunta ${q.numero} de ${q.total} · Preguntamos a ${s.meta} estudiantes…` : '';
-    $('#jPreg').textContent = q ? q.texto : '';
-    const tab = $('#tablero');
-    const t = s.tablero || [];
-    const firma = `${s.versionTablero}|${q && q.id}|${t.length}`;
-    if (firma !== tableroVer) {
-      tableroVer = firma;
-      tab.style.gridTemplateRows = `repeat(${Math.max(1, Math.ceil(t.length / 2))}, auto)`;
-      tab.innerHTML = t.length ? t.map((c, i) => `
-        <div class="slot" data-i="${i}"><div class="giro">
-          <div class="cara frente"><span class="circ">${c.n}</span><span class="halladas"></span></div>
-          <div class="cara atras"><span class="txt"></span><span class="pts"></span></div>
-        </div></div>`).join('') : '<p class="tenue" style="font-size:1.6em">El tablero se arma con las respuestas de la encuesta…</p>';
-    }
-    t.forEach((c, i) => {
-      const el = tab.querySelector(`.slot[data-i="${i}"]`);
-      if (!el) return;
-      const mostrar = c.revelada && !pendientes.has(i);
-      if (mostrar) { el.querySelector('.txt').textContent = c.texto; el.querySelector('.pts').textContent = c.puntos; }
-      el.classList.toggle('rev', mostrar);
-      el.classList.toggle('recien', recien.has(i));
-      el.querySelector('.halladas').innerHTML = c.encontradaPor ? `<b>${c.encontradaPor}</b> la encontraron` : '';
-    });
-    $('#jRank').innerHTML = (s.ranking || []).slice(0, 8).map(r => `<li><span>${esc(r.nombre)}</span><b>${r.puntos}</b></li>`).join('') || '<li><span class="tenue">Todavía nadie</span></li>';
-    const eq = s.equipos || [];
-    $('#jEquiposPanel').classList.toggle('oculto', !eq.length);
-    $('#jEquipos').innerHTML = eq.slice().sort((a, b) => b.puntos - a.puntos).map(e => `<li><span>${esc(e.nombre)} (${e.jugadores})</span><b>${e.puntos}</b></li>`).join('');
-  }
-  function pintarComparar() {
-    const c = s.comparacion || {};
-    $('#cPreg').textContent = s.pregunta ? s.pregunta.texto : '';
-    if (c.tipoLibre) {
-      $('#cEst').innerHTML = (s.tablero || []).map(x => `<div class="fila-comp"><span class="ic">🗣️</span><span class="t">${esc(x.texto || '¿?')}</span><span class="v">${x.puntos ?? ''}</span></div>`).join('');
-      $('#cHist').innerHTML = '<p class="tenue" style="font-size:1.3em">Esta pregunta es de prevención: no se compara con reportes de colonias. ¡Revisa el tablero completo!</p>';
-      $('#cVeredicto').textContent = '';
-      return;
-    }
-    if (!c.hayHistorico) {
-      $('#cEst').innerHTML = (c.estudiantes || []).map(e => `<div class="fila-comp"><span class="ic">🗣️</span><span class="t">${esc(e.texto)}</span><span class="v">${e.valor} pts</span></div>`).join('');
-      $('#cHist').innerHTML = '<p class="tenue" style="font-size:1.3em">Aún no se carga el histórico real. Súbelo desde el panel de administración (pestaña Histórico).</p>';
-      $('#cVeredicto').textContent = '';
-      return;
-    }
-    $('#cEst').innerHTML = c.estudiantes.map((e, i) => `
-      <div class="fila-comp ${e.enTop ? 'si' : 'no'}" style="animation-delay:${i * .25}s">
-        <span class="ic">${e.enTop ? '✅' : e.reportes ? '🟠' : '❌'}</span><span class="t">${esc(e.texto)}</span>
-        <span class="v">${e.reportes ? `${e.reportes} reportes${e.rank ? ` · #${e.rank}` : ''}` : 'sin reportes'}</span>
-      </div>`).join('');
-    $('#cHist').innerHTML = c.historico.map((h, i) => `
-      <div class="fila-comp ${h.nombrada ? 'si' : 'no'}" style="animation-delay:${(c.estudiantes.length + i) * .25}s">
-        <span class="ic">${h.nombrada ? '✅' : '👀'}</span><span class="t">#${h.rank} ${esc(h.colonia)}</span>
-        <span class="v">${h.reportes} reportes${h.votos ? ` · ${h.votos} votos` : ' · nadie la dijo'}</span>
-      </div>`).join('');
-    $('#cVeredicto').innerHTML = `Los estudiantes acertaron <b>${c.aciertos} de ${c.n}</b> colonias del top histórico`;
-  }
-  function pintarRanking() {
-    const r = s.ranking || [];
-    const orden = [1, 0, 2];
-    $('#podio').innerHTML = orden.filter(i => r[i]).map(i => `
-      <div class="escalon e${i + 1}"><div class="nombre">${esc(r[i].nombre)}</div><div class="puntos">${r[i].puntos} pts</div><div class="bloque">${i + 1}</div></div>`).join('')
-      || '<p class="tenue" style="font-size:1.6em">Todavía no hay puntos.</p>';
-    $('#rEquipos').innerHTML = (s.equipos || []).slice().sort((a, b) => b.puntos - a.puntos).map(e => `<div class="panel"><span>${esc(e.nombre)}</span><b>${e.puntos}</b></div>`).join('');
+  async function anunciar(n) {
+    $('#aK').textContent = n.lugar === 1 ? '¡NUEVO PRIMER LUGAR!' : `¡Entra al Top 10 en el lugar ${n.lugar}!`;
+    $('#aN').textContent = n.nombre;
+    $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
+    $('#anuncio').classList.remove('oculto');
+    n.lugar === 1 ? sfx.fanfarria() : sfx.ding();
+    if (n.lugar === 1) await clip('primero', `¡Tenemos nuevo primer lugar! ${n.nombre}, con ${n.puntos} puntos.`);
+    else await clip('top', `¡${n.nombre} entra al top diez en el lugar ${n.lugar}, con ${n.puntos} puntos!`);
+    await espera(1800);
+    $('#anuncio').classList.add('oculto');
   }
 
-  // ---------- transiciones con voz
-  function transiciones(a, b) {
-    if (!a) return;
-    if (a.fase !== b.fase) {
-      if (b.fase === 'lobby') enCola(() => clip('bienvenida', '¡Bienvenidos a Cien estudiantes dijeron! Escanea el código con tu celular y únete al juego.'));
-      if (b.fase === 'encuesta') enCola(() => clip('encuesta', 'Preguntamos a cien estudiantes. ¡Contesta la encuesta desde tu celular!'));
-      if (b.fase === 'comparar') enCola(() => clip('comparar', 'Ahora veamos qué dice el histórico real. ¿Acertaron, o fue pura percepción?'));
-      if (b.fase === 'ranking') enCola(async () => { sfx.fanfarria(); await clip('ranking', '¡Y los que más saben de su colonia son…!'); });
-    }
-    const cambioPregunta = b.fase === 'juego' && (a.fase !== 'juego' || (a.pregunta && a.pregunta.id) !== (b.pregunta && b.pregunta.id));
-    if (cambioPregunta && b.pregunta) {
-      const texto = b.pregunta.texto;
-      enCola(async () => { await clip('pregunta', `Preguntamos a ${b.meta} estudiantes…`); await Voz.decir(texto); });
-    }
-  }
-
-  function agregarFeed(html) {
-    const f = $('#feed');
-    const li = document.createElement('li');
-    li.innerHTML = html;
-    f.prepend(li);
-    while (f.children.length > 7) f.lastChild.remove();
-  }
-
-  async function mostrarTache(n) {
-    $('#tacheX').innerHTML = Array.from({ length: n }, (_, i) => `<span style="animation-delay:${i * .12}s">✕</span>`).join('');
-    $('#tache').classList.remove('oculto');
-    sfx.buzzer();
-    if (audios.tache) clip('tache', '');
-    await espera(1600);
-    $('#tache').classList.add('oculto');
-  }
-
-  // ---------- conexión
   function conectar() {
-    const es = new EventSource('/eventos?rol=tv');
+    const es = new EventSource('/eventos');
     es.onopen = () => { $('#estadoCon').textContent = 'En vivo'; };
     es.onerror = () => { $('#estadoCon').textContent = 'Reconectando…'; };
-    es.addEventListener('estado', ev => {
-      const nuevo = JSON.parse(ev.data);
-      transiciones(prev, nuevo);
-      prev = s = nuevo;
-      document.title = 'Pantalla · ' + s.titulo;
-      render();
-    });
-    es.addEventListener('revelar', ev => {
-      const d = JSON.parse(ev.data);
-      for (const it of d.items) pendientes.add(it.indice);
-      enCola(async () => {
-        await clip('dijeron', `¡${(s && s.meta) || 100} estudiantes dijeron!`);
-        for (const it of d.items) {
-          pendientes.delete(it.indice); recien.add(it.indice);
-          render(); sfx.ding();
-          await Voz.decir(`${it.texto}. ${it.puntos} puntos.`);
-          await espera(250);
-          setTimeout(() => { recien.delete(it.indice); }, 1300);
-        }
-      });
-    });
-    es.addEventListener('tache', ev => { const d = JSON.parse(ev.data); enCola(() => mostrarTache(d.n)); });
-    es.addEventListener('primero', ev => {
-      const d = JSON.parse(ev.data);
-      sfx.pop();
-      agregarFeed(`<b>${esc(d.nombre)}</b> encontró la respuesta #${d.numero} 🎯`);
+    es.addEventListener('estado', ev => { const d = JSON.parse(ev.data); ultimoTop = d.top; pintar(d); });
+    es.addEventListener('nuevoTop', ev => {
+      const n = JSON.parse(ev.data);
+      const fila = ultimoTop.find(r => r.nombre === n.nombre && r.puntos === n.puntos);
+      if (fila) { recientes.add(fila.id); setTimeout(() => recientes.delete(fila.id), 5000); }
+      enCola(() => anunciar(n));
     });
   }
 
@@ -451,7 +219,7 @@
     try { audios = await (await fetch('/api/audios')).json(); } catch { audios = {}; }
     const n = Object.keys(audios).length;
     $('#audiosInfo').textContent = n ? `Grabaciones propias: ${Object.keys(audios).join(', ')}` : 'Sin grabaciones propias en /audio: se usa la voz del navegador.';
-    Voz.decir('');
+    enCola(() => clip('bienvenida', '¡Bienvenidos a Cien estudiantes dijeron! Escanea el código con tu celular y demuestra cuánto sabes de las lluvias en Tijuana.'));
   });
   if ('speechSynthesis' in window) { Voz.cargar(); speechSynthesis.onvoiceschanged = () => Voz.cargar(); }
   $('#selVoz').addEventListener('change', e => { guardar('voz', e.target.value); Voz.cargar(); });
@@ -460,9 +228,13 @@
   $('#probarVoz').addEventListener('click', () => enCola(() => clip('dijeron', '¡Cien estudiantes dijeron!')));
   $('#engrane').addEventListener('click', () => $('#ajustes').classList.toggle('oculto'));
   $('#pantallaCompleta').addEventListener('click', () => { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); });
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pintarQRs, 300); });
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pintarQR, 300); });
 
-  pintarQRs();
+  // cada 3 minutos el conductor invita a jugar
+  setInterval(() => enCola(() => clip('invitacion', '¿Crees que sabes qué colonias se inundan más? Escanea el código y juega.')), 180000);
+
+  fetch('/api/info').then(r => r.json()).then(i => { $('#nRep').textContent = `${i.reportes} reportes reales de Tijuana`; }).catch(() => {});
+  pintarQR();
   conectar();
 })();
 </script>

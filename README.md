@@ -1,72 +1,47 @@
 # 100 estudiantes dijeron · Cuando El Niño toca la puerta
 
-Juego multijugador en tiempo real (OCUN · UABC Tijuana) inspirado en los concursos de encuesta de la tele, sobre el riesgo por lluvias en las colonias de Tijuana y BC.
+Juego en el celular (OCUN · UABC Tijuana): ¿qué colonias de Tijuana han sufrido más con las lluvias?
+Las respuestas correctas salen de los **reportes históricos de Tijuana** (Excel "Reportes de Riesgo": Ciudadanía + Servicios/Dependencias, 187 reportes, solo municipio de Tijuana).
 
 ## Páginas
 
 | Ruta | Para quién | Qué hace |
 |---|---|---|
-| `/` | Estudiantes (celular, por QR) | Se registran, contestan la encuesta y juegan a adivinar el tablero |
-| `/tv` | Pantalla o laptop del stand | Tablero con voz del conductor, sonidos, ranking en vivo, comparación con el histórico |
-| `/admin` | Conductor del equipo | Cambia fases, revela respuestas, pone ✕, carga el histórico, ve el análisis y descarga los datos |
+| `/` | Jugadores (celular, por QR) | Bienvenida → Juego → Resultados con Top 10 |
+| `/tv` | Pantalla del stand | QR para jugar + Top 10 en vivo con voz cuando alguien entra al top |
+| `/admin` | Equipo OCUN | Ranking, ocultar nombres, análisis, editar respuestas, descargar datos |
 
 ## Cómo se juega
 
-1. **Bienvenida**: la TV muestra el QR. Cada estudiante se registra (apodo, carrera, colonia donde vive).
-2. **Encuesta**: todos contestan las preguntas desde su celular (“Preguntamos a 100 estudiantes…”). La TV muestra el avance hacia la meta.
-3. **Juego**: en el panel, “Generar desde la encuesta” arma el tablero con las respuestas más votadas (puntos = % de estudiantes que la dijeron). Todos adivinan al mismo tiempo desde su celular, con 3 oportunidades por pregunta. El conductor revela cada respuesta en la TV con la voz y el sonido.
-4. **Comparar con histórico**: la TV compara lo que dijeron los estudiantes con las colonias con más reportes reales (¿acertaron o fue pura percepción?).
-5. **Ganadores**: podio y, si hay equipos, marcador por equipo.
+1. **Bienvenida**: el jugador pone su nombre o apodo (con filtro de groserías), y opcionalmente su carrera y colonia.
+2. **Juego**: 4 preguntas, una a la vez. Escribe colonias de Tijuana (con autocompletado). Tiene 3 oportunidades (✕) por pregunta y puede pasar a la siguiente cuando quiera. El reloj corre desde que empieza.
+3. **Resultados**: puntos, tiempo, lugar, Top 10 y todas las respuestas correctas con su número de reportes.
 
-Las respuestas parecidas se juntan solas (“col. camino berde” = “Camino Verde”).
+Puntos: cada pregunta reparte 100 puntos entre las colonias del tablero según cuántos reportes tiene cada una. Ranking: más puntos gana; si hay empate, gana el más rápido.
 
-## Cargar el histórico real
+## Preguntas y respuestas (del histórico de Tijuana)
 
-En el diagnóstico (https://diagnosticorosarito.netlify.app/) elige el municipio → colorea por **Reportes históricos** → **Resumen por colonia** → **Descargar tabla (CSV)**. En `/admin` → pestaña **Histórico real**, sube el archivo y revisa qué columnas son colonia y reportes. Todas las colonias del archivo se agregan también al autocompletado.
-
-## Voz del conductor
-
-La TV usa la voz en español del navegador (en Chrome o Edge hay voces de México). Elige la voz y la velocidad en el engrane ⚙ de la esquina.
-
-Para una voz más de concurso, graben a alguien del equipo diciendo estas frases y guarden los archivos en `public/audio/` con estos nombres (`.mp3`, `.wav`, `.ogg` o `.m4a`):
-
-| Archivo | Frase sugerida |
+| Pregunta | Qué cuenta |
 |---|---|
-| `bienvenida` | “¡Bienvenidos a 100 estudiantes dijeron! Escanea el código y únete.” |
-| `encuesta` | “Preguntamos a 100 estudiantes… ¡contesta desde tu celular!” |
-| `pregunta` | “Preguntamos a 100 estudiantes…” (luego la voz del navegador lee la pregunta) |
-| `dijeron` | “¡100 estudiantes dijeron!” (suena antes de cada respuesta revelada) |
-| `tache` | “¡No está en el tablero!” |
-| `comparar` | “¿Acertaron o fue pura percepción? Veamos el histórico real.” |
-| `ranking` | “¡Y los que más saben de su colonia son…!” |
+| ¿Qué colonia de Tijuana crees que se va a inundar primero con las próximas lluvias? | Todos los reportes por colonia |
+| ¿Qué zona de Tijuana evitarías cruzar cuando llueve fuerte? | Calles inundadas, encharcamientos, pasos a desnivel, arroyos desbordados, personas o autos arrastrados |
+| ¿En qué colonia de Tijuana se han inundado más casas por las lluvias? | Viviendas inundadas |
+| ¿En qué colonia de Tijuana ha habido más derrumbes o deslizamientos de tierra? | Derrumbes, deslizamientos, erosión |
 
-Si un archivo no existe, se usa la voz del navegador para esa frase.
+Están en `data/preguntas.js` y se pueden ajustar desde `/admin` → Preguntas y respuestas.
 
-## Datos que se guardan (para el análisis)
+## Datos que se guardan
 
-- **Jugadores**: apodo, carrera, colonia donde vive, equipo, puntos.
-- **Respuestas de la encuesta**: cada respuesta y su versión agrupada.
-- **Intentos del juego**: cada intento, si fue acierto o ✕, y los puntos.
+- **Partidas**: nombre, carrera, colonia donde vive, puntos por pregunta, tiempo total, lugar.
+- **Jugadas**: cada colonia que escribió cada jugador, si estaba o no en el histórico y en qué segundo.
 
-En `/admin` → **Análisis**: top de respuestas por pregunta, lo que intentaron y no estaba, percepción vs. histórico, top 5 por carrera, dónde viven los participantes y qué porcentaje vive en una colonia con reportes. En **Exportar datos** se descargan los CSV para Excel.
+En `/admin` → Análisis: qué % encontró cada colonia (realidad) contra lo que más escribieron (percepción), y las colonias que la gente cree que se inundan pero no tienen tantos reportes. En Exportar datos se bajan los CSV.
 
-## Subir a Railway
+## Voz
 
-1. Sube esta carpeta a un repositorio nuevo de GitHub.
-2. En Railway: **New Project → Deploy from GitHub repo**.
-3. En **Variables** agrega:
-   - `ADMIN_KEY` = la clave del panel (si no la pones, es `nino2026`).
-   - `MONGODB_URI` = tu cadena de conexión de MongoDB Atlas (la misma clase de cadena que ya usan en otros proyectos). Sin esta variable los datos se guardan en archivos y **se pierden en cada redeploy**.
-   - Opcional: `MONGODB_DB` (por defecto `cien_estudiantes`).
-4. En **Settings → Networking → Generate Domain**. Ese dominio es el que aparece en el QR.
+La TV usa la voz en español del navegador (elige en el engrane ⚙). Para usar grabaciones propias, pon archivos en `public/audio/` con estos nombres: `bienvenida`, `invitacion`, `top`, `primero`, `dijeron` (.mp3, .wav, .ogg o .m4a).
 
-## Probar en tu computadora
+## Variables en Railway
 
-```bash
-npm install
-npm start
-```
-
-Abre http://localhost:3000/admin (clave `nino2026`), http://localhost:3000/tv y http://localhost:3000/ en otra pestaña o en tu celular (misma red, con la IP de tu compu).
-
-El servidor no usa más librerías que el driver de MongoDB; el tiempo real va por Server-Sent Events, que aguanta cientos de celulares conectados al mismo tiempo.
+- `MONGODB_URI`: cadena de MongoDB Atlas (sin ella los datos se pierden en cada redeploy).
+- `ADMIN_KEY`: clave del panel (por defecto `nino2026`).

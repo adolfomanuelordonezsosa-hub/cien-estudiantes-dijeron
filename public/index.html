@@ -11,109 +11,153 @@
 <link rel="stylesheet" href="/estilo.css">
 <style>
   body { min-height: 100dvh; }
-  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .9rem 1rem; position: sticky; top: 0; background: rgba(42,44,43,.92); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.07); }
-  .barra .yo { font-size: .85rem; text-align: right; line-height: 1.25; }
-  .barra .yo b { color: var(--menta); }
-  .barra .pts { font-weight: 800; color: var(--naranja); }
+  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .8rem 1rem; position: sticky; top: 0; background: rgba(42,44,43,.94); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .barra .info { display: flex; gap: .9rem; align-items: center; font-weight: 700; }
+  .barra .reloj { font-variant-numeric: tabular-nums; color: var(--menta); }
+  .barra .pts { color: var(--naranja); }
   main { max-width: 520px; margin: 0 auto; padding: 1rem 1rem 3rem; }
-  h1.gis { font-size: clamp(2.2rem, 11vw, 3.2rem); line-height: 1; margin: .6rem 0 .3rem; }
+  h1.gis { font-size: clamp(2.2rem, 11vw, 3.2rem); line-height: 1; margin: .5rem 0 .3rem; }
   h1 .cien { color: var(--menta); display: block; font-size: 1.6em; }
-  .sub { color: var(--gis-tenue); margin: 0 0 1rem; }
-  .pregunta { font-size: 1.25rem; font-weight: 700; line-height: 1.35; margin: .3rem 0 1rem; }
-  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--menta); font-weight: 700; }
-  .aviso { font-size: .78rem; color: var(--gis-tenue); margin-top: 1rem; line-height: 1.45; }
+  .sub { color: var(--gis-tenue); margin: 0 0 1rem; line-height: 1.45; }
+  .reglas { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .45rem; }
+  .reglas li { display: flex; gap: .6rem; align-items: flex-start; font-size: .95rem; line-height: 1.4; }
+  .reglas li span { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; background: var(--menta); color: var(--tinta); font-weight: 800; font-size: .85rem; }
   .error { background: rgba(232,96,76,.15); border: 1px solid rgba(232,96,76,.5); color: #ffd9d2; padding: .7rem .9rem; border-radius: 10px; margin-top: .8rem; font-size: .92rem; }
-  .bloque-q { margin-bottom: 1.2rem; }
-  .bloque-q .num { display: inline-grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--menta); color: var(--tinta); font-weight: 800; margin-right: .4rem; font-size: .9rem; }
-  .tachas { display: flex; gap: .5rem; justify-content: center; margin: .6rem 0 1rem; }
-  .tachas span { font: 700 2.2rem 'Cabin Sketch', cursive; width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(243,240,230,.25); color: rgba(243,240,230,.2); }
-  .tachas span.on { color: var(--rojo); border-color: var(--rojo); background: rgba(232,96,76,.12); }
-  .mini-tablero { display: grid; gap: .45rem; margin: 1rem 0; }
-  .casilla { display: flex; align-items: center; gap: .6rem; padding: .6rem .8rem; border-radius: 10px; border: 2px solid rgba(155,232,201,.25); min-height: 2.9rem; }
-  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(155,232,201,.15); color: var(--menta); flex: none; }
-  .casilla .t { flex: 1; font-weight: 700; }
-  .casilla .p { font-weight: 800; color: var(--naranja); }
-  .casilla.mia { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
-  .casilla.mia .n { background: var(--tinta); color: var(--menta); }
-  .casilla.mia .p { color: var(--naranja-osc); }
-  .casilla.pantalla { border-style: dashed; opacity: .7; }
-  .casilla.pantalla .t::after { content: ' · revelada'; font-weight: 500; font-size: .75rem; color: var(--gis-tenue); }
+  .aviso { font-size: .78rem; color: var(--gis-tenue); margin-top: 1rem; line-height: 1.45; }
+  .opcional { font-weight: 500; color: rgba(243,240,230,.45); }
+
+  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--menta); font-weight: 700; }
+  .pasos { display: flex; gap: .35rem; margin: .4rem 0 .8rem; }
+  .pasos i { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.12); }
+  .pasos i.hecho { background: var(--verde); } .pasos i.actual { background: var(--naranja); }
+  .pregunta { font-size: 1.3rem; font-weight: 700; line-height: 1.35; margin: .2rem 0 .3rem; }
+  .ayuda { color: var(--gis-tenue); font-size: .88rem; margin: 0 0 .6rem; }
+  .tachas { display: flex; gap: .5rem; justify-content: center; margin: .6rem 0 .9rem; }
+  .tachas span { font: 700 2.1rem 'Cabin Sketch', cursive; width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(243,240,230,.25); color: rgba(243,240,230,.18); }
+  .tachas span.on { color: var(--rojo); border-color: var(--rojo); border-style: solid; background: rgba(232,96,76,.12); }
   .fila-envio { display: flex; gap: .5rem; }
   .fila-envio input { flex: 1; font-size: 1.1rem; }
-  .feedback { min-height: 3rem; margin-top: .8rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; text-align: center; font-size: 1.05rem; }
+  .feedback { min-height: 3rem; margin-top: .8rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; text-align: center; font-size: 1.02rem; }
   .feedback.ok { background: var(--menta); color: var(--tinta); animation: aparecer .3s both; }
   .feedback.mal { background: rgba(232,96,76,.18); color: #ffd4cc; border: 1px solid rgba(232,96,76,.5); animation: sacudir .35s both; }
   .feedback.info { background: rgba(255,255,255,.07); color: var(--gis); }
   @keyframes sacudir { 0%,100%{transform:none} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-  .grande { font: 700 4.5rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1; }
-  .ilustracion { font-size: 3.5rem; text-align: center; margin: 1rem 0 .4rem; }
-  .ranking-lista { list-style: none; padding: 0; margin: 1rem 0 0; }
-  .ranking-lista li { display: flex; justify-content: space-between; padding: .55rem .2rem; border-bottom: 1px dashed rgba(255,255,255,.12); }
-  .ranking-lista li.yo { color: var(--menta); font-weight: 700; }
-  .salir { background: none; border: 0; color: var(--gis-tenue); text-decoration: underline; font: inherit; font-size: .8rem; cursor: pointer; margin-top: 2rem; }
+  .mini-tablero { display: grid; gap: .45rem; margin: 1rem 0; }
+  .casilla { display: flex; align-items: center; gap: .6rem; padding: .55rem .8rem; border-radius: 10px; border: 2px solid rgba(155,232,201,.25); min-height: 2.8rem; }
+  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(155,232,201,.15); color: var(--menta); flex: none; }
+  .casilla .t { flex: 1; font-weight: 700; }
+  .casilla .p { font-weight: 800; color: var(--naranja); }
+  .casilla.mia { background: var(--menta); color: var(--tinta); border-color: var(--menta); animation: aparecer .35s both; }
+  .casilla.mia .n { background: var(--tinta); color: var(--menta); }
+  .casilla.mia .p { color: var(--naranja-osc); }
+  .pasar { margin-top: .4rem; }
+
+  .transicion { text-align: center; padding: 3rem 0; }
+  .transicion .grande { font: 700 4rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1; }
+
+  .marcador { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 1rem 0; }
+  .marcador div { background: rgba(255,255,255,.06); border-radius: 12px; padding: .8rem .4rem; text-align: center; }
+  .marcador b { display: block; font: 700 2rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1.1; }
+  .marcador span { font-size: .75rem; color: var(--gis-tenue); }
+  .res-q { margin-bottom: 1rem; }
+  .res-q h3 { font-size: 1rem; margin: 0 0 .2rem; line-height: 1.35; }
+  .res-q .dato { font-size: .78rem; color: var(--gis-tenue); margin: 0 0 .6rem; }
+  .res-fila { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: 9px; margin-bottom: .3rem; background: rgba(255,255,255,.04); font-size: .92rem; }
+  .res-fila .ic { width: 1.3rem; text-align: center; }
+  .res-fila .t { flex: 1; font-weight: 600; }
+  .res-fila .r { color: var(--gis-tenue); font-size: .78rem; }
+  .res-fila .p { font-weight: 800; color: var(--naranja); min-width: 2rem; text-align: right; }
+  .res-fila.si { background: rgba(85,187,146,.2); }
+  .res-fila.si .t { color: var(--menta); }
+  .res-q .sub-pts { float: right; color: var(--naranja); font-weight: 800; }
+  .dijiste { font-size: .8rem; color: #ffcabf; margin-top: .3rem; }
+  table.rank { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  table.rank td, table.rank th { padding: .45rem .3rem; border-bottom: 1px dashed rgba(255,255,255,.12); text-align: left; }
+  table.rank th { font-size: .72rem; color: var(--gis-tenue); text-transform: uppercase; letter-spacing: .05em; }
+  table.rank .num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.rank tr.yo td { color: var(--menta); font-weight: 800; }
+  .medalla { font-size: 1.05rem; }
+  .botones { display: grid; gap: .6rem; margin-top: 1.2rem; }
 </style>
 </head>
 <body>
 <header class="barra">
   <span class="pastilla">OCUN · UABC</span>
-  <div class="yo oculto" id="hdrYo"><b id="hdrNombre"></b><br><span class="pts" id="hdrPuntos">0</span> pts · lugar <span id="hdrPos">–</span></div>
+  <div class="info oculto" id="hdrJuego"><span class="reloj" id="reloj">0:00</span><span class="pts"><span id="hdrPuntos">0</span> pts</span></div>
 </header>
 
 <main>
-  <!-- REGISTRO -->
-  <section id="vRegistro" class="oculto aparece">
+  <!-- BIENVENIDA -->
+  <section id="vBienvenida" class="oculto aparece">
     <h1 class="gis"><span class="cien">100</span>estudiantes dijeron…</h1>
-    <p class="sub">Cuando El Niño toca la puerta. ¿Qué tanto sabes de las lluvias en tu colonia?</p>
+    <p class="sub">Cuando El Niño toca la puerta. ¿Sabes qué colonias de Tijuana han sufrido más con las lluvias?</p>
+    <ul class="reglas">
+      <li><span>1</span><div>Te hacemos <b id="nPreguntas">4</b> preguntas, una a la vez.</div></li>
+      <li><span>2</span><div>Escribe colonias de Tijuana. Las respuestas correctas salen de los <b id="nReportes">reportes reales</b> por lluvias.</div></li>
+      <li><span>3</span><div>Tienes <b>3 oportunidades</b> por pregunta. Entre más reportes tenga la colonia, más puntos.</div></li>
+      <li><span>4</span><div>El reloj corre: si empatas en puntos, gana el más rápido. ¡Entra al <b>Top 10</b>!</div></li>
+    </ul>
     <form id="fRegistro" class="tarjeta" autocomplete="off">
-      <label for="rNombre">Tu nombre o apodo</label>
-      <input id="rNombre" maxlength="30" required placeholder="Ej. Ana G.">
-      <label for="rCarrera">Carrera</label>
+      <label for="rNombre" style="margin-top:0">Tu nombre o apodo</label>
+      <input id="rNombre" maxlength="20" required placeholder="Ej. Ana G.">
+      <label for="rCarrera">Carrera <span class="opcional">(opcional)</span></label>
       <input id="rCarrera" list="dlCarreras" maxlength="60" placeholder="Ej. Ingeniería Industrial">
-      <label for="rColonia">¿En qué colonia vives?</label>
+      <label for="rColonia">¿En qué colonia vives? <span class="opcional">(opcional)</span></label>
       <input id="rColonia" list="dlColonias" maxlength="60" placeholder="Escribe tu colonia">
-      <div id="rEquipoWrap" class="oculto">
-        <label for="rEquipo">Equipo</label>
-        <select id="rEquipo"></select>
-      </div>
-      <button class="btn naranja ancho" style="margin-top:1.2rem" type="submit">¡Entrar al juego!</button>
+      <button class="btn naranja ancho" style="margin-top:1.2rem;font-size:1.1rem" type="submit" id="btnJugar">¡Jugar!</button>
       <div id="rError" class="error oculto"></div>
-      <p class="aviso">Tus respuestas son anónimas para el análisis del proyecto OCUN (UABC): solo usamos tu apodo para el marcador y tu colonia y carrera para las estadísticas.</p>
+      <p class="aviso">Tu apodo aparece en el ranking. Tu carrera y colonia solo se usan para las estadísticas del proyecto OCUN (UABC).</p>
     </form>
-  </section>
-
-  <!-- ESPERA / MENSAJES -->
-  <section id="vMensaje" class="oculto aparece centro">
-    <div class="ilustracion" id="mIcono">☁️</div>
-    <h2 class="gis" id="mTitulo" style="font-size:2rem;margin:.2rem 0"></h2>
-    <p class="tenue" id="mTexto"></p>
-    <div id="mExtra"></div>
-  </section>
-
-  <!-- ENCUESTA -->
-  <section id="vEncuesta" class="oculto aparece">
-    <div class="etiqueta">Encuesta</div>
-    <h2 class="gis" style="font-size:2rem;margin:.3rem 0 .2rem">Preguntamos a 100 estudiantes…</h2>
-    <p class="tenue" style="margin-top:0">Contesta lo primero que se te venga a la mente. No hay respuestas incorrectas.</p>
-    <form id="fEncuesta" autocomplete="off"></form>
-    <div id="eError" class="error oculto"></div>
+    <div class="tarjeta" style="margin-top:1rem">
+      <h2 class="gis" style="margin:0 0 .4rem;font-size:1.6rem;color:var(--menta)">Top 10</h2>
+      <div id="topBienvenida"></div>
+    </div>
   </section>
 
   <!-- JUEGO -->
-  <section id="vJuego" class="oculto aparece">
+  <section id="vJuego" class="oculto">
     <div class="etiqueta" id="jNumero"></div>
+    <div class="pasos" id="jPasos"></div>
     <p class="pregunta" id="jPregunta"></p>
-    <p class="tenue" style="margin:-.4rem 0 .4rem;font-size:.9rem">Adivina las respuestas más populares de la encuesta.</p>
+    <p class="ayuda" id="jAyuda"></p>
     <div class="tachas" id="jTachas"></div>
-    <form id="fAdivinar" class="fila-envio" autocomplete="off">
-      <input id="jInput" maxlength="80" placeholder="Tu respuesta…" enterkeyhint="send">
+    <form id="fResponder" class="fila-envio" autocomplete="off">
+      <input id="jInput" list="dlColonias" maxlength="80" placeholder="Escribe una colonia…" enterkeyhint="send" autocapitalize="words">
       <button class="btn naranja" type="submit" id="jBtn">Va</button>
     </form>
-    <div class="feedback info" id="jFeedback">Tienes 3 oportunidades. ¡Suerte!</div>
+    <div class="feedback info" id="jFeedback">Escribe la colonia que creas que tiene más reportes.</div>
     <div class="mini-tablero" id="jTablero"></div>
-    <p class="tenue centro" style="font-size:.85rem">Puntos en esta pregunta: <b id="jPuntosQ">0</b></p>
+    <button class="btn fantasma ancho pasar" id="btnPasar">Pasar a la siguiente pregunta →</button>
   </section>
 
-  <div class="centro"><button class="salir oculto" id="btnSalir">¿No eres tú? Cambiar de jugador</button></div>
+  <!-- TRANSICIÓN ENTRE PREGUNTAS -->
+  <section id="vTransicion" class="oculto transicion aparece">
+    <div class="tenue" id="tTitulo">Pregunta terminada</div>
+    <div class="grande" id="tPuntos">+0</div>
+    <p class="tenue" id="tTexto">Siguiente pregunta…</p>
+  </section>
+
+  <!-- RESULTADOS -->
+  <section id="vResultados" class="oculto aparece">
+    <div class="etiqueta">Resultados</div>
+    <h1 class="gis" style="font-size:2.4rem;margin:.3rem 0 0" id="resTitulo">¡Bien hecho!</h1>
+    <div class="marcador">
+      <div><b id="resPuntos">0</b><span>puntos</span></div>
+      <div><b id="resTiempo">0:00</b><span>tiempo</span></div>
+      <div><b id="resLugar">–</b><span id="resLugarTxt">lugar</span></div>
+    </div>
+    <div class="tarjeta" style="margin-bottom:1rem">
+      <h2 class="gis" style="margin:0 0 .5rem;font-size:1.6rem;color:var(--menta)">Top 10</h2>
+      <div id="topResultados"></div>
+    </div>
+    <h2 class="gis" style="font-size:1.6rem;margin:1.2rem 0 .3rem">Las respuestas correctas</h2>
+    <p class="tenue" style="margin:0 0 .8rem;font-size:.85rem" id="resFuente"></p>
+    <div id="resPreguntas"></div>
+    <div class="botones">
+      <button class="btn naranja ancho" id="btnOtra">Jugar otra vez</button>
+    </div>
+    <p class="aviso">Comparte con tu familia en qué colonias se reportan más problemas por lluvias. Informarse también es prevenir.</p>
+  </section>
 </main>
 
 <datalist id="dlCarreras"></datalist>
@@ -123,13 +167,15 @@
 (() => {
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const leer = k => { try { return localStorage.getItem('ced_' + k); } catch { return null; } };
-  const guardar = (k, v) => { try { v == null ? localStorage.removeItem('ced_' + k) : localStorage.setItem('ced_' + k, v); } catch { /* sin almacenamiento */ } };
+  const leer = k => { try { return localStorage.getItem('ced2_' + k); } catch { return null; } };
+  const guardar = (k, v) => { try { v == null ? localStorage.removeItem('ced2_' + k) : localStorage.setItem('ced2_' + k, v); } catch { /* */ } };
   const vibrar = p => { try { navigator.vibrate && navigator.vibrate(p); } catch { /* */ } };
+  const reloj = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const relojFino = ms => ms == null ? '–' : (ms >= 60000 ? reloj(ms) : (ms / 1000).toFixed(1) + ' s');
 
-  let pid = leer('pid');
-  let yo = null, s = null, info = null, clave = '', enviando = false;
-  const vistas = ['vRegistro', 'vMensaje', 'vEncuesta', 'vJuego'];
+  let id = leer('partida');
+  let partida = null, info = null, top = [], enviando = false, offset = 0, tReloj = null, transicionando = false;
+  const vistas = ['vBienvenida', 'vJuego', 'vTransicion', 'vResultados'];
 
   async function api(url, body) {
     const r = await fetch(url, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { cache: 'no-store' });
@@ -137,167 +183,193 @@
     if (!r.ok) { const e = new Error(d.error || 'Algo salió mal'); e.status = r.status; e.datos = d; throw e; }
     return d;
   }
-  function mostrar(id) { for (const v of vistas) $('#' + v).classList.toggle('oculto', v !== id); }
-  function mensaje(icono, titulo, texto, extra = '') {
-    $('#mIcono').textContent = icono; $('#mTitulo').textContent = titulo; $('#mTexto').textContent = texto; $('#mExtra').innerHTML = extra;
-    mostrar('vMensaje');
+  function mostrar(v) {
+    for (const x of vistas) $('#' + x).classList.toggle('oculto', x !== v);
+    $('#hdrJuego').classList.toggle('oculto', !(v === 'vJuego' || v === 'vTransicion'));
+    window.scrollTo(0, 0);
   }
-  function olvidar() { pid = null; yo = null; guardar('pid', null); render(); }
-
-  async function cargarInfo() {
-    try {
-      info = await api('/api/info');
-      $('#dlCarreras').innerHTML = info.carreras.map(c => `<option value="${esc(c)}">`).join('');
-      $('#dlColonias').innerHTML = info.colonias.map(c => `<option value="${esc(c)}">`).join('');
-      const eq = info.equipos || [];
-      $('#rEquipoWrap').classList.toggle('oculto', !eq.length);
-      $('#rEquipo').innerHTML = '<option value="">Elige tu equipo…</option>' + eq.map(e => `<option>${esc(e)}</option>`).join('');
-    } catch { /* se reintenta al reconectar */ }
-  }
-  async function refrescarYo() {
-    if (!pid) return;
-    try { yo = await api('/api/yo?pid=' + encodeURIComponent(pid)); }
-    catch (e) { if (e.status === 404) { olvidar(); return; } }
-    render();
+  function tablaTop(lista, miId) {
+    if (!lista.length) return '<p class="tenue" style="margin:0">Todavía nadie termina. ¡Sé el primero!</p>';
+    const med = ['🥇', '🥈', '🥉'];
+    return `<table class="rank"><thead><tr><th>#</th><th>Nombre</th><th class="num">Pts</th><th class="num">Tiempo</th></tr></thead><tbody>${
+      lista.map(r => `<tr class="${r.id === miId ? 'yo' : ''}"><td class="medalla">${med[r.lugar - 1] || r.lugar}</td><td>${esc(r.nombre)}</td><td class="num">${r.puntos}</td><td class="num">${relojFino(r.ms)}</td></tr>`).join('')
+    }</tbody></table>`;
   }
 
-  function header() {
-    $('#hdrYo').classList.toggle('oculto', !yo);
-    $('#btnSalir').classList.toggle('oculto', !yo);
-    if (!yo) return;
-    $('#hdrNombre').textContent = yo.nombre + (yo.equipo ? ' · ' + yo.equipo : '');
-    $('#hdrPuntos').textContent = yo.puntos;
-    $('#hdrPos').textContent = yo.posicion + ' de ' + yo.totalJugadores;
+  // ---------- reloj
+  function iniciarReloj() {
+    clearInterval(tReloj);
+    tReloj = setInterval(() => { if (partida && !partida.terminada) $('#reloj').textContent = reloj(Date.now() - offset); }, 250);
   }
 
+  // ---------- render
   function render() {
-    header();
-    if (!pid || !yo) { mostrar('vRegistro'); return; }
-    if (!s) { mensaje('⏳', 'Conectando…', 'Un momento.'); return; }
-    const f = s.fase;
-    if (f === 'lobby') {
-      mensaje('🌧️', '¡Ya estás dentro!', 'Mira la pantalla grande: en un momento empezamos.');
-    } else if (f === 'encuesta') {
-      const pendientes = yo.encuesta.filter(q => !q.respondida);
-      if (!pendientes.length) mensaje('🙌', '¡Gracias!', 'Tus respuestas ya cuentan para el tablero. Espera a que empiece el juego.');
-      else if ($('#vEncuesta').classList.contains('oculto') || $('#fEncuesta').dataset.ids !== pendientes.map(q => q.id).join(',')) pintarEncuesta(pendientes);
-    } else if (f === 'juego') {
-      if (!s.tablero || !yo.juego) mensaje('🧮', 'Preparando el tablero…', 'El conductor está por lanzar la pregunta.');
-      else pintarJuego();
-    } else if (f === 'comparar') {
-      const c = s.comparacion;
-      let extra = '';
-      if (c && !c.tipoLibre && c.hayHistorico) extra = `<div class="tarjeta" style="margin-top:1rem"><div class="grande">${c.aciertos}/${c.n}</div><p>respuestas de los estudiantes están entre las colonias con más reportes históricos.</p></div>`;
-      mensaje('🔍', '¿Acertaron o fue pura percepción?', 'Mira la pantalla: comparamos lo que dijeron los estudiantes con el histórico real de las lluvias.', extra);
-    } else if (f === 'ranking') {
-      const lista = (s.ranking || []).map((r, i) => `<li class="${r.nombre === yo.nombre && r.puntos === yo.puntos ? 'yo' : ''}"><span>${i + 1}. ${esc(r.nombre)}</span><b>${r.puntos}</b></li>`).join('');
-      mensaje('🏆', `Quedaste en el lugar ${yo.posicion}`, `Hiciste ${yo.puntos} puntos. ¡Gracias por jugar y por informarte!`,
-        `<ul class="ranking-lista">${lista}</ul><p class="aviso">Sigue al Chismógrafo del Niño para enterarte de cómo va la lluvia en tu colonia.</p>`);
+    if (!partida) {
+      mostrar('vBienvenida');
+      $('#topBienvenida').innerHTML = tablaTop(top);
+      return;
+    }
+    $('#hdrPuntos').textContent = partida.puntos;
+    if (partida.terminada) return pintarResultados();
+    if (!transicionando) pintarPregunta();
+  }
+
+  function pintarPregunta() {
+    const q = partida.pregunta;
+    $('#jNumero').textContent = `Pregunta ${q.numero} de ${partida.total}`;
+    $('#jPasos').innerHTML = Array.from({ length: partida.total }, (_, i) => `<i class="${i < q.numero - 1 ? 'hecho' : i === q.numero - 1 ? 'actual' : ''}"></i>`).join('');
+    $('#jPregunta').textContent = q.texto;
+    $('#jAyuda').textContent = `Hay ${q.respuestas} colonias en el tablero.`;
+    $('#jTachas').innerHTML = Array.from({ length: q.maxTachas }, (_, i) => `<span class="${i < q.tachas ? 'on' : ''}">✕</span>`).join('');
+    const mias = new Map(q.encontradas.map(e => [e.indice, e]));
+    $('#jTablero').innerHTML = Array.from({ length: q.respuestas }, (_, i) => {
+      const m = mias.get(i);
+      return m ? `<div class="casilla mia"><span class="n">${i + 1}</span><span class="t">${esc(m.texto)}</span><span class="p">${m.puntos}</span></div>`
+        : `<div class="casilla"><span class="n">${i + 1}</span><span class="t tenue">?</span></div>`;
+    }).join('');
+    $('#jInput').disabled = $('#jBtn').disabled = enviando;
+    if ($('#vJuego').classList.contains('oculto')) {
+      mostrar('vJuego');
+      feedback('info', 'Escribe la colonia que creas que tiene más reportes.');
+      setTimeout(() => $('#jInput').focus(), 200);
     }
   }
-
-  function pintarEncuesta(pendientes) {
-    const f = $('#fEncuesta');
-    f.dataset.ids = pendientes.map(q => q.id).join(',');
-    f.innerHTML = pendientes.map((q, i) => `
-      <div class="bloque-q tarjeta">
-        <label for="e_${esc(q.id)}" style="margin-top:0;color:var(--gis);font-size:1rem;line-height:1.4"><span class="num">${i + 1}</span>${esc(q.texto)}</label>
-        <input id="e_${esc(q.id)}" name="${esc(q.id)}" maxlength="80" required ${q.tipo === 'colonia' ? 'list="dlColonias" placeholder="Escribe una colonia"' : 'placeholder="Tu respuesta"'}>
-      </div>`).join('') + '<button class="btn naranja ancho" type="submit">Enviar respuestas</button>';
-    $('#eError').classList.add('oculto');
-    mostrar('vEncuesta');
-  }
-
-  function pintarJuego() {
-    const j = yo.juego;
-    $('#jNumero').textContent = `Pregunta ${s.pregunta.numero} de ${s.pregunta.total}`;
-    $('#jPregunta').textContent = s.pregunta.texto;
-    $('#jTachas').innerHTML = Array.from({ length: j.maxTachas }, (_, i) => `<span class="${i < j.tachas ? 'on' : ''}">✕</span>`).join('');
-    const mias = new Map(j.encontradas.map(e => [e.indice, e]));
-    $('#jTablero').innerHTML = s.tablero.map((c, i) => {
-      const m = mias.get(i);
-      if (m) return `<div class="casilla mia"><span class="n">${i + 1}</span><span class="t">${esc(m.texto)}</span><span class="p">${m.puntos}</span></div>`;
-      if (c.revelada) return `<div class="casilla pantalla"><span class="n">${i + 1}</span><span class="t">${esc(c.texto)}</span><span class="p">${c.puntos}</span></div>`;
-      return `<div class="casilla"><span class="n">${i + 1}</span><span class="t tenue">?</span></div>`;
-    }).join('');
-    $('#jPuntosQ').textContent = j.puntos;
-    const agotado = j.tachas >= j.maxTachas;
-    const completo = j.encontradas.length + s.tablero.filter((c, i) => c.revelada && !mias.has(i)).length >= s.tablero.length;
-    $('#jInput').disabled = $('#jBtn').disabled = agotado || completo || enviando;
-    if (agotado) feedback('mal', 'Se acabaron tus 3 oportunidades. ¡Mira el tablero en la pantalla!', false);
-    else if (completo) feedback('ok', '¡Tablero completo! Espera la siguiente pregunta.', false);
-    mostrar('vJuego');
-  }
-  function feedback(tipo, texto, animar = true) {
+  function feedback(tipo, texto) {
     const el = $('#jFeedback');
-    el.className = 'feedback ' + tipo;
-    if (animar) { void el.offsetWidth; }
+    el.className = 'feedback'; void el.offsetWidth; el.className = 'feedback ' + tipo;
     el.textContent = texto;
   }
 
-  // ---- eventos de formularios
+  async function transicion(puntosQ, motivo) {
+    transicionando = true;
+    $('#tTitulo').textContent = motivo;
+    $('#tPuntos').textContent = '+' + puntosQ;
+    $('#tTexto').textContent = partida.terminada ? 'Calculando tus resultados…' : 'Siguiente pregunta…';
+    mostrar('vTransicion');
+    await new Promise(r => setTimeout(r, 1500));
+    transicionando = false;
+    render();
+  }
+
+  function pintarResultados() {
+    clearInterval(tReloj);
+    const r = partida;
+    $('#resTitulo').textContent = r.lugar && r.lugar <= 10 ? '¡Entraste al Top 10!' : '¡Gracias por jugar!';
+    $('#resPuntos').textContent = r.puntos;
+    $('#resTiempo').textContent = relojFino(r.ms);
+    $('#resLugar').textContent = r.lugar || '–';
+    $('#resLugarTxt').textContent = r.jugadores ? `de ${r.jugadores}` : 'lugar';
+    $('#topResultados').innerHTML = tablaTop(r.top, r.id);
+    $('#resFuente').textContent = `Basado en ${r.reportes} reportes históricos de incidentes por lluvia en Tijuana (Cruz Roja, dependencias y ciudadanía). Entre paréntesis: número de reportes.`;
+    $('#resPreguntas').innerHTML = r.resultados.map((q, i) => `
+      <div class="tarjeta res-q">
+        <span class="sub-pts">+${q.puntos}</span>
+        <h3>${i + 1}. ${esc(q.texto)}</h3>
+        <p class="dato">${esc(q.dato)}</p>
+        ${q.tablero.map(t => `<div class="res-fila ${t.acerto ? 'si' : ''}"><span class="ic">${t.acerto ? '✅' : '•'}</span><span class="t">${esc(t.texto)} <span class="r">(${t.reportes})</span></span><span class="p">${t.puntos}</span></div>`).join('')}
+        ${q.fallidas && q.fallidas.length ? `<div class="dijiste">Tú dijiste y no estaba: ${q.fallidas.map(esc).join(', ')}</div>` : ''}
+      </div>`).join('');
+    mostrar('vResultados');
+  }
+
+  // ---------- acciones
   $('#fRegistro').addEventListener('submit', async ev => {
     ev.preventDefault();
     const err = $('#rError'); err.classList.add('oculto');
+    $('#btnJugar').disabled = true;
     try {
-      yo = await api('/api/unirse', { nombre: $('#rNombre').value, carrera: $('#rCarrera').value, colonia: $('#rColonia').value, equipo: $('#rEquipo').value });
-      pid = yo.pid; guardar('pid', pid);
+      partida = await api('/api/empezar', { nombre: $('#rNombre').value, carrera: $('#rCarrera').value, colonia: $('#rColonia').value });
+      id = partida.id; guardar('partida', id);
+      guardar('nombre', $('#rNombre').value); guardar('carrera', $('#rCarrera').value); guardar('colonia', $('#rColonia').value);
+      offset = Date.now() - partida.transcurrido;
+      iniciarReloj();
       render();
     } catch (e) { err.textContent = e.message; err.classList.remove('oculto'); }
+    $('#btnJugar').disabled = false;
   });
-  $('#fEncuesta').addEventListener('submit', async ev => {
-    ev.preventDefault();
-    const datos = {};
-    for (const inp of ev.target.querySelectorAll('input')) datos[inp.name] = inp.value;
-    try {
-      const r = await api('/api/encuesta', { pid, respuestas: datos });
-      yo = r.mio; vibrar(60); render();
-    } catch (e) {
-      if (e.status === 404) return olvidar();
-      $('#eError').textContent = e.message; $('#eError').classList.remove('oculto');
-    }
-  });
-  $('#fAdivinar').addEventListener('submit', async ev => {
+
+  $('#fResponder').addEventListener('submit', async ev => {
     ev.preventDefault();
     const input = $('#jInput');
     const texto = input.value.trim();
     if (!texto || enviando) return;
     enviando = true; $('#jBtn').disabled = true;
+    const antes = partida.pregunta;
     try {
-      const r = await api('/api/adivinar', { pid, texto });
-      yo = r.mio;
+      const r = await api('/api/responder', { id, texto });
+      partida = r.partida;
       const x = r.resultado;
-      if (x.tipo === 'acierto') { feedback('ok', `¡Está en el tablero! "${x.texto}" +${x.puntos}`); vibrar(90); }
-      else if (x.tipo === 'tache') { feedback('mal', `✕ No está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); }
-      else if (x.tipo === 'repetida') feedback('info', `"${x.texto}" ya la tenías. Intenta otra.`);
-      else if (x.tipo === 'revelada') feedback('info', `"${x.texto}" ya se reveló en la pantalla. Intenta otra.`);
       input.value = '';
+      if (x.tipo === 'acierto') { feedback('ok', `¡Correcto! "${x.texto}" +${x.puntos}`); vibrar(90); }
+      else if (x.tipo === 'tache') { feedback('mal', `✕ Esa colonia no está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); }
+      else if (x.tipo === 'repetida') feedback('info', `"${x.texto}" ya la tenías. Intenta otra.`);
+      if (x.finPregunta) {
+        const ganados = antes.puntos + (x.tipo === 'acierto' ? x.puntos : 0);
+        const motivo = x.tipo === 'tache' ? 'Se acabaron tus 3 oportunidades' : '¡Encontraste todas!';
+        enviando = false;
+        if (x.tipo !== 'tache') pintarPregunta();
+        await new Promise(r => setTimeout(r, 700));
+        return transicion(ganados, motivo);
+      }
     } catch (e) {
       if (e.status === 404) { enviando = false; return olvidar(); }
-      if (e.datos && e.datos.mio) yo = e.datos.mio;
+      if (e.datos && e.datos.partida) partida = e.datos.partida;
       feedback('info', e.message);
     }
     enviando = false;
     render();
     if (!$('#jInput').disabled) $('#jInput').focus();
   });
-  $('#btnSalir').addEventListener('click', () => { if (confirm('¿Salir y registrar a otra persona en este celular?')) olvidar(); });
 
-  // ---- tiempo real
-  function conectar() {
-    const es = new EventSource('/eventos?rol=jugador');
-    es.addEventListener('estado', ev => {
-      s = JSON.parse(ev.data);
-      document.title = s.titulo;
-      const nueva = `${s.fase}|${s.pregunta && s.pregunta.id}|${s.versionTablero}`;
-      if (nueva !== clave) { clave = nueva; if (s.fase === 'lobby' || s.fase === 'encuesta') cargarInfo(); refrescarYo(); }
-      else render();
-    });
-    es.onerror = () => { /* EventSource reintenta solo */ };
+  $('#btnPasar').addEventListener('click', async () => {
+    if (!partida || partida.terminada || enviando) return;
+    const q = partida.pregunta;
+    if (!q.encontradas.length && q.tachas < q.maxTachas && !confirm('¿Pasar sin contestar esta pregunta?')) return;
+    enviando = true;
+    try {
+      const r = await api('/api/pasar', { id, numero: q.numero });
+      partida = r.partida;
+      enviando = false;
+      return transicion(q.puntos, 'Pregunta terminada');
+    } catch (e) { if (e.status === 404) { enviando = false; return olvidar(); } feedback('info', e.message); }
+    enviando = false;
+  });
+
+  function olvidar() {
+    id = null; partida = null; guardar('partida', null); clearInterval(tReloj);
+    cargarTop().then(render);
   }
+  $('#btnOtra').addEventListener('click', olvidar);
 
-  cargarInfo().then(() => { if (pid) refrescarYo(); else render(); });
-  conectar();
+  // ---------- datos
+  async function cargarInfo() {
+    try {
+      info = await api('/api/info');
+      $('#dlCarreras').innerHTML = info.carreras.map(c => `<option value="${esc(c)}">`).join('');
+      $('#dlColonias').innerHTML = info.colonias.map(c => `<option value="${esc(c)}">`).join('');
+      $('#nPreguntas').textContent = info.totalPreguntas;
+      $('#nReportes').textContent = `${info.reportes} reportes reales`;
+    } catch { /* */ }
+  }
+  async function cargarTop() { try { top = (await api('/api/ranking')).top; } catch { /* */ } }
+
+  // recuerda los datos para "Jugar otra vez"
+  $('#rNombre').value = leer('nombre') || '';
+  $('#rCarrera').value = leer('carrera') || '';
+  $('#rColonia').value = leer('colonia') || '';
+
+  (async () => {
+    await Promise.all([cargarInfo(), cargarTop()]);
+    if (id) {
+      try {
+        partida = await api('/api/partida?id=' + encodeURIComponent(id));
+        if (!partida.terminada) { offset = Date.now() - partida.transcurrido; iniciarReloj(); }
+      } catch { id = null; guardar('partida', null); }
+    }
+    render();
+  })();
+  // el top de la bienvenida se actualiza solo
+  setInterval(async () => { if (!partida) { await cargarTop(); $('#topBienvenida').innerHTML = tablaTop(top); } }, 15000);
 })();
 </script>
 </body>

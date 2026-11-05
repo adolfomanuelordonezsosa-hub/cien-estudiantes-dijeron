@@ -16,172 +16,81 @@
   .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
   .tabs button { background: transparent; border: 2px solid rgba(255,255,255,.15); color: var(--gis); padding: .55em 1em; border-radius: 10px; font: 600 .95rem 'Montserrat'; cursor: pointer; }
   .tabs button.on { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
-  .grid2 { display: grid; grid-template-columns: 1.25fr 1fr; gap: 1rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
   h2.sec { font: 700 1.45rem 'Cabin Sketch', cursive; color: var(--menta); margin: 0 0 .7rem; }
-  .fases { display: flex; flex-wrap: wrap; gap: .45rem; }
   .fila { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .7rem; }
-  .fila > select, .fila > input { width: auto; flex: 1; min-width: 140px; }
   table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-  th, td { text-align: left; padding: .5rem .45rem; border-bottom: 1px solid rgba(255,255,255,.08); vertical-align: top; }
-  th { color: var(--gis-tenue); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
-  td.num, th.num { text-align: right; }
-  tr.rev td { color: var(--menta); }
-  .alias { color: var(--gis-tenue); font-size: .75rem; }
+  th, td { text-align: left; padding: .45rem .45rem; border-bottom: 1px solid rgba(255,255,255,.08); vertical-align: top; }
+  th { color: var(--gis-tenue); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.oculta td { opacity: .45; text-decoration: line-through; }
   .kpi { background: rgba(255,255,255,.05); border-radius: 12px; padding: .9rem 1rem; border: 1px solid rgba(255,255,255,.08); }
   .kpi b { display: block; font: 700 2rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1.1; }
   .kpi span { font-size: .8rem; color: var(--gis-tenue); }
   .barras { display: grid; gap: .35rem; }
-  .barra { display: grid; grid-template-columns: minmax(120px, 34%) 1fr auto; gap: .6rem; align-items: center; font-size: .9rem; }
+  .barra { display: grid; grid-template-columns: minmax(120px, 38%) 1fr auto; gap: .6rem; align-items: center; font-size: .9rem; }
   .barra .et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .barra .riel { height: 14px; background: rgba(255,255,255,.06); border-radius: 99px; overflow: hidden; }
   .barra .riel div { height: 100%; background: var(--menta); border-radius: 99px; }
   .barra.nar .riel div { background: var(--naranja); }
+  .barra.gris .riel div { background: rgba(243,240,230,.35); }
   .barra .val { color: var(--gis-tenue); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
   .msg { position: fixed; right: 1rem; bottom: 1rem; background: #1b1d1c; border: 1px solid rgba(255,255,255,.2); padding: .8rem 1rem; border-radius: 12px; z-index: 99; max-width: 380px; box-shadow: var(--sombra); }
   .msg.err { border-color: var(--rojo); }
-  .q-edit { display: grid; grid-template-columns: 1fr 150px auto; gap: .5rem; margin-bottom: .6rem; align-items: start; }
-  .q-edit textarea { min-height: 3.2em; resize: vertical; }
   .nota { font-size: .85rem; color: var(--gis-tenue); line-height: 1.5; }
   .peligro { border: 1px solid rgba(232,96,76,.4); }
-  .chip { display: inline-block; padding: .15em .55em; border-radius: 99px; background: rgba(255,255,255,.08); font-size: .78rem; margin: .1em; }
+  .chip { display: inline-block; padding: .12em .5em; border-radius: 99px; background: rgba(255,255,255,.08); font-size: .76rem; margin: .1em; }
   .chip.si { background: rgba(85,187,146,.25); color: var(--menta); }
-  a.link { color: var(--menta); }
-  .muestra { max-height: 260px; overflow: auto; }
+  .q-edit { margin-bottom: 1rem; }
+  .q-edit textarea { min-height: 2.6em; resize: vertical; }
+  .q-edit .tab-txt { min-height: 9em; font-family: ui-monospace, Menlo, monospace; font-size: .85rem; }
+  .muestra { max-height: 560px; overflow: auto; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <!-- LOGIN -->
   <section id="login" class="tarjeta oculto" style="max-width:420px;margin:12vh auto">
-    <h1 class="gis" style="margin:0 0 .4rem;font-size:2rem">Panel del conductor</h1>
-    <p class="tenue">Escribe la clave de administración (variable ADMIN_KEY).</p>
+    <h1 class="gis" style="margin:0 0 .4rem;font-size:2rem">Panel del juego</h1>
+    <p class="tenue">Escribe la clave de administración (variable ADMIN_KEY de Railway).</p>
     <form id="fLogin"><input id="clave" type="password" placeholder="Clave" required><button class="btn naranja ancho" style="margin-top:.8rem">Entrar</button></form>
   </section>
 
   <section id="app" class="oculto">
     <header class="adm">
-      <div><span class="pastilla">OCUN · UABC Tijuana</span><h1 class="gis" id="hTitulo">100 estudiantes dijeron</h1></div>
+      <div><span class="pastilla">OCUN · UABC Tijuana</span><h1 class="gis">Panel · 100 estudiantes dijeron</h1></div>
       <div class="fila" style="margin:0">
-        <a class="btn chico" href="/tv" target="_blank">Abrir pantalla (TV)</a>
+        <a class="btn chico" href="/tv" target="_blank">Abrir pantalla (Top 10)</a>
         <a class="btn chico fantasma" href="/" target="_blank">Página de jugadores</a>
         <button class="btn chico fantasma" id="salir">Salir</button>
       </div>
     </header>
     <nav class="tabs" id="tabs">
-      <button data-t="control" class="on">Control del juego</button>
-      <button data-t="preguntas">Preguntas</button>
-      <button data-t="historico">Histórico real</button>
+      <button data-t="ranking" class="on">Ranking y partidas</button>
       <button data-t="analisis">Análisis</button>
+      <button data-t="preguntas">Preguntas y respuestas</button>
       <button data-t="exportar">Exportar datos</button>
     </nav>
 
-    <!-- CONTROL -->
-    <div data-p="control">
+    <!-- RANKING -->
+    <div data-p="ranking">
       <div class="grid3" id="kpis" style="margin-bottom:1rem"></div>
       <div class="grid2">
         <div class="tarjeta">
-          <h2 class="sec">1. Fase en pantalla</h2>
-          <div class="fases" id="fases"></div>
-          <p class="nota" style="margin-top:.8rem">Bienvenida → Encuesta (los estudiantes responden) → Juego (adivinan el tablero) → Comparar con el histórico → Ganadores.</p>
-
-          <h2 class="sec" style="margin-top:1.4rem">2. Pregunta actual</h2>
-          <div class="fila">
-            <button class="btn chico fantasma" id="qPrev">◀</button>
-            <select id="qSel"></select>
-            <button class="btn chico fantasma" id="qNext">▶</button>
-          </div>
-          <p class="nota" id="qInfo"></p>
-
-          <h2 class="sec" style="margin-top:1.4rem">3. Tablero</h2>
-          <div class="fila">
-            <label style="margin:0">Respuestas en el tablero</label>
-            <select id="topN" style="max-width:90px"><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
-            <button class="btn chico" id="generar">Generar desde la encuesta</button>
-            <button class="btn chico fantasma" id="verManual">Tablero manual</button>
-          </div>
-          <div id="manual" class="oculto" style="margin-top:.7rem">
-            <p class="nota">Una respuesta por línea: <code>texto | puntos | sinónimos separados por coma</code>. Ej.: <code>Camino Verde | 32 | camino berde, cmn verde</code></p>
-            <textarea id="manualTxt" rows="6"></textarea>
-            <button class="btn chico naranja" id="guardarManual" style="margin-top:.5rem">Usar este tablero</button>
-          </div>
-          <table style="margin-top:.9rem">
-            <thead><tr><th>#</th><th>Respuesta</th><th class="num">Votos</th><th class="num">Pts</th><th class="num">La hallaron</th><th></th></tr></thead>
-            <tbody id="tab"></tbody>
-          </table>
-          <div class="fila">
-            <button class="btn naranja" id="revelarTodo">Revelar todo</button>
-            <button class="btn fantasma chico" id="ocultar">Ocultar todo</button>
-            <span style="flex:1"></span>
-            <button class="btn rojo chico" data-tache="1">✕</button>
-            <button class="btn rojo chico" data-tache="2">✕✕</button>
-            <button class="btn rojo chico" data-tache="3">✕✕✕</button>
-          </div>
-          <p class="nota">Los ✕ solo se muestran en la pantalla (para dinámicas por equipos frente al público). Los celulares llevan sus propias 3 oportunidades.</p>
-        </div>
-        <div>
-          <div class="tarjeta">
-            <h2 class="sec">En vivo</h2>
-            <ol id="rank" style="margin:0;padding-left:1.3rem;line-height:1.8"></ol>
-            <ul id="feedAdm" class="nota" style="list-style:none;padding:0;margin:.8rem 0 0"></ul>
-          </div>
-          <div class="tarjeta peligro" style="margin-top:1rem">
-            <h2 class="sec" style="color:var(--rojo)">Reiniciar</h2>
-            <div class="fila">
-              <button class="btn chico fantasma" data-reset="juego">Reiniciar puntos</button>
-              <button class="btn chico fantasma" data-reset="encuesta">Borrar encuesta y puntos</button>
-              <button class="btn chico rojo" data-reset="todo">Borrar TODO</button>
-            </div>
-            <p class="nota">Descarga los CSV antes de borrar: lo borrado no se recupera.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PREGUNTAS -->
-    <div data-p="preguntas" class="oculto">
-      <div class="tarjeta">
-        <h2 class="sec">Configuración</h2>
-        <div class="grid3">
-          <div><label>Título</label><input id="cTitulo" maxlength="60"></div>
-          <div><label>Meta de la encuesta</label><input id="cMeta" type="number" min="1"></div>
-          <div><label>Equipos (opcional, separados por coma)</label><input id="cEquipos" placeholder="Ej. Hilera Roja, Hilera Azul"></div>
-        </div>
-        <h2 class="sec" style="margin-top:1.4rem">Preguntas</h2>
-        <p class="nota">Tipo <b>colonia</b>: la respuesta es una colonia, se autocompleta y se compara con el histórico real. Tipo <b>libre</b>: preguntas de prevención.</p>
-        <div id="qLista"></div>
-        <div class="fila"><button class="btn chico fantasma" id="qAgregar">+ Agregar pregunta</button><span style="flex:1"></span><button class="btn naranja" id="cGuardar">Guardar cambios</button></div>
-      </div>
-    </div>
-
-    <!-- HISTÓRICO -->
-    <div data-p="historico" class="oculto">
-      <div class="grid2">
-        <div class="tarjeta">
-          <h2 class="sec">Cargar histórico real</h2>
-          <p class="nota">En el diagnóstico (<a class="link" href="https://diagnosticorosarito.netlify.app/" target="_blank" rel="noopener">diagnosticorosarito.netlify.app</a>) elige el municipio, colorea por <b>Reportes históricos</b>, abre <b>Resumen por colonia</b> y presiona <b>Descargar tabla (CSV)</b>. Sube ese archivo aquí. Puedes subir el de Tijuana o juntar varios municipios en un solo archivo.</p>
-          <input type="file" id="hArchivo" accept=".csv,text/csv,.txt">
-          <div id="hMapeo" class="oculto">
-            <div class="grid3" style="margin-top:.6rem">
-              <div><label>Columna de la colonia</label><select id="hColCol"></select></div>
-              <div><label>Columna de reportes</label><select id="hColRep"></select></div>
-              <div><label>Columna de municipio</label><select id="hColMun"></select></div>
-            </div>
-            <div class="muestra" style="margin-top:.8rem"><table id="hPrev"></table></div>
-            <button class="btn naranja" id="hGuardar" style="margin-top:.8rem">Guardar histórico</button>
-          </div>
-          <details style="margin-top:1rem">
-            <summary class="nota" style="cursor:pointer">O pégalo a mano (colonia, reportes)</summary>
-            <textarea id="hTexto" rows="7" placeholder="Camino Verde, 12&#10;Sánchez Taboada, 9"></textarea>
-            <button class="btn chico" id="hGuardarTexto" style="margin-top:.5rem">Guardar texto</button>
-          </details>
+          <h2 class="sec">Top 10</h2>
+          <table><thead><tr><th>#</th><th>Nombre</th><th>Carrera</th><th class="num">Pts</th><th class="num">Tiempo</th></tr></thead><tbody id="top"></tbody></table>
         </div>
         <div class="tarjeta">
-          <h2 class="sec">Histórico cargado</h2>
-          <p class="nota" id="hResumen"></p>
-          <div class="muestra" style="max-height:520px"><table><thead><tr><th>#</th><th>Colonia</th><th>Municipio</th><th class="num">Reportes</th></tr></thead><tbody id="hActual"></tbody></table></div>
+          <h2 class="sec">Últimas partidas</h2>
+          <p class="nota">Si se cuela un nombre ofensivo, presiona <b>Ocultar</b> y desaparece del ranking (sus datos se conservan para el análisis).</p>
+          <div class="muestra"><table><thead><tr><th>Nombre</th><th class="num">Pts</th><th class="num">Tiempo</th><th class="num">Lugar</th><th></th></tr></thead><tbody id="partidas"></tbody></table></div>
         </div>
+      </div>
+      <div class="tarjeta peligro" style="margin-top:1rem">
+        <h2 class="sec" style="color:var(--rojo)">Reiniciar</h2>
+        <button class="btn chico rojo" id="reiniciar">Borrar ranking y todas las partidas</button>
+        <p class="nota">Descarga los CSV antes de borrar: lo borrado no se recupera.</p>
       </div>
     </div>
 
@@ -191,17 +100,33 @@
       <div id="analisis"></div>
     </div>
 
+    <!-- PREGUNTAS -->
+    <div data-p="preguntas" class="oculto">
+      <div class="tarjeta">
+        <h2 class="sec">Preguntas y respuestas correctas</h2>
+        <p class="nota" id="pFuente"></p>
+        <p class="nota">Cada línea del tablero: <code>Colonia | reportes | puntos | sinónimos separados por coma</code>. Los puntos de cada pregunta deberían sumar 100. Si cambias algo, las partidas nuevas usan lo nuevo.</p>
+        <div id="pLista"></div>
+        <div class="fila">
+          <button class="btn chico fantasma" id="pAgregar">+ Agregar pregunta</button>
+          <button class="btn chico fantasma" id="pRestaurar">Restaurar las del histórico</button>
+          <span style="flex:1"></span>
+          <button class="btn naranja" id="pGuardar">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+
     <!-- EXPORTAR -->
     <div data-p="exportar" class="oculto">
       <div class="tarjeta">
         <h2 class="sec">Descargar datos (CSV para Excel)</h2>
         <div class="fila">
-          <a class="btn" id="xResp">Respuestas de la encuesta</a>
-          <a class="btn" id="xInt">Intentos del juego</a>
-          <a class="btn" id="xJug">Jugadores</a>
-          <button class="btn fantasma" id="xAnal">Análisis completo (JSON)</button>
+          <button class="btn" data-x="partidas">Partidas (jugadores, puntos, tiempo)</button>
+          <button class="btn" data-x="jugadas">Cada respuesta que escribieron</button>
+          <button class="btn" data-x="ranking">Ranking completo</button>
+          <button class="btn fantasma" id="xAnal">Análisis (JSON)</button>
         </div>
-        <p class="nota" style="margin-top:1rem">Cada respuesta incluye la carrera y la colonia donde vive el estudiante, y la columna <b>respuesta_agrupada</b> (las variantes como “col. camino berde” se juntan en “Camino Verde”), lista para tablas dinámicas.</p>
+        <p class="nota" style="margin-top:1rem"><b>Cada respuesta que escribieron</b> incluye lo que tecleó el jugador, la colonia reconocida y si estaba o no en el histórico: sirve para comparar percepción contra realidad.</p>
         <p class="nota" id="xAlmacen"></p>
       </div>
     </div>
@@ -216,14 +141,12 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const leer = k => { try { return localStorage.getItem('ced_adm_' + k); } catch { return null; } };
   const guardar = (k, v) => { try { v == null ? localStorage.removeItem('ced_adm_' + k) : localStorage.setItem('ced_adm_' + k, v); } catch { /* */ } };
-  const FASES = [['lobby', 'Bienvenida'], ['encuesta', 'Encuesta'], ['juego', 'Juego'], ['comparar', 'Comparar con histórico'], ['ranking', 'Ganadores']];
+  const tiempo = ms => ms == null ? '–' : ms >= 60000 ? Math.floor(ms / 60000) + ':' + String(Math.floor(ms / 1000) % 60).padStart(2, '0') : (ms / 1000).toFixed(1) + ' s';
 
   let clave = leer('clave') || '';
-  let a = null, es = null, preguntasEdit = [], csvDatos = null, autoT = null, configCargada = false;
+  let estado = null, preguntasEdit = [], es = null, autoT = null;
 
-  function aviso(t, err) {
-    const m = $('#msg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); clearTimeout(m._t); m._t = setTimeout(() => m.classList.add('oculto'), 3500);
-  }
+  function aviso(t, err) { const m = $('#msg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); clearTimeout(m._t); m._t = setTimeout(() => m.classList.add('oculto'), 3500); }
   async function api(ruta, body) {
     const r = await fetch('/api/admin/' + ruta, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'x-admin-key': clave }, body: body ? JSON.stringify(body) : undefined });
     const d = await r.json().catch(() => ({}));
@@ -231,192 +154,105 @@
     if (!r.ok) throw new Error(d.error || 'Error');
     return d;
   }
-  async function accion(ruta, body, ok) {
-    try { const d = await api(ruta, body); a = d; render(); if (ok) aviso(ok); return d; } catch (e) { aviso(e.message, true); }
-  }
 
-  // ---------- login
   function salir() { guardar('clave', null); clave = ''; if (es) es.close(); $('#app').classList.add('oculto'); $('#login').classList.remove('oculto'); }
   async function entrar() {
     try {
-      a = await api('estado');
+      estado = await api('estado');
       guardar('clave', clave);
       $('#login').classList.add('oculto'); $('#app').classList.remove('oculto');
-      render(); cargarConfig(); conectar();
+      pintarRanking(estado); cargarPartidas(); cargarPreguntas();
+      $('#xAlmacen').textContent = 'Los datos se guardan en: ' + estado.almacen + (estado.almacen === 'Archivos locales' ? ' (agrega MONGODB_URI en Railway para no perderlos).' : '.');
+      if (es) es.close();
+      es = new EventSource('/eventos');
+      es.addEventListener('estado', ev => { pintarRanking(JSON.parse(ev.data)); cargarPartidas(); });
     } catch { $('#login').classList.remove('oculto'); }
   }
   $('#fLogin').addEventListener('submit', e => { e.preventDefault(); clave = $('#clave').value; entrar(); });
   $('#salir').addEventListener('click', salir);
 
-  function conectar() {
-    if (es) es.close();
-    es = new EventSource('/eventos?rol=admin&key=' + encodeURIComponent(clave));
-    es.addEventListener('admin', ev => { a = JSON.parse(ev.data); render(); if (!configCargada) cargarConfig(); });
-    es.addEventListener('primero', ev => {
-      const d = JSON.parse(ev.data);
-      const li = document.createElement('li'); li.textContent = `🎯 ${d.nombre} encontró la #${d.numero}`;
-      $('#feedAdm').prepend(li); while ($('#feedAdm').children.length > 6) $('#feedAdm').lastChild.remove();
-    });
-  }
-
-  // ---------- tabs
   $('#tabs').addEventListener('click', e => {
     const t = e.target.dataset.t; if (!t) return;
     $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     $$('[data-p]').forEach(p => p.classList.toggle('oculto', p.dataset.p !== t));
-    if (t === 'historico') cargarHistorico();
     if (t === 'analisis') cargarAnalisis();
-    if (t === 'preguntas') cargarConfig();
   });
 
-  // ---------- render control
-  function render() {
-    if (!a) return;
-    $('#hTitulo').textContent = a.titulo;
-    $('#kpis').innerHTML = [
-      [a.stats.jugadores, 'jugadores registrados'], [a.stats.encuestados + ' / ' + a.meta, 'estudiantes encuestados'],
-      [a.stats.intentos, 'intentos en el juego'], [a.historicoConReportes, 'colonias con reportes en el histórico']
-    ].map(([v, t]) => `<div class="kpi"><b>${esc(v)}</b><span>${t}</span></div>`).join('');
-    $('#fases').innerHTML = FASES.map(([f, t]) => `<button class="btn chico ${a.fase === f ? 'activo naranja' : 'fantasma'}" data-fase="${f}">${t}</button>`).join('');
-    const sel = $('#qSel');
-    const opciones = a.preguntasCompletas.map((p, i) => `<option value="${i}" ${i === a.qIndex ? 'selected' : ''}>${i + 1}. ${esc(p.texto.slice(0, 90))}</option>`).join('');
-    if (sel.innerHTML !== opciones) sel.innerHTML = opciones;
-    sel.value = a.qIndex;
-    const q = a.preguntasCompletas[a.qIndex];
-    $('#qInfo').textContent = q ? `Tipo: ${q.tipo} · ${a.respuestasActual} respuestas en la encuesta` : '';
-    if (document.activeElement !== $('#topN')) $('#topN').value = a.topN;
-    $('#tab').innerHTML = a.tableroCompleto.length ? a.tableroCompleto.map((t, i) => `
-      <tr class="${t.revelada ? 'rev' : ''}">
-        <td>${t.n}</td>
-        <td><b>${esc(t.texto)}</b><div class="alias">${esc(t.alias.join(' · '))}</div>${t.primero ? `<div class="alias">1° en hallarla: ${esc(t.primero)}</div>` : ''}</td>
-        <td class="num">${t.votos}</td><td class="num">${t.puntos}</td><td class="num">${t.encontradaPor}</td>
-        <td>${t.revelada ? '✔' : `<button class="btn chico" data-rev="${i}">Revelar</button>`}</td>
-      </tr>`).join('') : '<tr><td colspan="6" class="tenue">Sin tablero. Abre la encuesta, junta respuestas y presiona “Generar desde la encuesta” (o arma uno manual).</td></tr>';
-    $('#rank').innerHTML = (a.ranking || []).map(r => `<li>${esc(r.nombre)}${r.equipo ? ` <span class="chip">${esc(r.equipo)}</span>` : ''} — <b style="color:var(--naranja)">${r.puntos}</b></li>`).join('') || '<li class="tenue">Sin puntos todavía</li>';
-    $('#xAlmacen').textContent = 'Los datos se guardan en: ' + a.almacen + (a.almacen === 'Archivos locales' ? ' (en Railway agrega MONGODB_URI para no perderlos al redeployar).' : '.');
+  // ---------- ranking
+  function pintarRanking(d) {
+    $('#kpis').innerHTML = [[d.stats.partidas, 'partidas iniciadas'], [d.stats.terminadas, 'partidas terminadas'], [d.stats.jugando, 'jugando ahora']]
+      .map(([v, t]) => `<div class="kpi"><b>${v}</b><span>${t}</span></div>`).join('');
+    $('#top').innerHTML = d.top.map(r => `<tr><td>${r.lugar}</td><td><b>${esc(r.nombre)}</b></td><td class="nota">${esc(r.carrera)}</td><td class="num">${r.puntos}</td><td class="num">${tiempo(r.ms)}</td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas terminadas</td></tr>';
   }
+  let tPart = null;
+  function cargarPartidas() {
+    clearTimeout(tPart);
+    tPart = setTimeout(async () => {
+      try {
+        const lista = await api('partidas');
+        $('#partidas').innerHTML = lista.map(p => `<tr class="${p.oculta ? 'oculta' : ''}"><td>${esc(p.nombre)}<div class="nota">${esc(p.carrera || '')}${p.colonia ? ' · ' + esc(p.colonia) : ''}</div></td>
+          <td class="num">${p.puntos}</td><td class="num">${p.terminada ? tiempo(p.ms) : '<span class="chip">jugando</span>'}</td><td class="num">${p.lugar || ''}</td>
+          <td><button class="btn chico ${p.oculta ? '' : 'fantasma'}" data-ocultar="${p.id}" data-v="${p.oculta ? '0' : '1'}">${p.oculta ? 'Mostrar' : 'Ocultar'}</button></td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas</td></tr>';
+      } catch { /* */ }
+    }, 300);
+  }
+  $('#partidas').addEventListener('click', async e => {
+    const id = e.target.dataset.ocultar; if (!id) return;
+    try { await api('ocultar', { id, oculta: e.target.dataset.v === '1' }); aviso('Listo'); cargarPartidas(); } catch (er) { aviso(er.message, true); }
+  });
+  $('#reiniciar').addEventListener('click', async () => {
+    if (!confirm('Se borran TODAS las partidas y el ranking. ¿Seguro?')) return;
+    if (prompt('Escribe BORRAR para confirmar') !== 'BORRAR') return;
+    try { const d = await api('reiniciar', {}); pintarRanking(d); cargarPartidas(); aviso('Ranking reiniciado'); } catch (e) { aviso(e.message, true); }
+  });
 
-  $('#fases').addEventListener('click', e => { const f = e.target.dataset.fase; if (f) accion('fase', { fase: f }); });
-  $('#qSel').addEventListener('change', e => accion('pregunta', { qIndex: Number(e.target.value) }));
-  $('#qPrev').addEventListener('click', () => a && a.qIndex > 0 && accion('pregunta', { qIndex: a.qIndex - 1 }));
-  $('#qNext').addEventListener('click', () => a && a.qIndex < a.preguntasCompletas.length - 1 && accion('pregunta', { qIndex: a.qIndex + 1 }));
-  $('#generar').addEventListener('click', () => {
-    if (a.tableroCompleto.length && !confirm('Regenerar el tablero borra los puntos ganados en esta pregunta. ¿Continuar?')) return;
-    accion('tablero', { qid: a.preguntasCompletas[a.qIndex].id, topN: Number($('#topN').value) }, 'Tablero generado');
-  });
-  $('#verManual').addEventListener('click', () => {
-    $('#manual').classList.toggle('oculto');
-    $('#manualTxt').value = a.tableroCompleto.map(t => `${t.texto} | ${t.puntos} | ${t.alias.join(', ')}`).join('\n');
-  });
-  $('#guardarManual').addEventListener('click', () => {
-    const items = $('#manualTxt').value.split('\n').map(l => l.split('|').map(x => x.trim())).filter(p => p[0]).map(p => ({ texto: p[0], puntos: Number(p[1]) || 0, alias: p[2] || '' }));
-    accion('tablero-manual', { qid: a.preguntasCompletas[a.qIndex].id, items }, 'Tablero manual guardado');
-  });
-  $('#tab').addEventListener('click', e => { const i = e.target.dataset.rev; if (i != null) accion('revelar', { indice: Number(i) }); });
-  $('#revelarTodo').addEventListener('click', () => accion('revelar', { todo: true }));
-  $('#ocultar').addEventListener('click', () => accion('ocultar', {}));
-  $$('[data-tache]').forEach(b => b.addEventListener('click', () => accion('tache', { n: Number(b.dataset.tache) })));
-  $$('[data-reset]').forEach(b => b.addEventListener('click', () => {
-    const que = b.dataset.reset;
-    const txt = { juego: 'Se borran los puntos e intentos del juego.', encuesta: 'Se borran TODAS las respuestas de la encuesta, los tableros y los puntos.', todo: 'Se borra TODO: jugadores, encuesta e intentos.' }[que];
-    if (!confirm(txt + '\n\n¿Seguro? No se puede deshacer.')) return;
-    if (que === 'todo' && prompt('Escribe BORRAR para confirmar') !== 'BORRAR') return;
-    accion('reiniciar', { que }, 'Listo');
-  }));
-
-  // ---------- preguntas / config
-  function cargarConfig() {
-    if (!a) return;
-    configCargada = true;
-    $('#cTitulo').value = a.titulo; $('#cMeta').value = a.meta; $('#cEquipos').value = (a.equiposConfig || []).join(', ');
-    preguntasEdit = a.preguntasCompletas.map(p => ({ ...p }));
+  // ---------- preguntas
+  function cargarPreguntas() {
+    const c = estado.config;
+    $('#pFuente').innerHTML = `Fuente: <b>${esc(c.fuente)}</b> · ${c.reportes} reportes de Tijuana.`;
+    preguntasEdit = c.preguntas.map(q => ({ ...q, tablero: q.tablero.map(t => ({ ...t })) }));
     pintarPreguntas();
   }
+  const tabATexto = tab => tab.map(t => `${t.texto} | ${t.reportes} | ${t.puntos} | ${(t.alias || []).join(', ')}`).join('\n');
   function pintarPreguntas() {
-    $('#qLista').innerHTML = preguntasEdit.map((p, i) => `
-      <div class="q-edit">
-        <textarea data-i="${i}" data-k="texto" maxlength="200">${esc(p.texto)}</textarea>
-        <select data-i="${i}" data-k="tipo"><option value="colonia" ${p.tipo === 'colonia' ? 'selected' : ''}>colonia</option><option value="libre" ${p.tipo === 'libre' ? 'selected' : ''}>libre</option></select>
-        <button class="btn chico rojo" data-del="${i}" title="Quitar">✕</button>
+    $('#pLista').innerHTML = preguntasEdit.map((q, i) => `
+      <div class="q-edit tarjeta">
+        <div class="fila" style="margin:0 0 .4rem"><b style="color:var(--menta)">Pregunta ${i + 1}</b><span style="flex:1"></span><span class="nota" data-suma="${i}"></span><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
+        <textarea data-i="${i}" data-k="texto" maxlength="200">${esc(q.texto)}</textarea>
+        <label>Qué cuenta como respuesta (se muestra en resultados)</label>
+        <input data-i="${i}" data-k="dato" maxlength="200" value="${esc(q.dato || '')}">
+        <label>Tablero (respuestas correctas)</label>
+        <textarea class="tab-txt" data-i="${i}" data-k="tablero">${esc(tabATexto(q.tablero))}</textarea>
       </div>`).join('');
+    preguntasEdit.forEach((_, i) => sumar(i));
   }
-  $('#qLista').addEventListener('input', e => { const i = e.target.dataset.i; if (i != null) preguntasEdit[i][e.target.dataset.k] = e.target.value; });
-  $('#qLista').addEventListener('click', e => { const i = e.target.dataset.del; if (i != null) { preguntasEdit.splice(Number(i), 1); pintarPreguntas(); } });
-  $('#qAgregar').addEventListener('click', () => { preguntasEdit.push({ texto: '', tipo: 'libre' }); pintarPreguntas(); });
-  $('#cGuardar').addEventListener('click', () => accion('config', {
-    titulo: $('#cTitulo').value, meta: Number($('#cMeta').value),
-    equipos: $('#cEquipos').value.split(',').map(x => x.trim()).filter(Boolean), preguntas: preguntasEdit
-  }, 'Configuración guardada').then(() => cargarConfig()));
-
-  // ---------- histórico
-  function parseCSV(texto) {
-    texto = texto.replace(/^﻿/, '');
-    const primera = texto.split(/\r?\n/)[0] || '';
-    const sep = [',', ';', '\t'].sort((x, y) => primera.split(y).length - primera.split(x).length)[0];
-    const filas = []; let fila = [], campo = '', comillas = false;
-    for (let i = 0; i < texto.length; i++) {
-      const c = texto[i];
-      if (comillas) {
-        if (c === '"') { if (texto[i + 1] === '"') { campo += '"'; i++; } else comillas = false; } else campo += c;
-      } else if (c === '"') comillas = true;
-      else if (c === sep) { fila.push(campo); campo = ''; }
-      else if (c === '\n' || c === '\r') { if (c === '\r' && texto[i + 1] === '\n') i++; fila.push(campo); filas.push(fila); fila = []; campo = ''; }
-      else campo += c;
-    }
-    if (campo || fila.length) { fila.push(campo); filas.push(fila); }
-    return filas.filter(f => f.some(x => x.trim()));
+  function parseTab(txt) {
+    return txt.split('\n').map(l => l.split('|').map(x => x.trim())).filter(p => p[0])
+      .map(p => ({ texto: p[0], reportes: Number(p[1]) || 0, puntos: Number(p[2]) || 0, alias: (p[3] || '').split(',').map(x => x.trim()).filter(Boolean) }));
   }
-  function opcionesCols(sel, cab, regex, permitirVacia) {
-    let idx = cab.findIndex(c => regex.test(c));
-    sel.innerHTML = (permitirVacia ? '<option value="-1">(ninguna)</option>' : '') + cab.map((c, i) => `<option value="${i}">${esc(c || 'Columna ' + (i + 1))}</option>`).join('');
-    sel.value = idx >= 0 ? idx : (permitirVacia ? -1 : 0);
+  function sumar(i) {
+    const s = preguntasEdit[i].tablero.reduce((a, t) => a + (Number(t.puntos) || 0), 0);
+    const el = document.querySelector(`[data-suma="${i}"]`);
+    if (el) { el.textContent = `Suma de puntos: ${s}`; el.style.color = s === 100 ? 'var(--menta)' : 'var(--naranja)'; }
   }
-  function previsualizar() {
-    if (!csvDatos) return;
-    const [cab, ...filas] = csvDatos;
-    const ic = +$('#hColCol').value, ir = +$('#hColRep').value, im = +$('#hColMun').value;
-    $('#hPrev').innerHTML = `<thead><tr><th>Colonia</th><th>Municipio</th><th class="num">Reportes</th></tr></thead><tbody>` +
-      filas.slice(0, 12).map(f => `<tr><td>${esc(f[ic])}</td><td>${im >= 0 ? esc(f[im]) : ''}</td><td class="num">${esc(f[ir])}</td></tr>`).join('') +
-      `</tbody><tfoot><tr><td colspan="3" class="nota">${filas.length} filas en el archivo</td></tr></tfoot>`;
-  }
-  $('#hArchivo').addEventListener('change', async e => {
-    const f = e.target.files[0]; if (!f) return;
-    csvDatos = parseCSV(await f.text());
-    if (csvDatos.length < 2) { aviso('El archivo no tiene filas', true); return; }
-    const cab = csvDatos[0];
-    opcionesCols($('#hColCol'), cab, /colonia|nom_?col|asentamiento|nombre/i, false);
-    opcionesCols($('#hColRep'), cab, /report|incid|hist|evento/i, false);
-    opcionesCols($('#hColMun'), cab, /municip/i, true);
-    $('#hMapeo').classList.remove('oculto');
-    previsualizar();
+  $('#pLista').addEventListener('input', e => {
+    const i = e.target.dataset.i, k = e.target.dataset.k; if (i == null) return;
+    if (k === 'tablero') { preguntasEdit[i].tablero = parseTab(e.target.value); sumar(i); } else preguntasEdit[i][k] = e.target.value;
   });
-  ['#hColCol', '#hColRep', '#hColMun'].forEach(s => $(s).addEventListener('change', previsualizar));
-  async function enviarHistorico(filas) {
-    try { a = await api('historico', { filas }); aviso(`Histórico guardado (${a.historicoN} colonias)`); render(); cargarHistorico(); } catch (e) { aviso(e.message, true); }
-  }
-  $('#hGuardar').addEventListener('click', () => {
-    const [, ...filas] = csvDatos;
-    const ic = +$('#hColCol').value, ir = +$('#hColRep').value, im = +$('#hColMun').value;
-    enviarHistorico(filas.map(f => ({ colonia: f[ic], reportes: f[ir], municipio: im >= 0 ? f[im] : '' })));
+  $('#pLista').addEventListener('click', e => { const i = e.target.dataset.del; if (i != null && confirm('¿Quitar esta pregunta?')) { preguntasEdit.splice(Number(i), 1); pintarPreguntas(); } });
+  $('#pAgregar').addEventListener('click', () => { preguntasEdit.push({ texto: '', dato: '', tablero: [] }); pintarPreguntas(); });
+  $('#pGuardar').addEventListener('click', async () => {
+    try { const d = await api('preguntas', { preguntas: preguntasEdit }); estado.config = d.config; cargarPreguntas(); aviso('Preguntas guardadas'); } catch (e) { aviso(e.message, true); }
   });
-  $('#hGuardarTexto').addEventListener('click', () => {
-    const filas = $('#hTexto').value.split('\n').map(l => { const m = l.match(/^(.*?)[,;\t]\s*([\d.]+)\s*$/); return m ? { colonia: m[1].trim(), reportes: m[2] } : null; }).filter(Boolean);
-    if (!filas.length) return aviso('Formato: colonia, reportes (una por línea)', true);
-    enviarHistorico(filas);
+  $('#pRestaurar').addEventListener('click', async () => {
+    if (!confirm('¿Volver a las preguntas y respuestas originales del histórico de Tijuana?')) return;
+    try { const d = await api('restaurar-preguntas', {}); estado.config = d.config; cargarPreguntas(); aviso('Restauradas'); } catch (e) { aviso(e.message, true); }
   });
-  async function cargarHistorico() {
-    try {
-      const d = await api('historico');
-      const con = d.filas.filter(f => f.reportes > 0);
-      $('#hResumen').textContent = d.filas.length ? `${d.filas.length} colonias cargadas, ${con.length} con al menos un reporte. Todas se usan también en el autocompletado.` : 'Todavía no se carga el histórico.';
-      $('#hActual').innerHTML = d.filas.slice(0, 300).map((f, i) => `<tr><td>${i + 1}</td><td>${esc(f.colonia)}</td><td>${esc(f.municipio)}</td><td class="num">${f.reportes}</td></tr>`).join('');
-    } catch (e) { aviso(e.message, true); }
-  }
 
   // ---------- análisis
-  const barras = (items, et, val, fmt, clase = '') => {
+  const barras = (items, et, val, fmt, clase = x => '') => {
     const max = Math.max(1, ...items.map(val));
-    return `<div class="barras">${items.map(x => `<div class="barra ${clase}"><span class="et" title="${esc(et(x))}">${esc(et(x))}</span><div class="riel"><div style="width:${val(x) / max * 100}%"></div></div><span class="val">${fmt(x)}</span></div>`).join('') || '<p class="tenue">Sin datos todavía.</p>'}</div>`;
+    return `<div class="barras">${items.map(x => `<div class="barra ${clase(x)}"><span class="et" title="${esc(et(x))}">${esc(et(x))}</span><div class="riel"><div style="width:${val(x) / max * 100}%"></div></div><span class="val">${fmt(x)}</span></div>`).join('') || '<p class="tenue">Sin datos todavía.</p>'}</div>`;
   };
   async function cargarAnalisis() {
     try {
@@ -424,46 +260,36 @@
       $('#aFecha').textContent = 'Actualizado ' + new Date(d.generado).toLocaleTimeString();
       const r = d.resumen;
       let html = `<div class="grid3" style="margin-bottom:1rem">${[
-        [r.jugadores, 'participantes'], [r.encuestados, 'respondieron la encuesta'], [r.respuestas, 'respuestas de encuesta'],
-        [r.intentos, 'intentos en el juego'], [r.precision + '%', 'intentos que acertaron'], [r.puntajePromedio, 'puntaje promedio']
+        [r.partidas, 'partidas'], [r.terminadas, 'terminadas'], [r.jugadas, 'respuestas escritas'],
+        [r.precision + '%', 'respuestas que estaban en el histórico'], [r.puntajePromedio + ' / ' + r.maxPuntos, 'puntaje promedio'], [tiempo(r.tiempoPromedio), 'tiempo promedio']
       ].map(([v, t]) => `<div class="kpi"><b>${esc(v)}</b><span>${t}</span></div>`).join('')}</div>`;
-      if (d.riesgoPropio) html += `<div class="tarjeta" style="margin-bottom:1rem"><h2 class="sec">Riesgo en casa</h2><p style="font-size:1.1rem;margin:0"><b style="color:var(--naranja);font-size:1.6rem">${d.riesgoPropio.pct}%</b> de los participantes que dijeron su colonia (${d.riesgoPropio.enRiesgo} de ${d.riesgoPropio.conColonia}) vive en una colonia con reportes históricos por lluvias.</p></div>`;
       for (const q of d.porPregunta) {
         html += `<div class="tarjeta" style="margin-bottom:1rem"><h2 class="sec">${esc(q.texto)}</h2>
-          <p class="nota">${q.total} respuestas · ${q.distintas} respuestas distintas · ${q.intentos} intentos en el juego (${q.aciertos} aciertos)</p>
-          <div class="grid2"><div><b>Lo que respondieron (encuesta)</b>${barras(q.top.slice(0, 10), x => x.texto, x => x.votos, x => `${x.votos} · ${x.pct}%`)}</div>
-          <div><b>Lo que intentaron en el juego y NO estaba</b>${barras(q.fallidas, x => x.texto, x => x.veces, x => x.veces, 'nar')}</div></div>`;
-        if (q.comparacion && q.comparacion.hayHistorico) {
-          const c = q.comparacion;
-          html += `<div class="grid2" style="margin-top:1rem"><div><b>Percepción → ¿tiene reportes?</b><table><thead><tr><th>Colonia (votos)</th><th class="num">Reportes</th><th class="num">Lugar hist.</th></tr></thead><tbody>${c.estudiantes.map(e => `<tr><td>${esc(e.texto)} <span class="chip">${e.valor}</span></td><td class="num">${e.reportes}</td><td class="num">${e.rank ? '#' + e.rank : '–'}</td></tr>`).join('')}</tbody></table></div>
-          <div><b>Top histórico → ¿lo dijeron?</b><table><thead><tr><th>Colonia</th><th class="num">Reportes</th><th class="num">Votos</th></tr></thead><tbody>${c.historico.map(h => `<tr><td>#${h.rank} ${esc(h.colonia)} ${h.votos ? '<span class="chip si">la dijeron</span>' : '<span class="chip">ignorada</span>'}</td><td class="num">${h.reportes}</td><td class="num">${h.votos}</td></tr>`).join('')}</tbody></table>
-          <p class="nota">Coincidencia: ${c.aciertos} de ${c.n} colonias del top 10 de percepción están en el top 10 histórico.</p></div></div>`;
-        } else if (q.tipo === 'colonia') html += '<p class="nota">Carga el histórico para comparar percepción contra reportes reales.</p>';
-        const carreras = Object.keys(q.porCarrera);
-        if (carreras.length && q.top5.length) {
-          html += `<div style="margin-top:1rem;overflow:auto"><b>Top 5 por carrera</b><table><thead><tr><th>Carrera</th>${q.top5.map(t => `<th class="num">${esc(t)}</th>`).join('')}</tr></thead><tbody>${carreras.map(c => `<tr><td>${esc(c)}</td>${q.top5.map(t => `<td class="num">${q.porCarrera[c][t] || 0}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-        }
-        html += '</div>';
+          <p class="nota">${q.jugaron} jugadores · ${q.intentos} respuestas escritas · ${q.aciertos} aciertos</p>
+          <div class="grid2">
+            <div><b>Realidad: % de jugadores que encontró cada colonia</b>
+              ${barras(q.tablero, x => `${x.texto} (${x.reportes} rep.)`, x => x.pct, x => `${x.pct}%`)}</div>
+            <div><b>Percepción: lo que más escribieron</b> <span class="nota">(verde = está en el histórico)</span>
+              ${barras(q.percepcion, x => x.texto, x => x.n, x => x.n, x => x.correcta ? '' : 'gris')}</div>
+          </div>
+          ${q.fallidas.length ? `<p class="nota" style="margin-top:.8rem"><b>Creen que se inundan pero no tienen tantos reportes:</b> ${q.fallidas.map(f => `<span class="chip">${esc(f.texto)} · ${f.n}</span>`).join(' ')}</p>` : ''}
+        </div>`;
       }
-      html += `<div class="grid2"><div class="tarjeta"><h2 class="sec">Dónde viven los participantes</h2>${barras(d.residencia, x => x.texto, x => x.n, x => x.n)}</div>
-        <div class="tarjeta"><h2 class="sec">Carreras</h2>${barras(d.carreras, x => x.texto, x => x.n, x => x.n, 'nar')}</div></div>`;
+      html += `<div class="grid2"><div class="tarjeta"><h2 class="sec">Dónde viven los jugadores</h2>${barras(d.residencia, x => x.texto, x => x.n, x => x.n)}</div>
+        <div class="tarjeta"><h2 class="sec">Carreras</h2>${barras(d.carreras, x => x.texto, x => x.n, x => x.n, () => 'nar')}</div></div>`;
       $('#analisis').innerHTML = html;
-      $('#analisis')._datos = d;
     } catch (e) { aviso(e.message, true); }
   }
   $('#aRefrescar').addEventListener('click', cargarAnalisis);
   $('#aAuto').addEventListener('change', e => { clearInterval(autoT); if (e.target.checked) autoT = setInterval(cargarAnalisis, 10000); });
 
   // ---------- exportar
-  const enlace = t => `/api/admin/exportar/${t}.csv?key=${encodeURIComponent(clave)}`;
-  $('#xResp').addEventListener('click', () => { location.href = enlace('respuestas'); });
-  $('#xInt').addEventListener('click', () => { location.href = enlace('intentos'); });
-  $('#xJug').addEventListener('click', () => { location.href = enlace('jugadores'); });
+  $$('[data-x]').forEach(b => b.addEventListener('click', () => { location.href = `/api/admin/exportar/${b.dataset.x}.csv?key=${encodeURIComponent(clave)}`; }));
   $('#xAnal').addEventListener('click', async () => {
     try {
       const d = await api('analisis');
-      const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
-      const u = URL.createObjectURL(b); const l = document.createElement('a'); l.href = u; l.download = 'analisis-100-estudiantes.json'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 2000);
+      const u = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
+      const l = document.createElement('a'); l.href = u; l.download = 'analisis-100-estudiantes.json'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 2000);
     } catch (e) { aviso(e.message, true); }
   });
 

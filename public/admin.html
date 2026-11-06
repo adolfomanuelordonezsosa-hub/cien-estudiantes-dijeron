@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
+<script src="/avatar.js"></script>
 <style>
   body { font-size: 15px; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 1rem 1rem 4rem; }
@@ -182,7 +183,7 @@
   function pintarRanking(d) {
     $('#kpis').innerHTML = [[d.stats.partidas, 'partidas iniciadas'], [d.stats.terminadas, 'partidas terminadas'], [d.stats.jugando, 'jugando ahora']]
       .map(([v, t]) => `<div class="kpi"><b>${v}</b><span>${t}</span></div>`).join('');
-    $('#top').innerHTML = d.top.map(r => `<tr><td>${r.lugar}</td><td><b>${esc(r.nombre)}</b></td><td class="nota">${esc(r.carrera)}</td><td class="num">${r.puntos}</td><td class="num">${tiempo(r.ms)}</td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas terminadas</td></tr>';
+    $('#top').innerHTML = d.top.map(r => `<tr><td>${r.lugar}</td><td>${Avatar.mini(r.avatar, 26)} <b>${esc(r.nombre)}</b></td><td class="nota">${esc(r.carrera)}</td><td class="num">${r.puntos}</td><td class="num">${tiempo(r.ms)}</td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas terminadas</td></tr>';
   }
   let tPart = null;
   function cargarPartidas() {
@@ -190,7 +191,7 @@
     tPart = setTimeout(async () => {
       try {
         const lista = await api('partidas');
-        $('#partidas').innerHTML = lista.map(p => `<tr class="${p.oculta ? 'oculta' : ''}"><td>${esc(p.nombre)}<div class="nota">${esc(p.carrera || '')}${p.colonia ? ' · ' + esc(p.colonia) : ''}</div></td>
+        $('#partidas').innerHTML = lista.map(p => `<tr class="${p.oculta ? 'oculta' : ''}"><td>${Avatar.mini(p.avatar, 24)} ${esc(p.nombre)}<div class="nota">${esc(p.carrera || '')}${p.colonia ? ' · ' + esc(p.colonia) : ''}</div></td>
           <td class="num">${p.puntos}</td><td class="num">${p.terminada ? tiempo(p.ms) : '<span class="chip">jugando</span>'}</td><td class="num">${p.lugar || ''}</td>
           <td><button class="btn chico ${p.oculta ? '' : 'fantasma'}" data-ocultar="${p.id}" data-v="${p.oculta ? '0' : '1'}">${p.oculta ? 'Mostrar' : 'Ocultar'}</button></td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas</td></tr>';
       } catch { /* */ }
@@ -221,6 +222,10 @@
         <textarea data-i="${i}" data-k="texto" maxlength="200">${esc(q.texto)}</textarea>
         <label>Qué cuenta como respuesta (se muestra en resultados)</label>
         <input data-i="${i}" data-k="dato" maxlength="200" value="${esc(q.dato || '')}">
+        <label>📊 Lo que dicen los datos (se muestra al final como retroalimentación)</label>
+        <textarea data-i="${i}" data-k="exp" maxlength="600">${esc(q.exp || '')}</textarea>
+        <label>💡 Consejo de prevención</label>
+        <textarea data-i="${i}" data-k="tip" maxlength="600">${esc(q.tip || '')}</textarea>
         <label>Tablero (respuestas correctas)</label>
         <textarea class="tab-txt" data-i="${i}" data-k="tablero">${esc(tabATexto(q.tablero))}</textarea>
       </div>`).join('');

@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/avatar.js"></script>
 <style>
   html, body { height: 100%; overflow: hidden; }
   body { font-size: clamp(13px, 1.1vw, 24px); }
@@ -33,8 +34,9 @@
   .panel h2 { font: 700 3.4em 'Cabin Sketch', cursive; margin: 0; color: var(--menta); line-height: 1; }
   .panel .sub { color: var(--gis-tenue); margin: .2em 0 .8em; font-size: 1.05em; }
   .filas { display: grid; gap: .5vh; flex: 1; min-height: 0; grid-template-rows: repeat(10, minmax(0, 1fr)); }
-  .fila { display: grid; grid-template-columns: 3.2em 1fr 5em 5.5em; align-items: center; gap: 1em; padding: 0 1em; border-radius: 12px; background: rgba(36,38,37,.9); border: 2px solid rgba(155,232,201,.18); font-size: min(1.3em, 2.3vh); min-height: 0; overflow: hidden; }
+  .fila { display: grid; grid-template-columns: 2.6em 2.4em 1fr 4.6em 5em; align-items: center; gap: 1em; padding: 0 1em; border-radius: 12px; background: rgba(36,38,37,.9); border: 2px solid rgba(155,232,201,.18); font-size: min(1.3em, 2.3vh); min-height: 0; overflow: hidden; }
   .fila .lugar { font: 700 1.5em 'Cabin Sketch', cursive; text-align: center; color: var(--gis-tenue); }
+  .fila .avf { display: flex; align-items: center; justify-content: center; }
   .fila .nom { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .fila .nom small { display: block; font-weight: 500; font-size: .62em; color: var(--gis-tenue); }
   .fila .pts { font: 700 1.5em 'Cabin Sketch', cursive; color: var(--naranja); text-align: right; }
@@ -89,7 +91,7 @@
   </div>
 </section>
 
-<div id="anuncio" class="oculto"><div class="caja"><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div></div></div>
+<div id="anuncio" class="oculto"><div class="caja"><div id="aAv" style="width:11vw;height:14.3vw;margin:0 auto 1vw;border-radius:2vw;background:radial-gradient(circle at 50% 40%,#e8fff5,#9be8c9)"></div><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div></div></div>
 
 <button id="engrane" title="Ajustes de voz">⚙</button>
 <div id="ajustes" class="oculto">
@@ -182,6 +184,7 @@
     $('#filas').innerHTML = d.top.length ? d.top.map(r => `
       <div class="fila l${r.lugar} ${recientes.has(r.id) ? 'nueva' : ''}">
         <span class="lugar">${med[r.lugar - 1] || r.lugar}</span>
+        <span class="avf"><span class="av-mini" style="width:1.75em;height:2.28em">${Avatar.svg(r.avatar)}</span></span>
         <span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span>
         <span class="pts">${r.puntos}</span>
         <span class="tiempo">${tiempo(r.ms)}</span>
@@ -191,6 +194,7 @@
   async function anunciar(n) {
     $('#aK').textContent = n.lugar === 1 ? '¡NUEVO PRIMER LUGAR!' : `¡Entra al Top 10 en el lugar ${n.lugar}!`;
     $('#aN').textContent = n.nombre;
+    $('#aAv').innerHTML = Avatar.svg(n.avatar);
     $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
     $('#anuncio').classList.remove('oculto');
     n.lugar === 1 ? sfx.fanfarria() : sfx.ding();

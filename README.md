@@ -13,9 +13,10 @@ Las respuestas correctas salen de los **reportes históricos de Tijuana** (Excel
 
 ## Cómo se juega
 
-1. **Bienvenida**: el jugador pone su nombre o apodo (con filtro de groserías), y opcionalmente su carrera y colonia.
+1. **Bienvenida**: el jugador arma su **avatar** (piel, cabello, camisa, pantalón y sombrero), pone su nombre o apodo (con filtro de groserías) y opcionalmente su carrera y colonia.
 2. **Juego**: 4 preguntas, una a la vez. Escribe colonias de Tijuana (con autocompletado). Tiene 3 oportunidades (✕) por pregunta y puede pasar a la siguiente cuando quiera. El reloj corre desde que empieza.
-3. **Resultados**: puntos, tiempo, lugar, Top 10 y todas las respuestas correctas con su número de reportes.
+3. **¡Gracias!**: su avatar, puntos, tiempo y lugar mientras suena la voz (mínimo 4 s); luego pasa solo a los resultados.
+4. **Resultados y retroalimentación**: Top 10 con avatares, todas las respuestas correctas con su número de reportes y, por cada pregunta: por qué no estaban sus respuestas (con el número real de reportes de esa colonia), lo que dicen los datos y un consejo de prevención.
 
 Puntos: cada pregunta reparte 100 puntos entre las colonias del tablero según cuántos reportes tiene cada una. Ranking: más puntos gana; si hay empate, gana el más rápido.
 
@@ -37,9 +38,21 @@ Están en `data/preguntas.js` y se pueden ajustar desde `/admin` → Preguntas y
 
 En `/admin` → Análisis: qué % encontró cada colonia (realidad) contra lo que más escribieron (percepción), y las colonias que la gente cree que se inundan pero no tienen tantos reportes. En Exportar datos se bajan los CSV.
 
-## Voz
+## Voz (en los celulares y en la TV)
 
-La TV usa la voz en español del navegador (elige en el engrane ⚙). Para usar grabaciones propias, pon archivos en `public/audio/` con estos nombres: `bienvenida`, `invitacion`, `top`, `primero`, `dijeron` (.mp3, .wav, .ogg o .m4a).
+Grabaciones del equipo en `public/audio/`; lo que no está grabado lo dice la voz del navegador.
+
+| Momento | Celular | TV |
+|---|---|---|
+| Primer toque en la página | `bienvenida` | `bienvenida` al activar |
+| Cada pregunta | voz: "Pregunta 1. …" | — |
+| Respuesta correcta | ding + `dijeron` + voz: "La Morita. 22 puntos." | — |
+| Respuesta incorrecta | buzzer + voz: "¡No está en el tablero! Te quedan 2." | — |
+| Al terminar | fanfarria + (`primero` o `top` si entra) + voz: "¡Gracias por jugar…!" | — |
+| Cada 3 minutos | — | `invitacion` |
+| Alguien entra al Top 10 | — | `top` o `primero` + voz con nombre y puntos |
+
+El botón 🔊 de arriba silencia el celular.
 
 ## Variables en Railway
 

@@ -11,6 +11,7 @@ const { validarNombre } = require('./lib/filtro');
 const { crearAlmacen } = require('./lib/almacen');
 const COLONIAS = require('./data/colonias');
 const DATOS = require('./data/preguntas');
+const HIST = require('./data/historico');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_KEY = process.env.ADMIN_KEY || 'nino2026';
@@ -41,7 +42,7 @@ function configInicial() {
     titulo: '100 estudiantes dijeron',
     fuente: DATOS.meta.fuente, reportes: DATOS.meta.reportes,
     preguntas: DATOS.preguntas.map(q => ({
-      id: q.id, texto: q.texto, dato: q.dato, totalReportes: q.totalReportes,
+      id: q.id, texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', totalReportes: q.totalReportes,
       tablero: q.tablero.map(t => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, alias: t.alias || [] }))
     }))
   };
@@ -69,6 +70,29 @@ function buscarEnTablero(tab, texto) {
   if (exacta) return llaves.findIndex(ls => ls.includes(exacta.key));
   return llaves.findIndex(ls => ls.some(l => sameKey(l, k)));
 }
+// Explica por qué una respuesta no estaba en el tablero, usando el histórico real
+function contarEn(mapa, texto) {
+  if (!mapa) return null;
+  const k = normKey(texto);
+  let mejor = 0, hallada = false;
+  for (const [nombre, n] of Object.entries(mapa)) {
+    const nk = normKey(nombre);
+    if (nk === k || sameKey(nk, k)) { hallada = true; if (n > mejor) mejor = n; }
+  }
+  return hallada ? mejor : 0;
+}
+function explicarError(q, colonia) {
+  const s = n => (n === 1 ? '' : 's');
+  const minTab = Math.min(...q.tablero.map(t => t.reportes || 0));
+  const nTipo = contarEn(HIST[q.id], colonia);
+  const nTotal = contarEn(HIST.q1, colonia);
+  const conocida = indiceColonias().some(c => c.key === normKey(colonia) || sameKey(c.key, normKey(colonia)));
+  if (nTipo === null) return 'No está entre las respuestas del tablero de esta pregunta.';
+  if (nTipo > 0) return `Sí tiene ${nTipo} reporte${s(nTipo)} de esto, pero no le alcanza para el tablero: la última colonia del tablero tiene ${minTab}.`;
+  if (q.id !== 'q1' && nTotal > 0) return `Tiene ${nTotal} reporte${s(nTotal)} por lluvia, pero ninguno de este tipo.`;
+  if (conocida) return 'No tiene reportes en el histórico de Tijuana. Puede que sí le afecte la lluvia, pero nadie lo ha reportado: por eso es importante reportar.';
+  return 'No la encontramos como colonia de Tijuana en el histórico. Revisa cómo se escribe.';
+}
 function nombreColonia(texto) {
   const k = normKey(texto);
   if (!k) return '';
@@ -79,7 +103,7 @@ function nombreColonia(texto) {
 // ---------------------------------------------------------------- partidas
 function crearPartida(datos) {
   const p = {
-    id: crypto.randomUUID(), nombre: datos.nombre, carrera: datos.carrera, colonia: datos.colonia,
+    id: crypto.randomUUID(), nombre: datos.nombre, avatar: datos.avatar, carrera: datos.carrera, colonia: datos.colonia,
     inicio: Date.now(), fin: null, ms: null, qIndex: 0, puntos: 0, terminada: false,
     progreso: {}, creada: ahora()
   };
@@ -111,12 +135,12 @@ function posicion(p) {
   const i = r.findIndex(x => x.id === p.id);
   return i >= 0 ? i + 1 : null;
 }
-const filaRanking = (p, i) => ({ lugar: i + 1, id: p.id, nombre: p.nombre, puntos: p.puntos, ms: p.ms, carrera: p.carrera || '', fecha: p.creada });
+const filaRanking = (p, i) => ({ lugar: i + 1, id: p.id, nombre: p.nombre, avatar: p.avatar || '', puntos: p.puntos, ms: p.ms, carrera: p.carrera || '', fecha: p.creada });
 function top() { return ranking().slice(0, TOP).map(filaRanking); }
 
 function vistaPartida(p) {
   const total = config.preguntas.length;
-  const base = { id: p.id, nombre: p.nombre, puntos: p.puntos, total, terminada: p.terminada, inicio: p.inicio };
+  const base = { id: p.id, nombre: p.nombre, avatar: p.avatar || '', puntos: p.puntos, total, terminada: p.terminada, inicio: p.inicio };
   if (!p.terminada) {
     const q = config.preguntas[p.qIndex];
     const pr = progresoDe(p, q.id);
@@ -136,9 +160,10 @@ function vistaPartida(p) {
     resultados: config.preguntas.map(q => {
       const pr = p.progreso[q.id] || { encontrados: [], puntos: 0, tachas: 0 };
       return {
-        texto: q.texto, dato: q.dato, totalReportes: q.totalReportes, puntos: pr.puntos,
+        texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', totalReportes: q.totalReportes, puntos: pr.puntos,
+        maxPuntos: q.tablero.reduce((a, t) => a + t.puntos, 0),
         tablero: q.tablero.map((t, i) => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, acerto: pr.encontrados.includes(i) })),
-        fallidas: (pr.fallidas || []).slice(0, 3)
+        errores: (pr.fallidas || []).slice(0, 3).map(c => ({ texto: c, motivo: explicarError(q, c) }))
       };
     })
   };
@@ -164,7 +189,7 @@ function responder(id, texto) {
     pr.encontrados.push(idx);
     pr.puntos += q.tablero[idx].puntos;
     p.puntos += q.tablero[idx].puntos;
-    resultado = { tipo: 'acierto', texto: q.tablero[idx].texto, puntos: q.tablero[idx].puntos };
+    resultado = { tipo: 'acierto', indice: idx, texto: q.tablero[idx].texto, puntos: q.tablero[idx].puntos };
   } else {
     pr.tachas++;
     pr.fallidas = pr.fallidas || [];
@@ -269,7 +294,7 @@ function avisarCambios() {
 }
 function anunciarSiTop(p) {
   const lugar = posicion(p);
-  if (lugar && lugar <= TOP) for (const c of clientes) enviar(c, 'nuevoTop', { nombre: p.nombre, puntos: p.puntos, ms: p.ms, lugar });
+  if (lugar && lugar <= TOP) for (const c of clientes) enviar(c, 'nuevoTop', { nombre: p.nombre, avatar: p.avatar || '', puntos: p.puntos, ms: p.ms, lugar });
 }
 setInterval(() => { for (const c of clientes) { try { c.res.write(': ping\n\n'); } catch { /* */ } } }, 20000);
 
@@ -344,7 +369,7 @@ async function manejar(req, res) {
 
   // ---------- API pública
   if (p === '/api/info' && m === 'GET') {
-    return json(res, 200, { titulo: config.titulo, totalPreguntas: config.preguntas.length, maxTachas: MAX_TACHAS, carreras: CARRERAS, colonias: COLONIAS, fuente: config.fuente, reportes: config.reportes });
+    return json(res, 200, { titulo: config.titulo, totalPreguntas: config.preguntas.length, maxTachas: MAX_TACHAS, audios: listaAudios(), carreras: CARRERAS, colonias: COLONIAS, fuente: config.fuente, reportes: config.reportes });
   }
   if (p === '/api/ranking' && m === 'GET') return json(res, 200, publico());
   if (p === '/api/audios' && m === 'GET') return json(res, 200, listaAudios());
@@ -362,7 +387,8 @@ async function manejar(req, res) {
     const nombre = limpiar(b.nombre, 20);
     const err = validarNombre(nombre);
     if (err) return json(res, 400, { error: err });
-    const pa = crearPartida({ nombre, carrera: limpiar(b.carrera, 60), colonia: limpiar(b.colonia, 60) });
+    const avatar = /^[0-7]{6}$/.test(String(b.avatar || '')) ? String(b.avatar) : '214301';
+    const pa = crearPartida({ nombre, avatar, carrera: limpiar(b.carrera, 60), colonia: limpiar(b.colonia, 60) });
     avisarCambios();
     return json(res, 200, vistaPartida(pa));
   }
@@ -388,7 +414,7 @@ async function manejar(req, res) {
     if (m === 'GET' && accion === 'partidas') {
       const lugar = new Map(ranking().map((x, i) => [x.id, i + 1]));
       return json(res, 200, [...partidas.values()].sort((a, b) => b.inicio - a.inicio).slice(0, 300).map(x => ({
-        id: x.id, nombre: x.nombre, carrera: x.carrera, colonia: x.colonia, puntos: x.puntos, ms: x.ms, terminada: x.terminada, oculta: !!x.oculta, lugar: lugar.get(x.id) || null, fecha: x.creada
+        id: x.id, nombre: x.nombre, avatar: x.avatar || '', carrera: x.carrera, colonia: x.colonia, puntos: x.puntos, ms: x.ms, terminada: x.terminada, oculta: !!x.oculta, lugar: lugar.get(x.id) || null, fecha: x.creada
       })));
     }
     const exp = accion.match(/^exportar\/(partidas|jugadas|ranking)\.csv$/);
@@ -410,7 +436,7 @@ async function manejar(req, res) {
           texto: limpiar(t.texto, 60), reportes: Math.max(0, Number(t.reportes) || 0), puntos: Math.max(0, Math.round(Number(t.puntos) || 0)),
           alias: (Array.isArray(t.alias) ? t.alias : String(t.alias || '').split(',')).map(a => limpiar(a, 60)).filter(Boolean)
         })).filter(t => t.texto).slice(0, 8);
-        return { id: /^[\w-]{1,20}$/.test(q.id || '') ? q.id : 'q' + (qi + 1) + crypto.randomBytes(2).toString('hex'), texto: limpiar(q.texto, 200), dato: limpiar(q.dato, 200), totalReportes: Number(q.totalReportes) || 0, tablero };
+        return { id: /^[\w-]{1,20}$/.test(q.id || '') ? q.id : 'q' + (qi + 1) + crypto.randomBytes(2).toString('hex'), texto: limpiar(q.texto, 200), dato: limpiar(q.dato, 200), exp: limpiar(q.exp, 600), tip: limpiar(q.tip, 600), totalReportes: Number(q.totalReportes) || 0, tablero };
       }).filter(q => q.texto && q.tablero.length);
       if (!nuevas.length) return json(res, 400, { error: 'Debe haber al menos una pregunta con respuestas' });
       config.preguntas = nuevas;
@@ -449,7 +475,15 @@ server.headersTimeout = 66000;
 async function iniciar() {
   almacen = await crearAlmacen();
   const c = await almacen.get(C_CONFIG, 'principal');
-  if (c && Array.isArray(c.preguntas) && c.preguntas.length) config = { ...configInicial(), ...c };
+  if (c && Array.isArray(c.preguntas) && c.preguntas.length) {
+    config = { ...configInicial(), ...c };
+    // preguntas guardadas antes de que existieran las explicaciones: se completan con las del histórico
+    const base = configInicial().preguntas;
+    for (const q of config.preguntas) {
+      const d = base.find(x => x.id === q.id);
+      if (d) { if (!q.exp) q.exp = d.exp; if (!q.tip) q.tip = d.tip; }
+    }
+  }
   for (const pa of await almacen.all(C_PARTIDAS)) if (pa && pa.id) { pa.progreso = pa.progreso || {}; partidas.set(pa.id, pa); }
   for (const j of await almacen.all(C_JUGADAS)) if (j && j.partida) jugadas.push(j);
   server.listen(PORT, () => {

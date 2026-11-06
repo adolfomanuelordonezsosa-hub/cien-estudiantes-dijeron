@@ -1,5 +1,6 @@
 // Generado a partir de los Excel "Reportes de Riesgo" (Ciudadanía + Servicios/Dependencias), SOLO municipio de Tijuana.
 // Cada tablero = colonias con más reportes para esa pregunta. puntos = % de los reportes del tablero (suman 100).
+// exp = lo que dicen los datos (se muestra al final); tip = consejo de prevención.
 // Se pueden ajustar desde el panel de administración (pestaña Preguntas).
 module.exports = {
   "meta": {
@@ -64,7 +65,9 @@ module.exports = {
           "puntos": 10,
           "alias": []
         }
-      ]
+      ],
+      "exp": "La Morita, Terrazas del Valle y Ribera del Bosque son las colonias con más reportes de incidentes por lluvia en Tijuana. Casi todas las colonias de este tablero están en el este de la ciudad, lejos del centro: muchas veces pensamos en las zonas que salen en las noticias, pero los reportes señalan otras.",
+      "tip": "Antes de que llueva, limpia las coladeras y canaletas de tu calle y no tires basura: la basura tapa el drenaje y provoca inundaciones."
     },
     {
       "id": "q2",
@@ -126,7 +129,9 @@ module.exports = {
           "puntos": 8,
           "alias": []
         }
-      ]
+      ],
+      "exp": "En Ribera del Bosque, La Morita y Villa del Real se reportaron más calles inundadas, arroyos desbordados, pasos a desnivel con agua y personas o autos arrastrados por la corriente.",
+      "tip": "Nunca cruces una calle o un arroyo con corriente, ni a pie ni en carro: unos 15 cm de agua en movimiento pueden tumbar a una persona y unos 30 cm pueden hacer flotar un carro. Si el agua corre, date la vuelta."
     },
     {
       "id": "q3",
@@ -179,7 +184,9 @@ module.exports = {
           "puntos": 12,
           "alias": []
         }
-      ]
+      ],
+      "exp": "Palma Real, Campestre Murua y Terrazas del Valle son las colonias con más reportes de casas inundadas por lluvia.",
+      "tip": "Si vives en una zona baja: ten costales de arena para las puertas, sube aparatos y documentos importantes y deja lista una mochila de emergencia con linterna, agua y medicinas."
     },
     {
       "id": "q4",
@@ -215,7 +222,9 @@ module.exports = {
             "canadas florido"
           ]
         }
-      ]
+      ],
+      "exp": "Terrazas del Valle, La Joya, Altiplano y Cañadas del Florido son las colonias con más reportes de derrumbes, deslizamientos o erosión de tierra.",
+      "tip": "Si ves grietas nuevas en paredes, pisos o en el terreno, o puertas que de pronto ya no cierran, sal de la casa y repórtalo al 911 o a Protección Civil."
     }
   ]
 };

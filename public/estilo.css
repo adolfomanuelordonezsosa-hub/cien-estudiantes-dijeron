@@ -1,15 +1,28 @@
+/* Paleta institucional UABC (Manual de Identidad Gráfica, ed. 2022)
+   Verde PANTONE 356 #00723F · Ocre PANTONE 131 #DD971A · Verde 369 #50B848 · Amarillo 124 #FEBE10
+   Verde oscuro 3435 #024731 · Ocre oscuro 132 #B08208 · Azul del escudo #20419A
+   El fondo es un pizarrón verde (verde oscuro UABC) con gis claro: toque académico. */
 :root {
-  --pizarra: #2a2c2b;
-  --pizarra-2: #343735;
-  --gis: #f3f0e6;
-  --gis-tenue: #c3c0b6;
-  --menta: #9be8c9;
-  --verde: #55bb92;
-  --verde-osc: #2f8f69;
-  --naranja: #f6a65a;
-  --naranja-osc: #d4631b;
-  --rojo: #e8604c;
-  --tinta: #16231d;
+  --verde-uabc: #00723F;
+  --ocre: #DD971A;
+  --verde-claro: #50B848;
+  --amarillo: #FEBE10;
+  --verde-osc-uabc: #024731;
+  --ocre-osc: #B08208;
+  --azul: #20419A;
+
+  --pizarra: #024731;
+  --pizarra-2: #03583c;
+  --gis: #f7f4ea;
+  --gis-tenue: #c4d6cb;
+  /* nombres usados en las páginas */
+  --menta: var(--amarillo);      /* resaltado principal */
+  --verde: var(--verde-claro);
+  --verde-osc: var(--verde-uabc);
+  --naranja: var(--ocre);
+  --naranja-osc: var(--ocre-osc);
+  --rojo: #e2563f;
+  --tinta: #02301f;
   --radio: 14px;
   --sombra: 0 10px 28px rgba(0, 0, 0, .35);
 }
@@ -18,43 +31,48 @@ html, body { margin: 0; min-height: 100%; }
 body {
   background-color: var(--pizarra);
   background-image:
-    radial-gradient(ellipse at 18% 8%, rgba(255, 255, 255, .07), transparent 55%),
-    radial-gradient(ellipse at 85% 92%, rgba(255, 255, 255, .05), transparent 50%),
-    repeating-linear-gradient(115deg, rgba(255, 255, 255, .014) 0 2px, transparent 2px 7px);
+    radial-gradient(ellipse at 18% 8%, rgba(255, 255, 255, .08), transparent 55%),
+    radial-gradient(ellipse at 85% 92%, rgba(254, 190, 16, .05), transparent 50%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, .016) 0 2px, transparent 2px 7px);
   background-attachment: fixed;
   color: var(--gis);
   font-family: 'Montserrat', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+/* franja institucional verde y ocre arriba */
+body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 100; background: linear-gradient(90deg, var(--verde-uabc) 0 70%, var(--ocre) 70% 100%); }
 .gis { font-family: 'Cabin Sketch', 'Montserrat', cursive; letter-spacing: .5px; font-weight: 700; }
+.serif { font-family: 'Merriweather', Georgia, serif; }
 .pastilla {
-  display: inline-block; background: var(--menta); color: var(--tinta); font-weight: 600;
+  display: inline-block; background: var(--amarillo); color: var(--tinta); font-weight: 700;
   border-radius: 8px; padding: .4em .9em; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase;
 }
 .btn {
   appearance: none; border: 0; border-radius: 12px; padding: .85em 1.2em; cursor: pointer;
-  font: 700 1rem 'Montserrat', sans-serif; background: var(--menta); color: var(--tinta);
+  font: 700 1rem 'Montserrat', sans-serif; background: var(--amarillo); color: var(--tinta);
   transition: transform .08s, filter .15s, background .15s; text-decoration: none; display: inline-flex;
   align-items: center; justify-content: center; gap: .4em;
 }
 .btn:hover { filter: brightness(1.06); }
 .btn:active { transform: scale(.97); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
-.btn.naranja { background: var(--naranja); color: #2a1606; }
+.btn.naranja { background: var(--ocre); color: #241500; }
+.btn.verde { background: var(--verde-uabc); color: #fff; }
 .btn.rojo { background: var(--rojo); color: #fff; }
-.btn.fantasma { background: transparent; color: var(--gis); border: 2px solid rgba(243, 240, 230, .3); }
-.btn.activo { outline: 3px solid var(--naranja); outline-offset: 2px; }
+.btn.fantasma { background: transparent; color: var(--gis); border: 2px solid rgba(247, 244, 234, .3); }
+.btn.activo { outline: 3px solid var(--amarillo); outline-offset: 2px; }
 .btn.chico { padding: .5em .8em; font-size: .85rem; border-radius: 9px; }
 .btn.ancho { width: 100%; }
 input, select, textarea {
   width: 100%; font: 500 1rem 'Montserrat', sans-serif; padding: .8em .9em; border-radius: 12px;
-  border: 2px solid rgba(243, 240, 230, .22); background: rgba(0, 0, 0, .25); color: var(--gis); outline: none;
+  border: 2px solid rgba(247, 244, 234, .22); background: rgba(0, 0, 0, .22); color: var(--gis); outline: none;
 }
-input::placeholder, textarea::placeholder { color: rgba(243, 240, 230, .45); }
-input:focus, select:focus, textarea:focus { border-color: var(--menta); }
-select option { color: #111; background: #fff; }
+input::placeholder, textarea::placeholder { color: rgba(247, 244, 234, .45); }
+input:focus, select:focus, textarea:focus { border-color: var(--amarillo); }
+input.mal, select.mal { border-color: var(--rojo); }
+select option, select optgroup { color: #111; background: #fff; }
 label { display: block; font-size: .85rem; color: var(--gis-tenue); margin: 1em 0 .4em; font-weight: 600; }
-.tarjeta { background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1); border-radius: var(--radio); padding: 1.1rem; }
+.tarjeta { background: rgba(255, 255, 255, .055); border: 1px solid rgba(255, 255, 255, .11); border-radius: var(--radio); padding: 1.1rem; }
 .oculto { display: none !important; }
 .tenue { color: var(--gis-tenue); }
 .centro { text-align: center; }

@@ -13,7 +13,7 @@ Las respuestas correctas salen de los **reportes históricos de Tijuana** (Excel
 
 ## Cómo se juega
 
-1. **Bienvenida**: el jugador arma su **avatar** (piel, cabello, camisa, pantalón y sombrero), pone su nombre o apodo (con filtro de groserías) y opcionalmente su carrera y colonia.
+1. **Bienvenida**: el jugador crea su **avatar** (mujer, hombre o uno de 8 animales: perro, gato, conejo, oso, panda, zorro, ajolote y mapache; con peinado, ropa, abajo, sombrero y accesorios), escribe **nombre y apellido reales** (en público se ve "Ana G."), dice si es estudiante (si sí, elige su carrera de la lista o la escribe; se unifica sola) y opcionalmente su delegación o colonia. Todo lleva filtro de groserías.
 2. **Juego**: 4 preguntas, una a la vez. Escribe colonias de Tijuana (con autocompletado). Tiene 3 oportunidades (✕) por pregunta y puede pasar a la siguiente cuando quiera. El reloj corre desde que empieza.
 3. **¡Gracias!**: su avatar, puntos, tiempo y lugar mientras suena la voz (mínimo 4 s); luego pasa solo a los resultados.
 4. **Resultados y retroalimentación**: Top 10 con avatares, todas las respuestas correctas con su número de reportes y, por cada pregunta: por qué no estaban sus respuestas (con el número real de reportes de esa colonia), lo que dicen los datos y un consejo de prevención.
@@ -38,21 +38,19 @@ Están en `data/preguntas.js` y se pueden ajustar desde `/admin` → Preguntas y
 
 En `/admin` → Análisis: qué % encontró cada colonia (realidad) contra lo que más escribieron (percepción), y las colonias que la gente cree que se inundan pero no tienen tantos reportes. En Exportar datos se bajan los CSV.
 
-## Voz (en los celulares y en la TV)
+## Voz de Victor (celulares y TV)
 
-Grabaciones del equipo en `public/audio/`; lo que no está grabado lo dice la voz del navegador.
+Las frases se graban o suben en `/admin` → **🎙️ Voces** (se guardan en MongoDB; no hay que subir nada a GitHub). Cada frase puede tener varias versiones y el juego elige una al azar. Los nombres se muestran en pantalla; el lugar se dice con las grabaciones "Lugar 1" a "Lugar 10".
 
-| Momento | Celular | TV |
-|---|---|---|
-| Primer toque en la página | `bienvenida` | `bienvenida` al activar |
-| Cada pregunta | voz: "Pregunta 1. …" | — |
-| Respuesta correcta | ding + `dijeron` + voz: "La Morita. 22 puntos." | — |
-| Respuesta incorrecta | buzzer + voz: "¡No está en el tablero! Te quedan 2." | — |
-| Al terminar | fanfarria + (`primero` o `top` si entra) + voz: "¡Gracias por jugar…!" | — |
-| Cada 3 minutos | — | `invitacion` |
-| Alguien entra al Top 10 | — | `top` o `primero` + voz con nombre y puntos |
+Frases: bienvenida, invitación a jugar, sale una pregunta, respuesta correcta, respuesta incorrecta, se acabaron las oportunidades, encontró todas, gracias, entró al Top 10, nuevo primer lugar, **te quitaron el lugar** ("Perdón, campeón, pero hay alguien más gallo que tú"), salió del Top 10, show del trono y "100 estudiantes dijeron". Si una frase no tiene grabación, se puede usar la voz de computadora (casilla en la misma pestaña).
 
-El botón 🔊 de arriba silencia el celular.
+## Pantalla de la TV
+
+Escenario con podio: el 1er lugar se sienta en un trono con corona; cada 70 segundos (y cuando hay nuevo primer lugar) hace su show: camina, busca a alguien mejor, no encuentra a nadie, se pone la corona brillante y se sienta; mientras, todos los demás voltean a verlo. El 2º aplaude, el 3º saluda y brinca, y los del 4 al 10 saludan, miran y brincan. En el engrane ⚙ hay un botón para ver el show cuando quieras.
+
+## Panel
+
+Ranking y partidas · 📊 Dashboard (lo que creen vs. lo que es real por pregunta, partidas por día y hora, puntajes, carreras, dónde viven, contador de personas) · 🎙️ Voces · 👥 Creadores (aparecen al tocar el sello "OCUN · Cuando El Niño toca la puerta" en la página de jugadores) · Preguntas y respuestas · Exportar datos.
 
 ## Variables en Railway
 

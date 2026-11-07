@@ -9,45 +9,88 @@
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="/avatar.js"></script>
+<script src="/voz.js"></script>
 <style>
   body { font-size: 15px; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 1rem 1rem 4rem; }
-  header.adm { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  :root { --s-creen: #c4840f; --s-real: #5f8be6; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+  header.adm { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin: .4rem 0 1rem; }
   header.adm h1 { margin: 0; font-size: 2rem; }
-  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
-  .tabs button { background: transparent; border: 2px solid rgba(255,255,255,.15); color: var(--gis); padding: .55em 1em; border-radius: 10px; font: 600 .95rem 'Montserrat'; cursor: pointer; }
-  .tabs button.on { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
+  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; position: sticky; top: 4px; z-index: 10; background: var(--pizarra); padding: .4rem 0; }
+  .tabs button { background: transparent; border: 2px solid rgba(255,255,255,.16); color: var(--gis); padding: .55em 1em; border-radius: 10px; font: 600 .95rem 'Montserrat'; cursor: pointer; }
+  .tabs button.on { background: var(--amarillo); color: var(--tinta); border-color: var(--amarillo); }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .8rem; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
-  h2.sec { font: 700 1.45rem 'Cabin Sketch', cursive; color: var(--menta); margin: 0 0 .7rem; }
+  h2.sec { font: 700 1.45rem 'Cabin Sketch', cursive; color: var(--amarillo); margin: 0 0 .5rem; }
+  h3.sub { font-size: 1rem; margin: 1rem 0 .4rem; }
   .fila { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .7rem; }
   table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-  th, td { text-align: left; padding: .45rem .45rem; border-bottom: 1px solid rgba(255,255,255,.08); vertical-align: top; }
+  th, td { text-align: left; padding: .45rem .45rem; border-bottom: 1px solid rgba(255,255,255,.09); vertical-align: middle; }
   th { color: var(--gis-tenue); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   tr.oculta td { opacity: .45; text-decoration: line-through; }
-  .kpi { background: rgba(255,255,255,.05); border-radius: 12px; padding: .9rem 1rem; border: 1px solid rgba(255,255,255,.08); }
-  .kpi b { display: block; font: 700 2rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1.1; }
+  .kpi { background: rgba(255,255,255,.06); border-radius: 12px; padding: .9rem 1rem; border: 1px solid rgba(255,255,255,.09); }
+  .kpi b { display: block; font: 700 2.1rem 'Cabin Sketch', cursive; color: var(--gis); line-height: 1.1; }
   .kpi span { font-size: .8rem; color: var(--gis-tenue); }
-  .barras { display: grid; gap: .35rem; }
-  .barra { display: grid; grid-template-columns: minmax(120px, 38%) 1fr auto; gap: .6rem; align-items: center; font-size: .9rem; }
-  .barra .et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .barra .riel { height: 14px; background: rgba(255,255,255,.06); border-radius: 99px; overflow: hidden; }
-  .barra .riel div { height: 100%; background: var(--menta); border-radius: 99px; }
-  .barra.nar .riel div { background: var(--naranja); }
-  .barra.gris .riel div { background: rgba(243,240,230,.35); }
-  .barra .val { color: var(--gis-tenue); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
-  .msg { position: fixed; right: 1rem; bottom: 1rem; background: #1b1d1c; border: 1px solid rgba(255,255,255,.2); padding: .8rem 1rem; border-radius: 12px; z-index: 99; max-width: 380px; box-shadow: var(--sombra); }
+  .kpi.grande { background: rgba(254,190,16,.12); border-color: rgba(254,190,16,.4); }
+  .kpi.grande b { color: var(--amarillo); font-size: 2.8rem; }
+  .msg { position: fixed; right: 1rem; bottom: 1rem; background: #01301f; border: 1px solid rgba(255,255,255,.2); padding: .8rem 1rem; border-radius: 12px; z-index: 99; max-width: 380px; box-shadow: var(--sombra); }
   .msg.err { border-color: var(--rojo); }
   .nota { font-size: .85rem; color: var(--gis-tenue); line-height: 1.5; }
-  .peligro { border: 1px solid rgba(232,96,76,.4); }
-  .chip { display: inline-block; padding: .12em .5em; border-radius: 99px; background: rgba(255,255,255,.08); font-size: .76rem; margin: .1em; }
-  .chip.si { background: rgba(85,187,146,.25); color: var(--menta); }
+  .peligro { border: 1px solid rgba(226,86,63,.45); }
+  .chip { display: inline-block; padding: .12em .55em; border-radius: 99px; background: rgba(255,255,255,.09); font-size: .76rem; margin: .1em; }
+  .chip.si { background: rgba(80,184,72,.25); color: #d7f5d3; }
   .q-edit { margin-bottom: 1rem; }
   .q-edit textarea { min-height: 2.6em; resize: vertical; }
   .q-edit .tab-txt { min-height: 9em; font-family: ui-monospace, Menlo, monospace; font-size: .85rem; }
   .muestra { max-height: 560px; overflow: auto; }
+  /* gráficas */
+  .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .85rem; color: var(--gis); margin: .2rem 0 .6rem; }
+  .leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+  .pareadas { display: grid; gap: .55rem; }
+  .par { display: grid; grid-template-columns: minmax(130px, 30%) 1fr; gap: .7rem; align-items: center; padding: .2rem .3rem; border-radius: 8px; }
+  .par:hover { background: rgba(255,255,255,.05); }
+  .par .et { font-size: .88rem; font-weight: 600; line-height: 1.2; }
+  .par .et small { display: block; font-weight: 500; color: var(--gis-tenue); font-size: .74rem; }
+  .barras2 { display: grid; gap: 2px; }
+  .b { height: 13px; display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: var(--gis); font-variant-numeric: tabular-nums; }
+  .b span { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .b.creen span { background: var(--s-creen); }
+  .b.real span { background: var(--s-real); }
+  .columnas { display: flex; align-items: flex-end; gap: 3px; height: 160px; padding-top: 1.2rem; border-bottom: 1px solid rgba(255,255,255,.2); }
+  .columnas .c { flex: 1; background: var(--s-creen); border-radius: 4px 4px 0 0; min-height: 1px; position: relative; }
+  .columnas .c:hover { filter: brightness(1.25); }
+  .ejes { display: flex; gap: 3px; font-size: .7rem; color: var(--gis-tenue); margin-top: .3rem; }
+  .ejes span { flex: 1; text-align: center; overflow: hidden; white-space: nowrap; }
+  .hbar { display: grid; grid-template-columns: minmax(120px, 34%) 1fr auto; gap: .6rem; align-items: center; font-size: .88rem; margin-bottom: .35rem; }
+  .hbar .et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hbar .riel { height: 13px; }
+  .hbar .riel div { height: 100%; background: var(--s-real); border-radius: 0 4px 4px 0; min-width: 2px; }
+  .hbar .val { color: var(--gis-tenue); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
+  #tip { position: fixed; z-index: 200; pointer-events: none; background: #fffdf5; color: #02301f; padding: .45rem .65rem; border-radius: 8px; font-size: .82rem; font-weight: 600; box-shadow: var(--sombra); max-width: 260px; display: none; }
+  details.tabla summary { cursor: pointer; color: var(--gis-tenue); font-size: .82rem; margin-top: .6rem; }
+  /* voces */
+  .voz { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  @media (max-width: 760px) { .voz { grid-template-columns: 1fr; } }
+  .voz h3 { margin: 0; font-size: 1.02rem; }
+  .voz .donde { font-size: .78rem; color: var(--gis-tenue); }
+  .voz .sug { margin: .4rem 0 0; padding-left: 1.1rem; font-size: .88rem; }
+  .voz .sug li { margin: .15rem 0; color: #fff3cc; }
+  .grab { display: flex; align-items: center; gap: .4rem; background: rgba(255,255,255,.06); border-radius: 10px; padding: .3rem .5rem; margin-bottom: .35rem; font-size: .82rem; }
+  .grab audio { height: 32px; flex: 1; min-width: 0; }
+  .sin { font-size: .82rem; color: var(--gis-tenue); }
+  .grabando { animation: parpadea 1s infinite; background: var(--rojo) !important; color: #fff !important; }
+  @keyframes parpadea { 50% { opacity: .6; } }
+  .lugares { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .7rem; }
+  .lugares .voz { display: block; border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: .7rem; }
+  /* creadores */
+  .creador-card { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: .9rem; margin-bottom: .8rem; }
+  .creador-card .cab { display: flex; gap: .8rem; align-items: center; }
+  .creador-card .cab .av-mini { width: 54px; height: 76px; }
+  .creador-card .campos { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; flex: 1; }
+  @media (max-width: 760px) { .creador-card .campos { grid-template-columns: 1fr; } }
+  .creador-card label { margin: 0 0 .2rem; }
 </style>
 </head>
 <body>
@@ -69,7 +112,9 @@
     </header>
     <nav class="tabs" id="tabs">
       <button data-t="ranking" class="on">Ranking y partidas</button>
-      <button data-t="analisis">Análisis</button>
+      <button data-t="dashboard">📊 Dashboard</button>
+      <button data-t="voces">🎙️ Voces</button>
+      <button data-t="creadores">👥 Creadores</button>
       <button data-t="preguntas">Preguntas y respuestas</button>
       <button data-t="exportar">Exportar datos</button>
     </nav>
@@ -84,21 +129,44 @@
         </div>
         <div class="tarjeta">
           <h2 class="sec">Últimas partidas</h2>
-          <p class="nota">Si se cuela un nombre ofensivo, presiona <b>Ocultar</b> y desaparece del ranking (sus datos se conservan para el análisis).</p>
+          <p class="nota">Si se cuela un nombre ofensivo o falso, presiona <b>Ocultar</b> y desaparece del ranking (sus datos se conservan para el análisis).</p>
           <div class="muestra"><table><thead><tr><th>Nombre</th><th class="num">Pts</th><th class="num">Tiempo</th><th class="num">Lugar</th><th></th></tr></thead><tbody id="partidas"></tbody></table></div>
         </div>
       </div>
       <div class="tarjeta peligro" style="margin-top:1rem">
         <h2 class="sec" style="color:var(--rojo)">Reiniciar</h2>
         <button class="btn chico rojo" id="reiniciar">Borrar ranking y todas las partidas</button>
-        <p class="nota">Descarga los CSV antes de borrar: lo borrado no se recupera.</p>
+        <p class="nota">Descarga los CSV antes de borrar: lo borrado no se recupera. Las voces, creadores y preguntas no se borran.</p>
       </div>
     </div>
 
-    <!-- ANÁLISIS -->
-    <div data-p="analisis" class="oculto">
-      <div class="fila" style="margin:0 0 1rem"><button class="btn chico" id="aRefrescar">Actualizar</button><label style="margin:0;display:flex;gap:.4rem;align-items:center"><input type="checkbox" id="aAuto" style="width:auto"> Actualizar cada 10 s</label><span class="nota" id="aFecha"></span></div>
-      <div id="analisis"></div>
+    <!-- DASHBOARD -->
+    <div data-p="dashboard" class="oculto">
+      <div class="fila" style="margin:0 0 1rem"><button class="btn chico" id="aRefrescar">Actualizar</button><label style="margin:0;display:flex;gap:.4rem;align-items:center"><input type="checkbox" id="aAuto" style="width:auto"> Actualizar cada 15 s</label><span class="nota" id="aFecha"></span></div>
+      <div id="dash"></div>
+    </div>
+
+    <!-- VOCES -->
+    <div data-p="voces" class="oculto">
+      <div class="tarjeta" style="margin-bottom:1rem">
+        <h2 class="sec">🎙️ La voz de Victor</h2>
+        <p class="nota">Cada frase del juego puede tener <b>varias versiones</b>; el juego elige una al azar para que no suene repetido. Graba aquí mismo con el micrófono o sube un audio (.mp3, .m4a, notas de voz). Se guardan en la base de datos: <b>no hay que subir nada a GitHub</b>. Los celulares y la TV las usan al momento.</p>
+        <p class="nota">Los nombres de los jugadores no se pueden grabar por adelantado: <b>aparecen en pantalla</b> mientras suena la frase. El lugar sí se dice con su voz usando las grabaciones "Lugar 1" a "Lugar 10" (al final de esta página).</p>
+        <label style="display:flex;gap:.5rem;align-items:center;color:var(--gis);font-size:.95rem"><input type="checkbox" id="vTTS" style="width:auto"> Si una frase no tiene grabación, que la diga la voz de computadora</label>
+        <p class="nota" id="vFormato"></p>
+      </div>
+      <div class="tarjeta"><h2 class="sec">Frases</h2><div id="vLista"></div></div>
+      <div class="tarjeta" style="margin-top:1rem"><h2 class="sec">Lugares (para "¡Quedaste en el… lugar 3!")</h2><div class="lugares" id="vLugares"></div></div>
+    </div>
+
+    <!-- CREADORES -->
+    <div data-p="creadores" class="oculto">
+      <div class="tarjeta">
+        <h2 class="sec">👥 Creadores del juego</h2>
+        <p class="nota">Aparecen en la página de los jugadores al tocar el sello <b>"OCUN · Cuando El Niño toca la puerta"</b> de la esquina. Cada persona puede tener su avatar.</p>
+        <div id="cLista"></div>
+        <div class="fila"><button class="btn chico fantasma" id="cAgregar">+ Agregar persona</button><span style="flex:1"></span><button class="btn naranja" id="cGuardar">Guardar creadores</button></div>
+      </div>
     </div>
 
     <!-- PREGUNTAS -->
@@ -106,7 +174,7 @@
       <div class="tarjeta">
         <h2 class="sec">Preguntas y respuestas correctas</h2>
         <p class="nota" id="pFuente"></p>
-        <p class="nota">Cada línea del tablero: <code>Colonia | reportes | puntos | sinónimos separados por coma</code>. Los puntos de cada pregunta deberían sumar 100. Si cambias algo, las partidas nuevas usan lo nuevo.</p>
+        <p class="nota">Aquí podrás cambiar las preguntas cuando lo necesiten. Cada línea del tablero: <code>Colonia | reportes | puntos | sinónimos separados por coma</code>. Los puntos de cada pregunta deberían sumar 100. Los cambios aplican a las partidas nuevas.</p>
         <div id="pLista"></div>
         <div class="fila">
           <button class="btn chico fantasma" id="pAgregar">+ Agregar pregunta</button>
@@ -125,15 +193,16 @@
           <button class="btn" data-x="partidas">Partidas (jugadores, puntos, tiempo)</button>
           <button class="btn" data-x="jugadas">Cada respuesta que escribieron</button>
           <button class="btn" data-x="ranking">Ranking completo</button>
-          <button class="btn fantasma" id="xAnal">Análisis (JSON)</button>
+          <button class="btn fantasma" id="xAnal">Dashboard (JSON)</button>
         </div>
-        <p class="nota" style="margin-top:1rem"><b>Cada respuesta que escribieron</b> incluye lo que tecleó el jugador, la colonia reconocida y si estaba o no en el histórico: sirve para comparar percepción contra realidad.</p>
+        <p class="nota" style="margin-top:1rem">Las carreras ya salen unificadas (por ejemplo "ing industrial", "industrial" e "Ingeniería Industrial" cuentan como una sola).</p>
         <p class="nota" id="xAlmacen"></p>
       </div>
     </div>
   </section>
 </div>
 <div id="msg" class="msg oculto"></div>
+<div id="tip"></div>
 
 <script>
 (() => {
@@ -143,9 +212,10 @@
   const leer = k => { try { return localStorage.getItem('ced_adm_' + k); } catch { return null; } };
   const guardar = (k, v) => { try { v == null ? localStorage.removeItem('ced_adm_' + k) : localStorage.setItem('ced_adm_' + k, v); } catch { /* */ } };
   const tiempo = ms => ms == null ? '–' : ms >= 60000 ? Math.floor(ms / 60000) + ':' + String(Math.floor(ms / 1000) % 60).padStart(2, '0') : (ms / 1000).toFixed(1) + ' s';
+  const nf = n => Number(n || 0).toLocaleString('es-MX');
 
   let clave = leer('clave') || '';
-  let estado = null, preguntasEdit = [], es = null, autoT = null;
+  let estado = null, preguntasEdit = [], creadores = [], es = null, autoT = null;
 
   function aviso(t, err) { const m = $('#msg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); clearTimeout(m._t); m._t = setTimeout(() => m.classList.add('oculto'), 3500); }
   async function api(ruta, body) {
@@ -156,13 +226,21 @@
     return d;
   }
 
+  // tooltip para las gráficas
+  document.addEventListener('mousemove', e => {
+    const t = e.target.closest('[data-tip]'), tip = $('#tip');
+    if (!t) { tip.style.display = 'none'; return; }
+    tip.innerHTML = t.dataset.tip; tip.style.display = 'block';
+    tip.style.left = Math.min(innerWidth - 270, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
+  });
+
   function salir() { guardar('clave', null); clave = ''; if (es) es.close(); $('#app').classList.add('oculto'); $('#login').classList.remove('oculto'); }
   async function entrar() {
     try {
       estado = await api('estado');
       guardar('clave', clave);
       $('#login').classList.add('oculto'); $('#app').classList.remove('oculto');
-      pintarRanking(estado); cargarPartidas(); cargarPreguntas();
+      pintarRanking(estado); cargarPartidas(); cargarPreguntas(); cargarCreadores();
       $('#xAlmacen').textContent = 'Los datos se guardan en: ' + estado.almacen + (estado.almacen === 'Archivos locales' ? ' (agrega MONGODB_URI en Railway para no perderlos).' : '.');
       if (es) es.close();
       es = new EventSource('/eventos');
@@ -176,14 +254,15 @@
     const t = e.target.dataset.t; if (!t) return;
     $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     $$('[data-p]').forEach(p => p.classList.toggle('oculto', p.dataset.p !== t));
-    if (t === 'analisis') cargarAnalisis();
+    if (t === 'dashboard') cargarDashboard();
+    if (t === 'voces') cargarVoces();
   });
 
-  // ---------- ranking
+  // ================= RANKING =================
   function pintarRanking(d) {
-    $('#kpis').innerHTML = [[d.stats.partidas, 'partidas iniciadas'], [d.stats.terminadas, 'partidas terminadas'], [d.stats.jugando, 'jugando ahora']]
-      .map(([v, t]) => `<div class="kpi"><b>${v}</b><span>${t}</span></div>`).join('');
-    $('#top').innerHTML = d.top.map(r => `<tr><td>${r.lugar}</td><td>${Avatar.mini(r.avatar, 26)} <b>${esc(r.nombre)}</b></td><td class="nota">${esc(r.carrera)}</td><td class="num">${r.puntos}</td><td class="num">${tiempo(r.ms)}</td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas terminadas</td></tr>';
+    $('#kpis').innerHTML = [[d.stats.personas, 'personas han jugado', 'grande'], [d.stats.partidas, 'partidas iniciadas'], [d.stats.terminadas, 'partidas terminadas'], [d.stats.jugando, 'jugando ahora']]
+      .map(([v, t, c]) => `<div class="kpi ${c || ''}"><b>${nf(v)}</b><span>${t}</span></div>`).join('');
+    $('#top').innerHTML = d.top.map(r => `<tr><td>${r.lugar}</td><td>${Avatar.mini(r.avatar, 24)} <b>${esc(r.nombre)}</b></td><td class="nota">${esc(r.carrera)}</td><td class="num">${r.puntos}</td><td class="num">${tiempo(r.ms)}</td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas terminadas</td></tr>';
   }
   let tPart = null;
   function cargarPartidas() {
@@ -191,7 +270,7 @@
     tPart = setTimeout(async () => {
       try {
         const lista = await api('partidas');
-        $('#partidas').innerHTML = lista.map(p => `<tr class="${p.oculta ? 'oculta' : ''}"><td>${Avatar.mini(p.avatar, 24)} ${esc(p.nombre)}<div class="nota">${esc(p.carrera || '')}${p.colonia ? ' · ' + esc(p.colonia) : ''}</div></td>
+        $('#partidas').innerHTML = lista.map(p => `<tr class="${p.oculta ? 'oculta' : ''}"><td>${Avatar.mini(p.avatar, 22)} ${esc(p.nombre)}<div class="nota">${p.estudiante === false ? 'No es estudiante' : esc(p.carrera || '')}${p.colonia ? ' · ' + esc(p.colonia) : ''}</div></td>
           <td class="num">${p.puntos}</td><td class="num">${p.terminada ? tiempo(p.ms) : '<span class="chip">jugando</span>'}</td><td class="num">${p.lugar || ''}</td>
           <td><button class="btn chico ${p.oculta ? '' : 'fantasma'}" data-ocultar="${p.id}" data-v="${p.oculta ? '0' : '1'}">${p.oculta ? 'Mostrar' : 'Ocultar'}</button></td></tr>`).join('') || '<tr><td colspan="5" class="tenue">Sin partidas</td></tr>';
       } catch { /* */ }
@@ -207,7 +286,166 @@
     try { const d = await api('reiniciar', {}); pintarRanking(d); cargarPartidas(); aviso('Ranking reiniciado'); } catch (e) { aviso(e.message, true); }
   });
 
-  // ---------- preguntas
+  // ================= DASHBOARD =================
+  function hbars(items, et, val, fmt, tip) {
+    const max = Math.max(1, ...items.map(val));
+    return items.map(x => `<div class="hbar" data-tip="${esc(tip ? tip(x) : et(x) + ': ' + fmt(x))}"><span class="et">${esc(et(x))}</span><div class="riel"><div style="width:${val(x) / max * 100}%"></div></div><span class="val">${fmt(x)}</span></div>`).join('') || '<p class="tenue">Sin datos todavía.</p>';
+  }
+  function columnas(items, et, val, tip) {
+    const max = Math.max(1, ...items.map(val));
+    return `<div class="columnas">${items.map(x => `<div class="c" style="height:${val(x) / max * 100}%" data-tip="${esc(tip(x))}"></div>`).join('')}</div><div class="ejes">${items.map(x => `<span>${esc(et(x))}</span>`).join('')}</div>`;
+  }
+  async function cargarDashboard() {
+    try {
+      const d = await api('analisis');
+      $('#aFecha').textContent = 'Actualizado ' + new Date(d.generado).toLocaleTimeString();
+      const r = d.resumen;
+      let h = `<div class="grid3" style="margin-bottom:1rem">${[
+        [nf(r.personas), 'personas han jugado', 'grande'], [nf(r.partidas), 'partidas iniciadas'], [nf(r.terminadas), 'partidas terminadas'],
+        [r.puntajePromedio + ' / ' + r.maxPuntos, 'puntaje promedio'], [r.precision + '%', 'respuestas que sí estaban en el histórico'], [tiempo(r.tiempoPromedio), 'tiempo promedio por partida'],
+        [nf(r.estudiantes), 'estudiantes'], [nf(r.noEstudiantes), 'no estudiantes']
+      ].map(([v, t, c]) => `<div class="kpi ${c || ''}"><b>${esc(v)}</b><span>${t}</span></div>`).join('')}</div>`;
+
+      h += `<div class="tarjeta" style="margin-bottom:1rem"><h2 class="sec">¿Lo que creen vs. lo que es real?</h2>
+        <p class="nota">Por cada pregunta se compara qué parte de <b>todas las respuestas de los jugadores</b> se llevó cada colonia, contra qué parte de <b>todos los reportes reales</b> de Tijuana tiene esa colonia. Si la barra de "creen" es mucho más grande, la gente <b>cree</b> que ahí hay más problemas de los que se han reportado; si es al revés, es una colonia con problemas reales que casi nadie conoce.</p>
+        <div class="leyenda"><span><i style="background:var(--s-creen)"></i>Lo que creen (% de las respuestas)</span><span><i style="background:var(--s-real)"></i>Lo que es real (% de los reportes)</span></div></div>`;
+      for (const q of d.porPregunta) {
+        const max = Math.max(1, ...q.comparacion.flatMap(c => [c.pctCreen, c.pctReal]));
+        h += `<div class="tarjeta" style="margin-bottom:1rem">
+          <h2 class="sec" style="font-size:1.25rem">${esc(q.texto)}</h2>
+          <div class="grid3" style="margin:.4rem 0 .8rem">
+            <div class="kpi"><b>${q.conocimiento}%</b><span>de las colonias del tablero que en promedio encontraron</span></div>
+            <div class="kpi"><b>${q.puntosPromedio}</b><span>puntos promedio en esta pregunta</span></div>
+            <div class="kpi"><b>${nf(q.jugaron)}</b><span>jugadores · ${nf(q.intentos)} respuestas escritas</span></div>
+          </div>
+          <div class="leyenda"><span><i style="background:var(--s-creen)"></i>Lo que creen</span><span><i style="background:var(--s-real)"></i>Lo que es real</span><span class="nota">⭐ = está en el tablero</span></div>
+          <div class="pareadas">${q.comparacion.map(c => `
+            <div class="par" data-tip="<b>${esc(c.colonia)}</b><br>La escribieron ${c.jugadores} jugador(es): ${c.pctCreen}% de las respuestas<br>Tiene ${c.reportes} reporte(s): ${c.pctReal}% de los reportes">
+              <div class="et">${c.enTablero ? '⭐ ' : ''}${esc(c.colonia)}<small>${c.reportes} reporte${c.reportes === 1 ? '' : 's'}</small></div>
+              <div class="barras2"><div class="b creen"><span style="width:${c.pctCreen / max * 85}%"></span>${c.pctCreen}%</div><div class="b real"><span style="width:${c.pctReal / max * 85}%"></span>${c.pctReal}%</div></div>
+            </div>`).join('') || '<p class="tenue">Sin respuestas todavía.</p>'}</div>
+          ${q.mitos.length ? `<h3 class="sub">Lo que más respondieron y NO estaba en el tablero</h3><p class="nota">${q.mitos.map(m => `<span class="chip">${esc(m.texto)} · ${m.n} vez${m.n === 1 ? '' : 'es'}${m.reportes != null ? ` · ${m.reportes} reporte${m.reportes === 1 ? '' : 's'}` : ''}</span>`).join(' ')}</p>` : ''}
+          <details class="tabla"><summary>Ver como tabla</summary><table><thead><tr><th>Colonia</th><th class="num">Reportes</th><th class="num">% real</th><th class="num">% creen</th></tr></thead><tbody>${q.comparacion.map(c => `<tr><td>${esc(c.colonia)}</td><td class="num">${c.reportes}</td><td class="num">${c.pctReal}%</td><td class="num">${c.pctCreen}%</td></tr>`).join('')}</tbody></table></details>
+        </div>`;
+      }
+      h += `<div class="grid2">
+        <div class="tarjeta"><h2 class="sec">Partidas por día</h2>${d.dias.length ? columnas(d.dias, x => x.dia, x => x.n, x => `${x.dia}: ${x.n} partida(s)`) : '<p class="tenue">Sin datos todavía.</p>'}</div>
+        <div class="tarjeta"><h2 class="sec">¿A qué hora juegan?</h2>${columnas(d.horas, x => x.hora % 3 === 0 ? x.hora + 'h' : '', x => x.n, x => `${x.hora}:00 a ${x.hora}:59 — ${x.n} partida(s)`)}</div>
+        <div class="tarjeta"><h2 class="sec">¿Cuántos puntos hacen?</h2>${columnas(d.histograma, x => x.desde, x => x.n, x => `${x.desde} a ${x.hasta} puntos: ${x.n} persona(s)`)}</div>
+        <div class="tarjeta"><h2 class="sec">Puntaje promedio por carrera</h2>${hbars(d.carreras, x => x.carrera, x => x.promedio, x => `${x.promedio} pts`, x => `${x.carrera}: ${x.promedio} puntos promedio (${x.n} persona(s))`)}</div>
+        <div class="tarjeta"><h2 class="sec">¿Cuántos jugaron por carrera?</h2>${hbars(d.carreras, x => x.carrera, x => x.n, x => nf(x.n))}</div>
+        <div class="tarjeta"><h2 class="sec">¿Dónde viven?</h2>${hbars(d.residencia, x => x.texto, x => x.n, x => nf(x.n))}</div>
+      </div>`;
+      $('#dash').innerHTML = h;
+    } catch (e) { aviso(e.message, true); }
+  }
+  $('#aRefrescar').addEventListener('click', cargarDashboard);
+  $('#aAuto').addEventListener('change', e => { clearInterval(autoT); if (e.target.checked) autoT = setInterval(cargarDashboard, 15000); });
+
+  // ================= VOCES =================
+  const FORMATO = (() => {
+    if (!window.MediaRecorder) return null;
+    for (const t of ['audio/mp4', 'audio/mp4;codecs=mp4a.40.2', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg']) if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) return t;
+    return '';
+  })();
+  $('#vFormato').innerHTML = FORMATO == null ? 'Este navegador no puede grabar: usa "Subir audio".'
+    : /webm|ogg/.test(FORMATO) ? '⚠️ Este navegador graba en formato <b>webm</b>, que algunos iPhone no reproducen. Para que se oiga en todos los celulares, mejor <b>sube archivos .mp3 o .m4a</b> (por ejemplo, notas de voz) o graba desde Safari.'
+    : 'Las grabaciones se guardan en formato m4a, que se oye en todos los celulares.';
+  let vocesData = { lista: [], tts: true };
+  async function cargarVoces() {
+    try { vocesData = await api('voces'); } catch (e) { return aviso(e.message, true); }
+    $('#vTTS').checked = vocesData.tts;
+    const porEvento = ev => vocesData.lista.filter(v => v.evento === ev);
+    const bloque = e => {
+      const gs = porEvento(e.id);
+      return `<div class="voz" data-ev="${e.id}">
+        <div><h3>${esc(e.titulo)}</h3><div class="donde">${esc(e.donde)} · ${esc(e.cuando)}</div>
+          ${e.numero ? '' : `<ul class="sug">${e.sugerencias.map(s => `<li>"${esc(s)}"</li>`).join('')}</ul>`}</div>
+        <div>${gs.length ? gs.map(g => `<div class="grab"><audio controls preload="none" src="${g.url}"></audio><button class="btn chico fantasma" data-borrar="${g.id}" title="Borrar">🗑</button></div>`).join('') : `<div class="sin">Sin grabación${vocesData.tts ? ' (usa la voz de computadora)' : ' (no suena nada)'}</div>`}
+          <div class="fila" style="margin-top:.4rem">${FORMATO != null ? `<button class="btn chico" data-grabar="${e.id}">🎙️ Grabar</button>` : ''}<label class="btn chico fantasma" style="margin:0">📁 Subir audio<input type="file" accept="audio/*" data-subir="${e.id}" hidden></label></div>
+          <div class="prev"></div></div></div>`;
+    };
+    $('#vLista').innerHTML = Voz.EVENTOS.filter(e => !e.numero).map(bloque).join('');
+    $('#vLugares').innerHTML = Voz.EVENTOS.filter(e => e.numero).map(bloque).join('');
+  }
+  $('#vTTS').addEventListener('change', async e => { try { await api('voces/opciones', { tts: e.target.checked }); aviso('Guardado'); cargarVoces(); } catch (er) { aviso(er.message, true); } });
+  const aBase64 = blob => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = mal; r.readAsDataURL(blob); });
+  async function subirVoz(evento, blob, mime) {
+    try { await api('voces', { evento, mime: (mime || blob.type || 'audio/mpeg').split(';')[0], data: await aBase64(blob) }); aviso('Grabación guardada ✔'); cargarVoces(); } catch (e) { aviso(e.message, true); }
+  }
+  let grabadora = null, trozos = [];
+  document.addEventListener('click', async e => {
+    const bBorrar = e.target.closest('[data-borrar]');
+    if (bBorrar) { if (!confirm('¿Borrar esta grabación?')) return; try { await api('voces/borrar', { id: bBorrar.dataset.borrar }); aviso('Borrada'); cargarVoces(); } catch (er) { aviso(er.message, true); } return; }
+    const bGrabar = e.target.closest('[data-grabar]');
+    if (!bGrabar) return;
+    if (grabadora && grabadora.state === 'recording') { grabadora.stop(); return; }
+    const evento = bGrabar.dataset.grabar, caja = bGrabar.closest('.voz').querySelector('.prev');
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      trozos = [];
+      grabadora = FORMATO ? new MediaRecorder(stream, { mimeType: FORMATO }) : new MediaRecorder(stream);
+      grabadora.ondataavailable = ev => { if (ev.data.size) trozos.push(ev.data); };
+      grabadora.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        bGrabar.classList.remove('grabando'); bGrabar.textContent = '🎙️ Grabar';
+        const blob = new Blob(trozos, { type: grabadora.mimeType || FORMATO || 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        caja.innerHTML = `<div class="grab" style="margin-top:.4rem"><audio controls src="${url}"></audio><button class="btn chico" data-ok>Guardar</button><button class="btn chico fantasma" data-no>Descartar</button></div>`;
+        caja.querySelector('[data-ok]').onclick = () => { caja.innerHTML = ''; subirVoz(evento, blob, blob.type); };
+        caja.querySelector('[data-no]').onclick = () => { caja.innerHTML = ''; };
+      };
+      grabadora.start();
+      bGrabar.classList.add('grabando'); bGrabar.textContent = '⏹ Detener';
+    } catch { aviso('No se pudo usar el micrófono. Revisa los permisos del navegador.', true); }
+  });
+  document.addEventListener('change', e => {
+    const inp = e.target.closest('[data-subir]');
+    if (!inp || !inp.files[0]) return;
+    const f = inp.files[0];
+    if (f.size > 4e6) return aviso('El audio es muy grande (máximo 4 MB)', true);
+    const ext = (f.name.split('.').pop() || '').toLowerCase();
+    const mime = f.type || { mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg', opus: 'audio/ogg', webm: 'audio/webm', mpeg: 'audio/mpeg', aac: 'audio/aac' }[ext] || 'audio/mpeg';
+    subirVoz(inp.dataset.subir, f, mime);
+    inp.value = '';
+  });
+
+  // ================= CREADORES =================
+  function cargarCreadores() { creadores = (estado.config.creadores || []).map(c => ({ ...c })); pintarCreadores(); }
+  function pintarCreadores() {
+    $('#cLista').innerHTML = creadores.map((c, i) => `
+      <div class="creador-card" data-i="${i}">
+        <div class="cab">${Avatar.mini(c.avatar, 54)}
+          <div class="campos">
+            <div><label>Nombre</label><input data-k="nombre" value="${esc(c.nombre)}" maxlength="60" placeholder="Nombre y apellido"></div>
+            <div><label>Carrera</label><input data-k="carrera" value="${esc(c.carrera)}" maxlength="60" placeholder="Ej. Ingeniería Industrial"></div>
+            <div><label>Qué hizo</label><input data-k="rol" value="${esc(c.rol)}" maxlength="60" placeholder="Ej. Programación, voz, diseño"></div>
+          </div>
+        </div>
+        <div class="fila"><button class="btn chico fantasma" data-av="${i}">🎨 Editar avatar</button><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
+        <div class="editor-c oculto" style="margin-top:.8rem"></div>
+      </div>`).join('') || '<p class="tenue">Todavía no hay creadores. Agrega a tu equipo.</p>';
+  }
+  $('#cLista').addEventListener('input', e => { const card = e.target.closest('.creador-card'); if (card && e.target.dataset.k) creadores[card.dataset.i][e.target.dataset.k] = e.target.value; });
+  $('#cLista').addEventListener('click', e => {
+    const card = e.target.closest('.creador-card'); if (!card) return;
+    const i = +card.dataset.i;
+    if (e.target.dataset.del != null) { if (confirm('¿Quitar a esta persona?')) { creadores.splice(i, 1); pintarCreadores(); } return; }
+    if (e.target.dataset.av != null) {
+      const ed = card.querySelector('.editor-c');
+      ed.classList.toggle('oculto');
+      if (!ed.dataset.listo) {
+        ed.dataset.listo = '1';
+        Avatar.editor(ed, creadores[i].avatar, cod => { creadores[i].avatar = cod; const m = card.querySelector('.cab .av-mini'); if (m) m.outerHTML = Avatar.mini(cod, 54); });
+      }
+    }
+  });
+  $('#cAgregar').addEventListener('click', () => { creadores.push({ nombre: '', carrera: '', rol: '', avatar: Avatar.aleatorio() }); pintarCreadores(); });
+  $('#cGuardar').addEventListener('click', async () => {
+    try { const d = await api('creadores', { creadores }); estado.config.creadores = d.creadores; cargarCreadores(); aviso('Creadores guardados ✔'); } catch (e) { aviso(e.message, true); }
+  });
+
+  // ================= PREGUNTAS =================
   function cargarPreguntas() {
     const c = estado.config;
     $('#pFuente').innerHTML = `Fuente: <b>${esc(c.fuente)}</b> · ${c.reportes} reportes de Tijuana.`;
@@ -218,11 +456,11 @@
   function pintarPreguntas() {
     $('#pLista').innerHTML = preguntasEdit.map((q, i) => `
       <div class="q-edit tarjeta">
-        <div class="fila" style="margin:0 0 .4rem"><b style="color:var(--menta)">Pregunta ${i + 1}</b><span style="flex:1"></span><span class="nota" data-suma="${i}"></span><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
+        <div class="fila" style="margin:0 0 .4rem"><b style="color:var(--amarillo)">Pregunta ${i + 1}</b><span style="flex:1"></span><span class="nota" data-suma="${i}"></span><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
         <textarea data-i="${i}" data-k="texto" maxlength="200">${esc(q.texto)}</textarea>
         <label>Qué cuenta como respuesta (se muestra en resultados)</label>
         <input data-i="${i}" data-k="dato" maxlength="200" value="${esc(q.dato || '')}">
-        <label>📊 Lo que dicen los datos (se muestra al final como retroalimentación)</label>
+        <label>📊 Lo que dicen los datos (retroalimentación al final)</label>
         <textarea data-i="${i}" data-k="exp" maxlength="600">${esc(q.exp || '')}</textarea>
         <label>💡 Consejo de prevención</label>
         <textarea data-i="${i}" data-k="tip" maxlength="600">${esc(q.tip || '')}</textarea>
@@ -238,14 +476,14 @@
   function sumar(i) {
     const s = preguntasEdit[i].tablero.reduce((a, t) => a + (Number(t.puntos) || 0), 0);
     const el = document.querySelector(`[data-suma="${i}"]`);
-    if (el) { el.textContent = `Suma de puntos: ${s}`; el.style.color = s === 100 ? 'var(--menta)' : 'var(--naranja)'; }
+    if (el) { el.textContent = `Suma de puntos: ${s}`; el.style.color = s === 100 ? 'var(--verde)' : 'var(--ocre)'; }
   }
   $('#pLista').addEventListener('input', e => {
     const i = e.target.dataset.i, k = e.target.dataset.k; if (i == null) return;
     if (k === 'tablero') { preguntasEdit[i].tablero = parseTab(e.target.value); sumar(i); } else preguntasEdit[i][k] = e.target.value;
   });
   $('#pLista').addEventListener('click', e => { const i = e.target.dataset.del; if (i != null && confirm('¿Quitar esta pregunta?')) { preguntasEdit.splice(Number(i), 1); pintarPreguntas(); } });
-  $('#pAgregar').addEventListener('click', () => { preguntasEdit.push({ texto: '', dato: '', tablero: [] }); pintarPreguntas(); });
+  $('#pAgregar').addEventListener('click', () => { preguntasEdit.push({ texto: '', dato: '', exp: '', tip: '', tablero: [] }); pintarPreguntas(); });
   $('#pGuardar').addEventListener('click', async () => {
     try { const d = await api('preguntas', { preguntas: preguntasEdit }); estado.config = d.config; cargarPreguntas(); aviso('Preguntas guardadas'); } catch (e) { aviso(e.message, true); }
   });
@@ -254,47 +492,13 @@
     try { const d = await api('restaurar-preguntas', {}); estado.config = d.config; cargarPreguntas(); aviso('Restauradas'); } catch (e) { aviso(e.message, true); }
   });
 
-  // ---------- análisis
-  const barras = (items, et, val, fmt, clase = x => '') => {
-    const max = Math.max(1, ...items.map(val));
-    return `<div class="barras">${items.map(x => `<div class="barra ${clase(x)}"><span class="et" title="${esc(et(x))}">${esc(et(x))}</span><div class="riel"><div style="width:${val(x) / max * 100}%"></div></div><span class="val">${fmt(x)}</span></div>`).join('') || '<p class="tenue">Sin datos todavía.</p>'}</div>`;
-  };
-  async function cargarAnalisis() {
-    try {
-      const d = await api('analisis');
-      $('#aFecha').textContent = 'Actualizado ' + new Date(d.generado).toLocaleTimeString();
-      const r = d.resumen;
-      let html = `<div class="grid3" style="margin-bottom:1rem">${[
-        [r.partidas, 'partidas'], [r.terminadas, 'terminadas'], [r.jugadas, 'respuestas escritas'],
-        [r.precision + '%', 'respuestas que estaban en el histórico'], [r.puntajePromedio + ' / ' + r.maxPuntos, 'puntaje promedio'], [tiempo(r.tiempoPromedio), 'tiempo promedio']
-      ].map(([v, t]) => `<div class="kpi"><b>${esc(v)}</b><span>${t}</span></div>`).join('')}</div>`;
-      for (const q of d.porPregunta) {
-        html += `<div class="tarjeta" style="margin-bottom:1rem"><h2 class="sec">${esc(q.texto)}</h2>
-          <p class="nota">${q.jugaron} jugadores · ${q.intentos} respuestas escritas · ${q.aciertos} aciertos</p>
-          <div class="grid2">
-            <div><b>Realidad: % de jugadores que encontró cada colonia</b>
-              ${barras(q.tablero, x => `${x.texto} (${x.reportes} rep.)`, x => x.pct, x => `${x.pct}%`)}</div>
-            <div><b>Percepción: lo que más escribieron</b> <span class="nota">(verde = está en el histórico)</span>
-              ${barras(q.percepcion, x => x.texto, x => x.n, x => x.n, x => x.correcta ? '' : 'gris')}</div>
-          </div>
-          ${q.fallidas.length ? `<p class="nota" style="margin-top:.8rem"><b>Creen que se inundan pero no tienen tantos reportes:</b> ${q.fallidas.map(f => `<span class="chip">${esc(f.texto)} · ${f.n}</span>`).join(' ')}</p>` : ''}
-        </div>`;
-      }
-      html += `<div class="grid2"><div class="tarjeta"><h2 class="sec">Dónde viven los jugadores</h2>${barras(d.residencia, x => x.texto, x => x.n, x => x.n)}</div>
-        <div class="tarjeta"><h2 class="sec">Carreras</h2>${barras(d.carreras, x => x.texto, x => x.n, x => x.n, () => 'nar')}</div></div>`;
-      $('#analisis').innerHTML = html;
-    } catch (e) { aviso(e.message, true); }
-  }
-  $('#aRefrescar').addEventListener('click', cargarAnalisis);
-  $('#aAuto').addEventListener('change', e => { clearInterval(autoT); if (e.target.checked) autoT = setInterval(cargarAnalisis, 10000); });
-
-  // ---------- exportar
+  // ================= EXPORTAR =================
   $$('[data-x]').forEach(b => b.addEventListener('click', () => { location.href = `/api/admin/exportar/${b.dataset.x}.csv?key=${encodeURIComponent(clave)}`; }));
   $('#xAnal').addEventListener('click', async () => {
     try {
       const d = await api('analisis');
       const u = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
-      const l = document.createElement('a'); l.href = u; l.download = 'analisis-100-estudiantes.json'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 2000);
+      const l = document.createElement('a'); l.href = u; l.download = 'dashboard-100-estudiantes.json'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 2000);
     } catch (e) { aviso(e.message, true); }
   });
 

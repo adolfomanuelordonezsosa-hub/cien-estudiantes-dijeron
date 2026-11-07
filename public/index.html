@@ -3,152 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#2a2c2b">
-<title>100 estudiantes dijeron</title>
+<meta name="theme-color" content="#024731">
+<title>100 estudiantes dijeron · OCUN UABC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="/avatar.js"></script>
+<script src="/voz.js"></script>
 <style>
   body { min-height: 100dvh; }
-  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .7rem 1rem; position: sticky; top: 0; background: rgba(42,44,43,.94); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.07); }
-  .barra .der { display: flex; gap: .8rem; align-items: center; font-weight: 700; }
-  .barra .reloj { font-variant-numeric: tabular-nums; color: var(--menta); }
-  .barra .pts { color: var(--naranja); }
-  .sonido { background: rgba(255,255,255,.08); border: 0; border-radius: 10px; width: 2.4rem; height: 2.2rem; font-size: 1.1rem; cursor: pointer; color: var(--gis); }
+  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .75rem 1rem .65rem; position: sticky; top: 0; background: rgba(2,71,49,.95); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .barra .der { display: flex; gap: .8rem; align-items: center; font-weight: 700; flex: none; }
+  .barra .reloj { font-variant-numeric: tabular-nums; color: var(--amarillo); }
+  .barra .pts { color: var(--ocre); }
+  .sonido { background: rgba(255,255,255,.1); border: 0; border-radius: 10px; width: 2.4rem; height: 2.2rem; font-size: 1.1rem; cursor: pointer; color: var(--gis); }
+  /* sello OCUN: brilla al pasar el mouse y muestra a los creadores */
+  .sello { border: 0; cursor: pointer; text-align: left; line-height: 1.15; font-size: .72rem; padding: .45em .8em; position: relative; overflow: hidden; transition: box-shadow .25s, transform .15s; max-width: 70vw; }
+  .sello small { display: block; font-weight: 600; text-transform: none; letter-spacing: 0; font-size: .95em; opacity: .85; }
+  .sello::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-20deg); }
+  .sello:hover, .sello:focus-visible { box-shadow: 0 0 0 3px rgba(254,190,16,.35), 0 0 18px 4px rgba(254,190,16,.55); transform: translateY(-1px); }
+  .sello:hover::after, .sello:focus-visible::after { animation: destello 1s ease; }
+  @keyframes destello { to { left: 130%; } }
   main { max-width: 520px; margin: 0 auto; padding: 1rem 1rem 3rem; }
   h1.gis { font-size: clamp(2.2rem, 11vw, 3.2rem); line-height: 1; margin: .5rem 0 .3rem; }
-  h1 .cien { color: var(--menta); display: block; font-size: 1.6em; }
-  .sub { color: var(--gis-tenue); margin: 0 0 1rem; line-height: 1.45; }
+  h1 .cien { color: var(--amarillo); display: block; font-size: 1.6em; }
+  .sub { color: var(--gis-tenue); margin: 0 0 .8rem; line-height: 1.45; }
+  .contador { display: inline-flex; align-items: center; gap: .5rem; background: rgba(254,190,16,.12); border: 1px solid rgba(254,190,16,.35); color: var(--amarillo); border-radius: 99px; padding: .35rem .8rem; font-weight: 700; font-size: .88rem; margin-bottom: 1rem; }
   .reglas { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .45rem; }
   .reglas li { display: flex; gap: .6rem; align-items: flex-start; font-size: .95rem; line-height: 1.4; }
-  .reglas li span { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; background: var(--menta); color: var(--tinta); font-weight: 800; font-size: .85rem; }
-  .paso-titulo { font: 700 1.35rem 'Cabin Sketch', cursive; color: var(--menta); margin: 0 0 .7rem; }
-  .error { background: rgba(232,96,76,.15); border: 1px solid rgba(232,96,76,.5); color: #ffd9d2; padding: .7rem .9rem; border-radius: 10px; margin-top: .8rem; font-size: .92rem; }
+  .reglas li span { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; background: var(--amarillo); color: var(--tinta); font-weight: 800; font-size: .85rem; }
+  .paso-titulo { font: 700 1.35rem 'Cabin Sketch', cursive; color: var(--amarillo); margin: 0 0 .7rem; }
+  .error { background: rgba(226,86,63,.15); border: 1px solid rgba(226,86,63,.55); color: #ffd9d2; padding: .7rem .9rem; border-radius: 10px; margin-top: .8rem; font-size: .92rem; }
   .aviso { font-size: .78rem; color: var(--gis-tenue); margin-top: 1rem; line-height: 1.45; }
-  .opcional { font-weight: 500; color: rgba(243,240,230,.45); }
+  .opcional { font-weight: 500; color: rgba(247,244,234,.5); }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .dos label { margin-top: 0; }
+  .si-no { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .si-no button { padding: .75em; border-radius: 12px; border: 2px solid rgba(247,244,234,.22); background: rgba(0,0,0,.18); color: var(--gis); font: 700 1rem Montserrat, sans-serif; cursor: pointer; }
+  .si-no button.on { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); }
 
-  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--menta); font-weight: 700; }
+  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--amarillo); font-weight: 700; }
   .pasos { display: flex; gap: .35rem; margin: .4rem 0 .8rem; }
-  .pasos i { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.12); }
-  .pasos i.hecho { background: var(--verde); } .pasos i.actual { background: var(--naranja); }
+  .pasos i { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.14); }
+  .pasos i.hecho { background: var(--verde); } .pasos i.actual { background: var(--amarillo); }
   .pregunta { font-size: 1.3rem; font-weight: 700; line-height: 1.35; margin: .2rem 0 .3rem; }
   .ayuda { color: var(--gis-tenue); font-size: .88rem; margin: 0 0 .6rem; }
   .tachas { display: flex; gap: .5rem; justify-content: center; margin: .6rem 0 .9rem; }
-  .tachas span { font: 700 2.1rem 'Cabin Sketch', cursive; width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(243,240,230,.25); color: rgba(243,240,230,.18); }
-  .tachas span.on { color: var(--rojo); border-color: var(--rojo); border-style: solid; background: rgba(232,96,76,.12); }
+  .tachas span { font: 700 2.1rem 'Cabin Sketch', cursive; width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(247,244,234,.25); color: rgba(247,244,234,.18); }
+  .tachas span.on { color: var(--rojo); border-color: var(--rojo); border-style: solid; background: rgba(226,86,63,.14); }
   .fila-envio { display: flex; gap: .5rem; }
   .fila-envio input { flex: 1; font-size: 1.1rem; }
   .feedback { min-height: 3rem; margin-top: .8rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; text-align: center; font-size: 1.02rem; }
-  .feedback.ok { background: var(--menta); color: var(--tinta); animation: aparecer .3s both; }
-  .feedback.mal { background: rgba(232,96,76,.18); color: #ffd4cc; border: 1px solid rgba(232,96,76,.5); animation: sacudir .35s both; }
-  .feedback.info { background: rgba(255,255,255,.07); color: var(--gis); }
+  .feedback.ok { background: var(--amarillo); color: var(--tinta); animation: aparecer .3s both; }
+  .feedback.mal { background: rgba(226,86,63,.18); color: #ffd4cc; border: 1px solid rgba(226,86,63,.5); animation: sacudir .35s both; }
+  .feedback.info { background: rgba(255,255,255,.08); color: var(--gis); }
   @keyframes sacudir { 0%,100%{transform:none} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
   .mini-tablero { display: grid; gap: .45rem; margin: 1rem 0; }
-  .casilla { display: flex; align-items: center; gap: .6rem; padding: .55rem .8rem; border-radius: 10px; border: 2px solid rgba(155,232,201,.25); min-height: 2.8rem; }
-  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(155,232,201,.15); color: var(--menta); flex: none; }
+  .casilla { display: flex; align-items: center; gap: .6rem; padding: .55rem .8rem; border-radius: 10px; border: 2px solid rgba(254,190,16,.28); min-height: 2.8rem; }
+  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(254,190,16,.15); color: var(--amarillo); flex: none; }
   .casilla .t { flex: 1; font-weight: 700; }
-  .casilla .p { font-weight: 800; color: var(--naranja); }
-  .casilla.mia { background: var(--menta); color: var(--tinta); border-color: var(--menta); animation: aparecer .35s both; }
-  .casilla.mia .n { background: var(--tinta); color: var(--menta); }
-  .casilla.mia .p { color: var(--naranja-osc); }
+  .casilla .p { font-weight: 800; color: var(--ocre); }
+  .casilla.mia { background: var(--amarillo); color: var(--tinta); border-color: var(--amarillo); animation: aparecer .35s both; }
+  .casilla.mia .n { background: var(--tinta); color: var(--amarillo); }
+  .casilla.mia .p { color: var(--ocre-osc); }
   .pasar { margin-top: .4rem; }
-
   .transicion { text-align: center; padding: 3rem 0; }
-  .transicion .grande { font: 700 4rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1; }
+  .transicion .grande { font: 700 4rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1; }
 
-  /* gracias */
-  .gracias { text-align: center; padding-top: 1.5rem; }
-  .gracias .av-grande { width: 150px; height: 195px; margin: 0 auto; border-radius: 18px; background: radial-gradient(circle at 50% 40%,#e8fff5,#9be8c9); animation: brinco 1.2s ease infinite alternate; }
-  .gracias .av-grande .av { width: 100%; height: 100%; }
-  @keyframes brinco { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+  .gracias { text-align: center; padding-top: 1.2rem; }
+  .av-grande { width: 150px; height: 205px; margin: 0 auto; border-radius: 18px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 8px; }
+  .av-grande .av { width: 100%; height: 100%; }
   .gracias h2 { font: 700 2.6rem 'Cabin Sketch', cursive; margin: .8rem 0 .2rem; }
-  .gracias .total { font: 700 4.4rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1; }
-  .gracias .lugar-txt { font-weight: 800; color: var(--menta); margin-top: .4rem; font-size: 1.1rem; }
+  .gracias .total { font: 700 4.4rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1; }
+  .gracias .lugar-txt { font-weight: 800; color: var(--amarillo); margin-top: .4rem; font-size: 1.1rem; }
   .ondas { display: flex; gap: 4px; justify-content: center; height: 22px; align-items: flex-end; margin: 1.2rem 0 .4rem; }
-  .ondas i { width: 5px; background: var(--menta); border-radius: 3px; animation: onda .9s ease-in-out infinite; }
+  .ondas i { width: 5px; background: var(--amarillo); border-radius: 3px; animation: onda .9s ease-in-out infinite; }
   .ondas i:nth-child(2) { animation-delay: .15s } .ondas i:nth-child(3) { animation-delay: .3s } .ondas i:nth-child(4) { animation-delay: .45s } .ondas i:nth-child(5) { animation-delay: .6s }
   @keyframes onda { 0%,100% { height: 5px } 50% { height: 22px } }
   .conf { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
   .conf i { position: absolute; top: -12px; width: 9px; height: 14px; animation: caer 2.8s linear forwards; }
   @keyframes caer { to { transform: translateY(105vh) rotate(540deg); } }
 
-  /* resultados */
   .perfil { display: flex; gap: 1rem; align-items: center; }
-  .perfil .av-box { width: 92px; height: 120px; flex: none; border-radius: 14px; background: radial-gradient(circle at 50% 40%,#e8fff5,#9be8c9); }
+  .perfil .av-box { width: 92px; height: 126px; flex: none; border-radius: 14px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 4px; }
   .perfil .av-box .av { width: 100%; height: 100%; }
   .perfil h2 { margin: 0; font: 700 1.9rem 'Cabin Sketch', cursive; line-height: 1.05; }
   .marcador { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .8rem; }
-  .marcador div { background: rgba(255,255,255,.06); border-radius: 12px; padding: .7rem .3rem; text-align: center; }
-  .marcador b { display: block; font: 700 1.8rem 'Cabin Sketch', cursive; color: var(--naranja); line-height: 1.1; }
+  .marcador div { background: rgba(255,255,255,.07); border-radius: 12px; padding: .7rem .3rem; text-align: center; }
+  .marcador b { display: block; font: 700 1.8rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1.1; }
   .marcador span { font-size: .72rem; color: var(--gis-tenue); }
   .res-q { margin-bottom: 1rem; }
   .res-q h3 { font-size: 1rem; margin: 0 0 .2rem; line-height: 1.35; }
   .res-q .dato { font-size: .78rem; color: var(--gis-tenue); margin: 0 0 .6rem; }
-  .res-fila { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: 9px; margin-bottom: .3rem; background: rgba(255,255,255,.04); font-size: .92rem; }
+  .res-fila { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: 9px; margin-bottom: .3rem; background: rgba(255,255,255,.05); font-size: .92rem; }
   .res-fila .ic { width: 1.3rem; text-align: center; }
   .res-fila .t { flex: 1; font-weight: 600; }
   .res-fila .r { color: var(--gis-tenue); font-size: .78rem; }
-  .res-fila .p { font-weight: 800; color: var(--naranja); min-width: 2rem; text-align: right; }
-  .res-fila.si { background: rgba(85,187,146,.2); }
-  .res-fila.si .t { color: var(--menta); }
-  .res-q .sub-pts { float: right; color: var(--naranja); font-weight: 800; margin-left: .5rem; }
+  .res-fila .p { font-weight: 800; color: var(--ocre); min-width: 2rem; text-align: right; }
+  .res-fila.si { background: rgba(80,184,72,.22); }
+  .res-fila.si .t { color: #d7f5d3; }
+  .res-q .sub-pts { float: right; color: var(--amarillo); font-weight: 800; margin-left: .5rem; }
   .retro { margin-top: .7rem; padding: .7rem .8rem; border-radius: 10px; font-size: .9rem; line-height: 1.45; }
   .retro b { display: block; margin-bottom: .25rem; }
-  .retro.errores { background: rgba(232,96,76,.1); border-left: 4px solid var(--rojo); }
+  .retro.errores { background: rgba(226,86,63,.12); border-left: 4px solid var(--rojo); }
   .retro.errores ul { margin: 0; padding-left: 1.1rem; }
   .retro.errores li { margin: .3rem 0; }
   .retro.errores li span { color: #ffcabf; font-weight: 700; }
-  .retro.datos { background: rgba(155,232,201,.08); border-left: 4px solid var(--menta); }
-  .retro.tip { background: rgba(246,166,90,.1); border-left: 4px solid var(--naranja); }
-  .retro.bien { background: rgba(85,187,146,.15); border-left: 4px solid var(--verde); }
+  .retro.datos { background: rgba(32,65,154,.22); border-left: 4px solid #7f9be0; }
+  .retro.tip { background: rgba(221,151,26,.14); border-left: 4px solid var(--ocre); }
+  .retro.bien { background: rgba(80,184,72,.16); border-left: 4px solid var(--verde); }
   .top-lista { list-style: none; padding: 0; margin: 0; }
-  .top-lista li { display: flex; align-items: center; gap: .6rem; padding: .35rem .2rem; border-bottom: 1px dashed rgba(255,255,255,.12); }
+  .top-lista li { display: flex; align-items: center; gap: .6rem; padding: .3rem .2rem; border-bottom: 1px dashed rgba(255,255,255,.13); }
   .top-lista li .l { width: 1.8rem; text-align: center; font-weight: 800; color: var(--gis-tenue); }
-  .top-lista li .nom { flex: 1; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .top-lista li .pt { color: var(--naranja); font-weight: 800; }
+  .top-lista li .nom { flex: 1; min-width: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top-lista li .nom small { display: block; font-weight: 500; font-size: .72rem; color: var(--gis-tenue); }
+  .top-lista li .pt { color: var(--amarillo); font-weight: 800; }
   .top-lista li .tm { color: var(--gis-tenue); font-size: .8rem; min-width: 3.4rem; text-align: right; font-variant-numeric: tabular-nums; }
-  .top-lista li.yo { background: rgba(155,232,201,.12); border-radius: 10px; }
-  .top-lista li.yo .nom { color: var(--menta); }
+  .top-lista li.yo { background: rgba(254,190,16,.13); border-radius: 10px; }
+  .top-lista li.yo .nom { color: var(--amarillo); }
   .botones { display: grid; gap: .6rem; margin-top: 1.2rem; }
+
+  .toast { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); width: min(92vw, 440px); background: #0b3a29; border: 2px solid var(--amarillo); border-radius: 16px; padding: .9rem 1rem; display: flex; gap: .8rem; align-items: center; z-index: 40; box-shadow: var(--sombra); animation: subir .4s cubic-bezier(.3,1.4,.5,1) both; }
+  .toast .av-mini { width: 46px; height: 64px; }
+  .toast b { color: var(--amarillo); }
+  @keyframes subir { from { transform: translate(-50%, 120%); } to { transform: translate(-50%, 0); } }
+
+  .modal { position: fixed; inset: 0; background: rgba(1,30,20,.82); z-index: 60; display: grid; place-items: center; padding: 1rem; backdrop-filter: blur(3px); }
+  .modal .caja { background: var(--pizarra-2); border: 2px solid rgba(254,190,16,.45); border-radius: 18px; width: min(560px, 100%); max-height: 88vh; overflow: auto; padding: 1.2rem; position: relative; animation: aparecer .3s both; }
+  .modal .caja > .pastilla { margin-right: 2.8rem; }
+  .modal .cerrar { position: absolute; top: .6rem; right: .6rem; background: rgba(255,255,255,.1); border: 0; color: var(--gis); width: 2.2rem; height: 2.2rem; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
+  .creadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .8rem; margin-top: 1rem; }
+  .creador { background: rgba(255,255,255,.06); border-radius: 14px; padding: .7rem; text-align: center; }
+  .creador .av-box { width: 90px; height: 124px; margin: 0 auto .4rem; border-radius: 12px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 4px; }
+  .creador .av-box .av { width: 100%; height: 100%; }
+  .creador b { display: block; line-height: 1.2; }
+  .creador span { display: block; font-size: .78rem; color: var(--gis-tenue); margin-top: .2rem; }
+  .creador em { display: block; font-style: normal; font-size: .75rem; color: var(--amarillo); margin-top: .2rem; font-weight: 700; }
 </style>
 </head>
 <body>
 <header class="barra">
-  <span class="pastilla">OCUN · UABC</span>
+  <button class="pastilla sello" id="btnSello" type="button" title="¿Quién hizo este juego?">OCUN · UABC<small>Cuando El Niño toca la puerta</small></button>
   <div class="der">
     <span class="reloj oculto" id="reloj">0:00</span>
     <span class="pts oculto" id="hdrPuntosWrap"><span id="hdrPuntos">0</span> pts</span>
-    <button class="sonido" id="btnSonido" type="button" aria-label="Sonido">🔊</button>
+    <button class="sonido" id="btnSonido" type="button" aria-label="Activar o silenciar sonido">🔊</button>
   </div>
 </header>
 
 <main>
-  <!-- BIENVENIDA: avatar + datos -->
+  <!-- BIENVENIDA -->
   <section id="vBienvenida" class="oculto aparece">
     <h1 class="gis"><span class="cien">100</span>estudiantes dijeron…</h1>
-    <p class="sub">Cuando El Niño toca la puerta. ¿Sabes qué colonias de Tijuana han sufrido más con las lluvias?</p>
+    <p class="sub">Cuando El Niño toca la puerta. ¿Sabes qué colonias de Tijuana han tenido más problemas con las lluvias?</p>
+    <div class="contador" id="contador">👥 <span>Cargando…</span></div>
     <ul class="reglas">
-      <li><span>1</span><div>Arma tu avatar: así aparecerás en el <b>Top 10</b>.</div></li>
-      <li><span>2</span><div><b id="nPreguntas">4</b> preguntas, una a la vez. Escribe colonias de Tijuana; las correctas salen de los <b id="nReportes">reportes reales</b> por lluvias.</div></li>
-      <li><span>3</span><div><b>3 oportunidades</b> por pregunta. Entre más reportes tenga la colonia, más puntos.</div></li>
-      <li><span>4</span><div>El reloj corre: si empatas, gana el más rápido. Al final te explicamos cada respuesta.</div></li>
+      <li><span>1</span><div>Crea tu avatar: así aparecerás en el <b>Top 10</b>.</div></li>
+      <li><span>2</span><div><b id="nPreguntas">4</b> preguntas, una a la vez. Escribe colonias de Tijuana; las respuestas correctas salen de <b id="nReportes">reportes reales</b> por lluvias.</div></li>
+      <li><span>3</span><div>Tienes <b>3 oportunidades</b> por pregunta. Entre más reportes tenga la colonia, más puntos.</div></li>
+      <li><span>4</span><div>El reloj corre: si hay empate, gana quien terminó más rápido. Al final te explicamos cada respuesta.</div></li>
     </ul>
     <div class="tarjeta" style="margin-bottom:1rem">
       <h2 class="paso-titulo">Tu avatar</h2>
       <div id="editorAvatar"></div>
     </div>
-    <form id="fRegistro" class="tarjeta" autocomplete="off">
-      <label for="rNombre" style="margin-top:0">Tu nombre o apodo</label>
-      <input id="rNombre" maxlength="20" required placeholder="Ej. Ana G." autocapitalize="words">
-      <label for="rCarrera">Carrera <span class="opcional">(opcional)</span></label>
-      <input id="rCarrera" list="dlCarreras" maxlength="60" placeholder="Ej. Ingeniería Industrial">
-      <label for="rColonia">¿En qué colonia vives? <span class="opcional">(opcional)</span></label>
-      <input id="rColonia" list="dlColonias" maxlength="60" placeholder="Escribe tu colonia">
+    <form id="fRegistro" class="tarjeta" autocomplete="off" novalidate>
+      <h2 class="paso-titulo">Tus datos</h2>
+      <div class="dos">
+        <div><label for="rNombre">Nombre</label><input id="rNombre" maxlength="40" placeholder="Ej. Ana" autocapitalize="words" autocomplete="given-name"></div>
+        <div><label for="rApellido">Apellido</label><input id="rApellido" maxlength="50" placeholder="Ej. García" autocapitalize="words" autocomplete="family-name"></div>
+      </div>
+      <p class="aviso" style="margin-top:.4rem">Usa tu nombre real. En el ranking se verá así: <b id="vistaNombre">Ana G.</b></p>
+      <label>¿Eres estudiante?</label>
+      <div class="si-no" id="siNo"><button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button></div>
+      <div id="bloqueCarrera" class="oculto">
+        <label for="rCarrera">¿Qué carrera estudias?</label>
+        <select id="rCarrera"></select>
+        <input id="rCarreraOtra" class="oculto" maxlength="60" placeholder="Escribe tu carrera" style="margin-top:.5rem">
+      </div>
+      <label for="rColonia">¿En qué delegación o colonia vives? <span class="opcional">(opcional)</span></label>
+      <input id="rColonia" maxlength="60" placeholder="Ej. La Presa, Otay, Camino Verde…">
       <button class="btn naranja ancho" style="margin-top:1.2rem;font-size:1.1rem" type="submit" id="btnJugar">¡Jugar!</button>
       <div id="rError" class="error oculto"></div>
-      <p class="aviso">Tu apodo y tu avatar aparecen en el ranking. Tu carrera y colonia solo se usan para las estadísticas del proyecto OCUN (UABC). Sube el volumen: el juego tiene voz 🔊</p>
+      <p class="aviso">Tu carrera y tu colonia solo se usan para las estadísticas del proyecto OCUN (UABC). Sube el volumen: el juego tiene voz 🔊</p>
     </form>
     <div class="tarjeta" style="margin-top:1rem">
       <h2 class="paso-titulo">🏆 Top 10</h2>
@@ -172,14 +210,13 @@
     <button class="btn fantasma ancho pasar" id="btnPasar">Pasar a la siguiente pregunta →</button>
   </section>
 
-  <!-- TRANSICIÓN -->
   <section id="vTransicion" class="oculto transicion aparece">
     <div class="tenue" id="tTitulo">Pregunta terminada</div>
     <div class="grande" id="tPuntos">+0</div>
     <p class="tenue" id="tTexto">Siguiente pregunta…</p>
   </section>
 
-  <!-- GRACIAS (suena el audio y luego se muestran las respuestas) -->
+  <!-- GRACIAS -->
   <section id="vGracias" class="oculto gracias aparece">
     <div class="av-grande" id="gAvatar"></div>
     <h2 id="gTitulo">¡Gracias por jugar!</h2>
@@ -191,7 +228,7 @@
     <button class="btn fantasma" id="btnVerResultados">Ver mis resultados ahora</button>
   </section>
 
-  <!-- RESULTADOS + RETROALIMENTACIÓN -->
+  <!-- RESULTADOS -->
   <section id="vResultados" class="oculto aparece">
     <div class="tarjeta">
       <div class="perfil">
@@ -205,7 +242,7 @@
       </div>
     </div>
     <div class="tarjeta" style="margin:1rem 0">
-      <h2 class="paso-titulo">🏆 Top 10</h2>
+      <h2 class="paso-titulo">🏆 Top 10 <span class="tenue" style="font:600 .75rem Montserrat">· en vivo</span></h2>
       <div id="topResultados"></div>
     </div>
     <h2 class="gis" style="font-size:1.7rem;margin:1.2rem 0 .3rem">Tu retroalimentación</h2>
@@ -216,8 +253,18 @@
   </section>
 </main>
 <div class="conf" id="conf"></div>
+<div id="toast"></div>
 
-<datalist id="dlCarreras"></datalist>
+<div class="modal oculto" id="modalCreadores" role="dialog" aria-modal="true" aria-labelledby="tCreadores">
+  <div class="caja">
+    <button class="cerrar" id="cerrarCreadores" aria-label="Cerrar">✕</button>
+    <span class="pastilla">OCUN · Emprendimiento y liderazgo</span>
+    <h2 class="gis" id="tCreadores" style="font-size:2rem;margin:.6rem 0 .2rem">Hecho por</h2>
+    <p class="tenue" style="margin:0">Estudiantes de la UABC, Facultad de Ciencias Químicas e Ingeniería, con el proyecto "Cuando El Niño toca la puerta".</p>
+    <div class="creadores" id="listaCreadores"></div>
+  </div>
+</div>
+
 <datalist id="dlColonias"></datalist>
 
 <script>
@@ -230,109 +277,26 @@
   const espera = ms => new Promise(r => setTimeout(r, ms));
   const reloj = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
   const relojFino = ms => ms == null ? '–' : (ms >= 60000 ? reloj(ms) : (ms / 1000).toFixed(1) + ' s');
-  const tiempoHablado = ms => { const s = Math.round((ms || 0) / 1000), m = Math.floor(s / 60), r = s % 60; return (m ? `${m} minuto${m === 1 ? '' : 's'} ` : '') + (r || !m ? `${r} segundo${r === 1 ? '' : 's'}` : ''); };
 
-  // ================= SONIDO (en el celular) =================
-  // Grabaciones del equipo (/audio/*.mp3) + voz del navegador para lo que no está grabado + efectos.
-  const Sonido = {
-    activo: leer('sonido') !== '0', ctx: null, buffers: {}, rutas: {}, fuente: null, token: 0, desbloqueado: false, voz: null,
-    async desbloquear() {
-      if (this.desbloqueado) return;
-      this.desbloqueado = true;
-      try {
-        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if (this.ctx.state === 'suspended') await this.ctx.resume();
-      } catch { this.ctx = null; }
-      try { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch { /* */ }
-      this.cargar();
-    },
-    async cargar() {
-      if (!this.ctx) return;
-      await Promise.all(Object.entries(this.rutas).map(async ([n, url]) => {
-        if (this.buffers[n]) return;
-        try { const r = await fetch(url); this.buffers[n] = await this.ctx.decodeAudioData(await r.arrayBuffer()); } catch { /* */ }
-      }));
-    },
-    elegirVoz() {
-      if (!('speechSynthesis' in window)) return;
-      const vs = speechSynthesis.getVoices().filter(v => /^es/i.test(v.lang));
-      this.voz = vs.find(v => /es[-_]MX/i.test(v.lang)) || vs.find(v => /es[-_]US/i.test(v.lang)) || vs[0] || null;
-    },
-    detener() {
-      this.token++;
-      try { this.fuente && this.fuente.stop(); } catch { /* */ }
-      this.fuente = null;
-      try { 'speechSynthesis' in window && speechSynthesis.cancel(); } catch { /* */ }
-    },
-    clip(nombre, tk) {
-      const b = this.buffers[nombre];
-      if (!this.activo || !this.ctx || !b || tk !== this.token) return Promise.resolve(false);
-      return new Promise(ok => {
-        const s = this.ctx.createBufferSource();
-        s.buffer = b; s.connect(this.ctx.destination);
-        s.onended = () => ok(true);
-        this.fuente = s; s.start();
-        setTimeout(() => ok(true), b.duration * 1000 + 400);
-      });
-    },
-    decir(texto, tk) {
-      if (!this.activo || !texto || !('speechSynthesis' in window) || tk !== this.token) return Promise.resolve();
-      return new Promise(ok => {
-        const u = new SpeechSynthesisUtterance(texto);
-        if (!this.voz) this.elegirVoz();
-        if (this.voz) { u.voice = this.voz; u.lang = this.voz.lang; } else u.lang = 'es-MX';
-        u.rate = 1.05; u.pitch = 1;
-        let listo = false; const fin = () => { if (!listo) { listo = true; ok(); } };
-        u.onend = fin; u.onerror = fin; setTimeout(fin, 1200 + texto.length * 95);
-        speechSynthesis.speak(u);
-      });
-    },
-    tono(f, t0, d, tipo = 'triangle', vol = .2) {
-      if (!this.activo || !this.ctx) return;
-      const c = this.ctx, o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
-      o.type = tipo; o.frequency.value = f;
-      g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
-      o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .05);
-    },
-    ding() { this.tono(784, 0, .35, 'sine', .25); this.tono(1175, .09, .5, 'sine', .2); },
-    buzzer() { this.tono(92, 0, .7, 'sawtooth', .16); this.tono(97, 0, .7, 'square', .08); },
-    fanfarria() { [523, 659, 784, 1047].forEach((f, i) => this.tono(f, i * .13, .5)); },
-    // Ejecuta una secuencia; si llega otra, la anterior se corta
-    async secuencia(pasos) {
-      this.detener();
-      const tk = this.token;
-      for (const p of pasos) {
-        if (tk !== this.token) return;
-        if (p.efecto) { this[p.efecto](); await espera(p.pausa || 250); }
-        else if (p.clip) { const sono = await this.clip(p.clip, tk); if (!sono && p.si_no) await this.decir(p.si_no, tk); }
-        else if (p.decir) await this.decir(p.decir, tk);
-      }
-    }
-  };
-  if ('speechSynthesis' in window) { Sonido.elegirVoz(); speechSynthesis.onvoiceschanged = () => Sonido.elegirVoz(); }
-  function pintarBotonSonido() { $('#btnSonido').textContent = Sonido.activo ? '🔊' : '🔇'; }
-  $('#btnSonido').addEventListener('click', () => {
-    Sonido.activo = !Sonido.activo; guardar('sonido', Sonido.activo ? '1' : '0');
-    if (!Sonido.activo) Sonido.detener();
-    pintarBotonSonido();
-  });
-  pintarBotonSonido();
-  // El primer toque en la página activa el audio y da la bienvenida
+  // ================= SONIDO =================
+  function pintarBotonSonido() { $('#btnSonido').textContent = Voz.activo ? '🔊' : '🔇'; }
+  $('#btnSonido').addEventListener('click', () => { Voz.alternar(); pintarBotonSonido(); });
   let bienvenidaDada = false;
   function primerToque() {
-    Sonido.desbloquear().then(() => {
-      if (!bienvenidaDada && !partida) {
-        bienvenidaDada = true;
-        setTimeout(() => Sonido.secuencia([{ clip: 'bienvenida', si_no: '¡Bienvenido a Cien estudiantes dijeron! Arma tu avatar y demuestra cuánto sabes de las lluvias en Tijuana.' }]), 350);
-      }
-    });
+    const p = Voz.desbloquear();
+    if (!bienvenidaDada && !partida) {
+      bienvenidaDada = true;
+      Promise.resolve(p).then(() => setTimeout(() => Voz.secuencia([{ evento: 'bienvenida' }]), 200));
+    }
   }
   ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, primerToque, { once: true, capture: true }));
 
   // ================= ESTADO =================
   let id = leer('partida');
-  let partida = null, info = null, top = [], enviando = false, offset = 0, tReloj = null, transicionando = false, avatar = Avatar.fix(leer('avatar') || Avatar.aleatorio());
-  let preguntaHablada = null;
+  let partida = null, info = null, top = [], enviando = false, offset = 0, tReloj = null, transicionando = false;
+  let avatar = Avatar.fix(leer('avatar') || Avatar.aleatorio());
+  let esEstudiante = leer('estudiante') === 'si' ? true : leer('estudiante') === 'no' ? false : null;
+  let miLugar = null;
   const vistas = ['vBienvenida', 'vJuego', 'vTransicion', 'vGracias', 'vResultados'];
 
   async function api(url, body) {
@@ -351,8 +315,15 @@
   function listaTop(lista, miId) {
     if (!lista.length) return '<p class="tenue" style="margin:0">Todavía nadie termina. ¡Sé el primero!</p>';
     const med = ['🥇', '🥈', '🥉'];
-    return `<ol class="top-lista">${lista.map(r => `<li class="${r.id === miId ? 'yo' : ''}"><span class="l">${med[r.lugar - 1] || r.lugar}</span>${Avatar.mini(r.avatar, 30)}<span class="nom">${esc(r.nombre)}</span><span class="pt">${r.puntos}</span><span class="tm">${relojFino(r.ms)}</span></li>`).join('')}</ol>`;
+    return `<ol class="top-lista">${lista.map(r => `<li class="${r.id === miId ? 'yo' : ''}"><span class="l">${med[r.lugar - 1] || r.lugar}</span>${Avatar.mini(r.avatar, 32, r.lugar === 1 ? 'anim-idle con-corona' : 'anim-idle')}<span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pt">${r.puntos}</span><span class="tm">${relojFino(r.ms)}</span></li>`).join('')}</ol>`;
   }
+  // animaciones al azar en las listas del Top (saludan, miran, brincan)
+  setInterval(() => {
+    const svgs = document.querySelectorAll('.top-lista .av');
+    if (!svgs.length) return;
+    const s = svgs[Math.random() * svgs.length | 0];
+    Avatar.animar(s, ['saluda', 'mira-abajo', 'brinca', 'mira-izq', 'mira-der'][Math.random() * 5 | 0], 1900);
+  }, 1400);
 
   // ================= RELOJ =================
   function iniciarReloj() {
@@ -362,16 +333,12 @@
 
   // ================= PANTALLAS =================
   function render() {
-    if (!partida) {
-      mostrar('vBienvenida');
-      $('#topBienvenida').innerHTML = listaTop(top);
-      return;
-    }
+    if (!partida) { mostrar('vBienvenida'); $('#topBienvenida').innerHTML = listaTop(top); return; }
     $('#hdrPuntos').textContent = partida.puntos;
     if (partida.terminada) return pintarResultados();
     if (!transicionando) pintarPregunta();
   }
-
+  let preguntaAnunciada = null;
   function pintarPregunta() {
     const q = partida.pregunta;
     $('#jNumero').textContent = `Pregunta ${q.numero} de ${partida.total}`;
@@ -385,10 +352,7 @@
       feedback('info', 'Escribe la colonia que creas que tiene más reportes.');
       setTimeout(() => $('#jInput').focus(), 200);
     }
-    if (preguntaHablada !== q.numero) {
-      preguntaHablada = q.numero;
-      Sonido.secuencia([{ decir: `Pregunta ${q.numero}. ${q.texto}` }]);
-    }
+    if (preguntaAnunciada !== q.numero) { preguntaAnunciada = q.numero; Voz.secuencia([{ evento: 'pregunta' }]); }
   }
   function pintarTablero(q) {
     $('#jTachas').innerHTML = Array.from({ length: q.maxTachas }, (_, i) => `<span class="${i < q.tachas ? 'on' : ''}">✕</span>`).join('');
@@ -404,7 +368,6 @@
     el.className = 'feedback'; void el.offsetWidth; el.className = 'feedback ' + tipo;
     el.textContent = texto;
   }
-
   async function transicion(puntosQ, motivo) {
     transicionando = true;
     $('#tTitulo').textContent = motivo;
@@ -417,33 +380,35 @@
     render();
   }
 
-  // ----- Gracias: suena el audio, se da un tiempo y luego se muestran las respuestas
+  // ----- ¡Gracias!: suena la voz, se da un tiempo y luego se muestran las respuestas
   let graciasActiva = false;
   async function pantallaGracias() {
     clearInterval(tReloj);
     graciasActiva = true;
     const r = partida;
-    $('#gAvatar').innerHTML = Avatar.svg(r.avatar);
+    miLugar = r.lugar && r.lugar <= 10 ? r.lugar : null;
+    $('#gAvatar').innerHTML = Avatar.svg(r.avatar, 'anim-idle' + (r.lugar === 1 ? ' con-corona' : ''));
+    setTimeout(() => Avatar.animar($('#gAvatar'), r.lugar && r.lugar <= 10 ? 'brinca' : 'saluda', 1900), 400);
     $('#gTitulo').textContent = `¡Gracias, ${r.nombre}!`;
     $('#gPuntos').textContent = r.puntos;
     $('#gTiempo').textContent = relojFino(r.ms);
-    $('#gLugar').textContent = r.lugar ? (r.lugar === 1 ? '🥇 ¡Primer lugar!' : r.lugar <= 10 ? `🏆 ¡Entraste al Top 10! Lugar ${r.lugar}` : `Lugar ${r.lugar} de ${r.jugadores}`) : '';
+    $('#gLugar').textContent = r.lugar ? (r.lugar === 1 ? '👑 ¡Primer lugar!' : r.lugar <= 10 ? `🏆 ¡Entraste al Top 10! Lugar ${r.lugar}` : `Lugar ${r.lugar} de ${r.jugadores}`) : '';
     mostrar('vGracias');
-    $('#gOndas').classList.toggle('oculto', !Sonido.activo);
+    $('#gOndas').classList.toggle('oculto', !Voz.activo);
     if (r.lugar && r.lugar <= 10) confeti();
     const pasos = [{ efecto: 'fanfarria', pausa: 700 }];
-    if (r.lugar === 1) pasos.push({ clip: 'primero' });
-    else if (r.lugar && r.lugar <= 10) pasos.push({ clip: 'top' });
-    pasos.push({ decir: `¡Gracias por jugar, ${r.nombre}! Hiciste ${r.puntos} puntos en ${tiempoHablado(r.ms)}.${r.lugar && r.lugar <= 10 ? ` Quedaste en el lugar ${r.lugar}.` : ''} Ahora veamos las respuestas correctas.` });
-    const audio = Sonido.activo ? Sonido.secuencia(pasos) : Promise.resolve();
-    // mínimo 4 s en pantalla, máximo 14 s aunque el audio siga
-    await Promise.race([Promise.all([audio, espera(4000)]), espera(14000)]);
+    if (r.lugar === 1) pasos.push({ evento: 'nuevo_primero' });
+    else if (r.lugar && r.lugar <= 10) pasos.push({ evento: 'entra_top' }, { lugar: r.lugar });
+    pasos.push({ pausa: 300 }, { evento: 'gracias' });
+    const audio = Voz.activo ? Voz.secuencia(pasos) : Promise.resolve();
+    await Promise.race([Promise.all([audio, espera(4000)]), espera(15000)]);
     if (graciasActiva) { graciasActiva = false; pintarResultados(); }
+    escucharRanking();
   }
-  $('#btnVerResultados').addEventListener('click', () => { if (graciasActiva) { graciasActiva = false; pintarResultados(); } });
+  $('#btnVerResultados').addEventListener('click', () => { if (graciasActiva) { graciasActiva = false; pintarResultados(); escucharRanking(); } });
 
   function confeti() {
-    const c = $('#conf'), cols = ['#9be8c9', '#f6a65a', '#e8604c', '#55bb92', '#f3f0e6'];
+    const c = $('#conf'), cols = ['#FEBE10', '#DD971A', '#50B848', '#00723F', '#f7f4ea'];
     c.innerHTML = Array.from({ length: 40 }, (_, i) => `<i style="left:${Math.random() * 100}%;background:${cols[i % 5]};animation-delay:${(Math.random() * 1.2).toFixed(2)}s"></i>`).join('');
     setTimeout(() => { c.innerHTML = ''; }, 4500);
   }
@@ -452,7 +417,7 @@
     clearInterval(tReloj);
     const r = partida;
     const max = r.resultados.reduce((a, q) => a + (q.maxPuntos || 100), 0);
-    $('#resAvatar').innerHTML = Avatar.svg(r.avatar);
+    $('#resAvatar').innerHTML = Avatar.svg(r.avatar, 'anim-idle' + (r.lugar === 1 ? ' con-corona' : ''));
     $('#resNombre').textContent = r.nombre;
     $('#resTitulo').textContent = r.lugar === 1 ? '¡Vas en primer lugar!' : r.lugar && r.lugar <= 10 ? '¡Estás en el Top 10!' : '¡Gracias por jugar!';
     $('#resPuntos').textContent = r.puntos;
@@ -460,8 +425,8 @@
     $('#resTiempo').textContent = relojFino(r.ms);
     $('#resLugar').textContent = r.lugar || '–';
     $('#resLugarTxt').textContent = r.jugadores ? `de ${r.jugadores}` : 'lugar';
-    $('#topResultados').innerHTML = listaTop(r.top, r.id);
-    $('#resFuente').textContent = `Basado en ${r.reportes} reportes históricos de incidentes por lluvia en Tijuana (Cruz Roja, dependencias y ciudadanía). Entre paréntesis: número de reportes.`;
+    $('#topResultados').innerHTML = listaTop(top.length ? top : r.top, r.id);
+    $('#resFuente').textContent = `Basado en ${r.reportes} reportes de incidentes por lluvia en Tijuana (Cruz Roja, dependencias y ciudadanía). Entre paréntesis: número de reportes.`;
     $('#resPreguntas').innerHTML = r.resultados.map((q, i) => {
       const acertadas = q.tablero.filter(t => t.acerto).length;
       return `
@@ -480,32 +445,94 @@
     mostrar('vResultados');
   }
 
-  // ================= ACCIONES =================
+  // ----- Ranking en vivo: si alguien te gana el lugar, Victor te avisa
+  let fuenteEventos = null;
+  function escucharRanking() {
+    if (fuenteEventos || !partida || !partida.terminada) return;
+    fuenteEventos = new EventSource('/eventos');
+    fuenteEventos.addEventListener('estado', ev => {
+      const d = JSON.parse(ev.data);
+      top = d.top;
+      if (partida && partida.terminada && !$('#vResultados').classList.contains('oculto')) $('#topResultados').innerHTML = listaTop(top, partida.id);
+      actualizarContador(d.stats.personas);
+    });
+    fuenteEventos.addEventListener('nuevoTop', ev => {
+      const d = JSON.parse(ev.data);
+      if (!partida || d.id === partida.id) return;
+      const yo = (d.desplazados || []).find(x => x.id === partida.id);
+      if (!yo) return;
+      miLugar = yo.despues;
+      if (yo.despues) {
+        mostrarToast(d.avatar, `<b>${esc(d.nombre)}</b> te ganó el lugar. Ahora vas en el <b>lugar ${yo.despues}</b>.`);
+        Voz.secuencia([{ efecto: 'buzzer', pausa: 500 }, { evento: 'te_rebasaron' }, { lugar: yo.despues }]);
+      } else {
+        mostrarToast(d.avatar, `<b>${esc(d.nombre)}</b> te sacó del Top 10. ¡Juega otra vez para recuperarlo!`);
+        Voz.secuencia([{ efecto: 'buzzer', pausa: 500 }, { evento: 'salio_top' }]);
+      }
+      vibrar([80, 60, 80]);
+      if (partida.lugar) partida.lugar = yo.despues || partida.lugar;
+    });
+  }
+  let tToast = null;
+  function mostrarToast(av, html) {
+    $('#toast').innerHTML = `<div class="toast">${Avatar.mini(av, 46, 'anim-idle anim-saluda')}<div>${html}</div></div>`;
+    clearTimeout(tToast);
+    tToast = setTimeout(() => { $('#toast').innerHTML = ''; }, 7000);
+  }
+
+  // ================= REGISTRO =================
   Avatar.editor($('#editorAvatar'), avatar, c => { avatar = c; guardar('avatar', c); });
+
+  function pintarEstudiante() {
+    document.querySelectorAll('#siNo button').forEach(b => b.classList.toggle('on', (b.dataset.v === 'si' && esEstudiante === true) || (b.dataset.v === 'no' && esEstudiante === false)));
+    $('#bloqueCarrera').classList.toggle('oculto', esEstudiante !== true);
+    $('#rCarreraOtra').classList.toggle('oculto', $('#rCarrera').value !== '__otra');
+  }
+  $('#siNo').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    esEstudiante = b.dataset.v === 'si';
+    guardar('estudiante', b.dataset.v);
+    pintarEstudiante();
+  });
+  $('#rCarrera').addEventListener('change', () => { pintarEstudiante(); guardar('carrera', $('#rCarrera').value); if ($('#rCarrera').value === '__otra') $('#rCarreraOtra').focus(); });
+  function vistaPrevia() {
+    const n = $('#rNombre').value.trim().split(/\s+/)[0] || 'Ana';
+    const a = $('#rApellido').value.trim().split(/\s+/).find(w => !/^(de|del|la|las|los|y)$/i.test(w)) || 'García';
+    const cap = s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    $('#vistaNombre').textContent = `${cap(n)} ${a.charAt(0).toUpperCase()}.`;
+  }
+  ['#rNombre', '#rApellido'].forEach(s => $(s).addEventListener('input', () => { $(s).classList.remove('mal'); vistaPrevia(); }));
 
   $('#fRegistro').addEventListener('submit', async ev => {
     ev.preventDefault();
-    Sonido.desbloquear();
+    Voz.desbloquear();
     const err = $('#rError'); err.classList.add('oculto');
+    document.querySelectorAll('#fRegistro .mal').forEach(x => x.classList.remove('mal'));
+    const malo = (campo, texto) => {
+      err.textContent = texto; err.classList.remove('oculto');
+      const el = { nombre: '#rNombre', apellido: '#rApellido', carrera: $('#rCarrera').value === '__otra' ? '#rCarreraOtra' : '#rCarrera', colonia: '#rColonia' }[campo];
+      if (el) { $(el).classList.add('mal'); $(el).focus(); }
+      Voz.secuencia([{ efecto: 'buzzer', pausa: 100 }]);
+    };
+    if (esEstudiante === null) return malo(null, 'Dinos si eres estudiante (Sí o No)');
+    const carrera = esEstudiante ? ($('#rCarrera').value === '__otra' ? $('#rCarreraOtra').value : $('#rCarrera').value) : '';
     $('#btnJugar').disabled = true;
     try {
-      partida = await api('/api/empezar', { nombre: $('#rNombre').value, carrera: $('#rCarrera').value, colonia: $('#rColonia').value, avatar });
+      partida = await api('/api/empezar', { nombre: $('#rNombre').value, apellido: $('#rApellido').value, estudiante: esEstudiante, carrera, colonia: $('#rColonia').value, avatar });
       id = partida.id; guardar('partida', id);
-      guardar('nombre', $('#rNombre').value); guardar('carrera', $('#rCarrera').value); guardar('colonia', $('#rColonia').value);
+      guardar('nombre', $('#rNombre').value); guardar('apellido', $('#rApellido').value); guardar('carreraOtra', $('#rCarreraOtra').value); guardar('colonia', $('#rColonia').value);
       offset = Date.now() - partida.transcurrido;
-      preguntaHablada = null;
+      preguntaAnunciada = null;
       iniciarReloj();
       render();
-    } catch (e) {
-      err.textContent = e.message; err.classList.remove('oculto');
-      Sonido.secuencia([{ efecto: 'buzzer', pausa: 100 }]);
-    }
+    } catch (e) { malo(e.datos && e.datos.campo, e.message); }
     $('#btnJugar').disabled = false;
   });
 
+  // ================= JUEGO =================
   $('#fResponder').addEventListener('submit', async ev => {
     ev.preventDefault();
-    Sonido.desbloquear();
+    Voz.desbloquear();
     const input = $('#jInput');
     const texto = input.value.trim();
     if (!texto || enviando) return;
@@ -518,23 +545,21 @@
       input.value = '';
       if (x.tipo === 'acierto') {
         feedback('ok', `¡Correcto! "${x.texto}" +${x.puntos}`); vibrar(90);
-        Sonido.secuencia([{ efecto: 'ding', pausa: 350 }, { clip: 'dijeron' }, { decir: `${x.texto}. ${x.puntos} puntos.` }]);
+        Voz.secuencia([{ efecto: 'ding', pausa: 300 }, { evento: 'correcta' }, ...(x.completo ? [{ evento: 'tablero_completo' }] : [])]);
       } else if (x.tipo === 'tache') {
         feedback('mal', `✕ Esa colonia no está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]);
-        Sonido.secuencia([{ efecto: 'buzzer', pausa: 750 }, { decir: x.tachas >= 3 ? '¡No está en el tablero! Se acabaron tus oportunidades.' : `¡No está en el tablero! Te quedan ${3 - x.tachas}.` }]);
+        Voz.secuencia([{ efecto: 'buzzer', pausa: 650 }, { evento: 'incorrecta' }, ...(x.tachas >= 3 ? [{ evento: 'sin_oportunidades' }] : [])]);
       } else if (x.tipo === 'repetida') {
         feedback('info', `"${x.texto}" ya la tenías. Intenta otra.`);
-        Sonido.secuencia([{ decir: 'Esa ya la tenías. Intenta otra.' }]);
       }
       if (x.finPregunta) {
         const ganados = antes.puntos + (x.tipo === 'acierto' ? x.puntos : 0);
         const motivo = x.tipo === 'tache' ? 'Se acabaron tus 3 oportunidades' : '¡Encontraste todas!';
         enviando = false;
-        // muestra cómo quedó el tablero de esta pregunta antes de pasar a la siguiente
         pintarTablero(x.tipo === 'acierto' ? { ...antes, encontradas: [...antes.encontradas, { indice: x.indice, texto: x.texto, puntos: x.puntos }] } : { ...antes, tachas: x.tachas });
         $('#jInput').disabled = $('#jBtn').disabled = true;
         $('#hdrPuntos').textContent = partida.puntos;
-        await espera(x.tipo === 'tache' ? 2600 : 2400);
+        await espera(x.tipo === 'tache' ? 3000 : 2600);
         return transicion(ganados, motivo);
       }
     } catch (e) {
@@ -552,7 +577,7 @@
     const q = partida.pregunta;
     if (!q.encontradas.length && q.tachas < q.maxTachas && !confirm('¿Pasar sin contestar esta pregunta?')) return;
     enviando = true;
-    Sonido.detener();
+    Voz.detener();
     try {
       const r = await api('/api/pasar', { id, numero: q.numero });
       partida = r.partida;
@@ -563,36 +588,68 @@
   });
 
   function olvidar() {
-    id = null; partida = null; guardar('partida', null); clearInterval(tReloj); graciasActiva = false;
-    Sonido.detener();
+    id = null; partida = null; miLugar = null; guardar('partida', null); clearInterval(tReloj); graciasActiva = false;
+    if (fuenteEventos) { fuenteEventos.close(); fuenteEventos = null; }
+    Voz.detener();
     cargarTop().then(render);
   }
   $('#btnOtra').addEventListener('click', olvidar);
 
+  // ================= CREADORES =================
+  let tCreadores = null;
+  $('#btnSello').addEventListener('click', async () => {
+    $('#modalCreadores').classList.remove('oculto');
+    let lista = [];
+    try { lista = await api('/api/creadores'); } catch { /* */ }
+    $('#listaCreadores').innerHTML = lista.length ? lista.map(c => `
+      <div class="creador"><div class="av-box">${Avatar.svg(c.avatar, 'anim-idle')}</div><b>${esc(c.nombre)}</b>${c.carrera ? `<span>${esc(c.carrera)}</span>` : ''}${c.rol ? `<em>${esc(c.rol)}</em>` : ''}</div>`).join('')
+      : '<p class="tenue">Pronto aparecerán aquí los nombres del equipo.</p>';
+    clearInterval(tCreadores);
+    tCreadores = setInterval(() => {
+      const s = document.querySelectorAll('#listaCreadores .av');
+      if (s.length) Avatar.animar(s[Math.random() * s.length | 0], ['saluda', 'brinca', 'aplaude'][Math.random() * 3 | 0], 2000);
+    }, 1200);
+    document.querySelectorAll('#listaCreadores .av').forEach((s, i) => setTimeout(() => Avatar.animar(s, 'saluda', 1800), 200 + i * 250));
+  });
+  const cerrarModal = () => { $('#modalCreadores').classList.add('oculto'); clearInterval(tCreadores); };
+  $('#cerrarCreadores').addEventListener('click', cerrarModal);
+  $('#modalCreadores').addEventListener('click', e => { if (e.target.id === 'modalCreadores') cerrarModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
   // ================= DATOS =================
+  function actualizarContador(n) {
+    if (n == null) return;
+    $('#contador').innerHTML = n ? `👥 <span>Ya jugaron <b>${n.toLocaleString('es-MX')}</b> persona${n === 1 ? '' : 's'}</span>` : '👥 <span>¡Sé de las primeras personas en jugar!</span>';
+  }
   async function cargarInfo() {
     try {
       info = await api('/api/info');
-      $('#dlCarreras').innerHTML = info.carreras.map(c => `<option value="${esc(c)}">`).join('');
+      const grupos = { FCQI: 'Ciencias Químicas e Ingeniería (FCQI)', Otras: 'Otras carreras' };
+      $('#rCarrera').innerHTML = '<option value="">Elige tu carrera…</option>' + Object.entries(grupos).map(([g, t]) => `<optgroup label="${t}">${info.carreras.filter(c => c.grupo === g).map(c => `<option>${esc(c.nombre)}</option>`).join('')}</optgroup>`).join('') + '<option value="__otra">Otra (escríbela)</option>';
+      const prev = leer('carrera'); if (prev) $('#rCarrera').value = prev;
       $('#dlColonias').innerHTML = info.colonias.map(c => `<option value="${esc(c)}">`).join('');
       $('#nPreguntas').textContent = info.totalPreguntas;
       $('#nReportes').textContent = `${info.reportes} reportes reales`;
-      Sonido.rutas = info.audios || {};
-      Sonido.cargar();
+      actualizarContador(info.personas);
+      pintarEstudiante();
     } catch { /* */ }
   }
-  async function cargarTop() { try { top = (await api('/api/ranking')).top; } catch { /* */ } }
+  async function cargarTop() { try { const d = await api('/api/ranking'); top = d.top; actualizarContador(d.stats.personas); } catch { /* */ } }
 
   $('#rNombre').value = leer('nombre') || '';
-  $('#rCarrera').value = leer('carrera') || '';
+  $('#rApellido').value = leer('apellido') || '';
+  $('#rCarreraOtra').value = leer('carreraOtra') || '';
   $('#rColonia').value = leer('colonia') || '';
+  vistaPrevia(); pintarEstudiante(); pintarBotonSonido();
 
   (async () => {
+    Voz.iniciar({ clave: 'ced2_voz' }).then(pintarBotonSonido);
     await Promise.all([cargarInfo(), cargarTop()]);
     if (id) {
       try {
         partida = await api('/api/partida?id=' + encodeURIComponent(id));
         if (!partida.terminada) { offset = Date.now() - partida.transcurrido; iniciarReloj(); }
+        else escucharRanking();
       } catch { id = null; guardar('partida', null); }
     }
     render();

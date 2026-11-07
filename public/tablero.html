@@ -3,65 +3,94 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ranking · 100 estudiantes dijeron</title>
+<title>Top 10 · 100 estudiantes dijeron</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="/avatar.js"></script>
+<script src="/voz.js"></script>
 <style>
   html, body { height: 100%; overflow: hidden; }
-  body { font-size: clamp(13px, 1.1vw, 24px); }
-  .escena { position: absolute; inset: 0; padding: 2vw 3vw; display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5vw; }
+  body { font-size: clamp(12px, 1.05vw, 24px); }
+  .escena { position: absolute; inset: 0; padding: 2.2vh 2.6vw; display: grid; grid-template-columns: 1fr 1.5fr; gap: 2.6vw; }
   .gotas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-  .gotas i { position: absolute; top: -5vh; width: 3px; height: 2.2vh; border-radius: 3px; background: var(--menta); opacity: .45; animation: caer linear infinite; }
+  .gotas i { position: absolute; top: -5vh; width: 3px; height: 2.2vh; border-radius: 3px; background: #9fd4b8; opacity: .35; animation: caer linear infinite; }
   @keyframes caer { to { transform: translateY(112vh) rotate(12deg); } }
   .col { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 0; }
-  .titulo-cien { font: 700 11vw/0.85 'Cabin Sketch', cursive; color: var(--menta); margin: .3em 0 0; }
-  .titulo-dijeron { font: 700 4.4vw/1 'Cabin Sketch', cursive; margin: .05em 0 .3em; }
-  .lema { font-size: 1.35em; color: var(--gis-tenue); line-height: 1.4; margin: 0 0 1em; }
-  .unete { display: flex; gap: 1.6vw; align-items: center; margin-top: auto; }
+  .titulo-cien { font: 700 min(10vw, 19vh)/0.85 'Cabin Sketch', cursive; color: var(--amarillo); margin: .25em 0 0; }
+  .titulo-dijeron { font: 700 min(3.8vw, 7vh)/1 'Cabin Sketch', cursive; margin: .05em 0 .3em; }
+  .lema { font-size: 1.25em; color: var(--gis-tenue); line-height: 1.4; margin: 0 0 1em; }
+  .contador { display: flex; align-items: center; gap: .8em; background: rgba(254,190,16,.1); border: 2px solid rgba(254,190,16,.4); border-radius: 16px; padding: .7em 1em; }
+  .contador b { font: 700 3.2em/1 'Cabin Sketch', cursive; color: var(--amarillo); }
+  .contador span { color: var(--gis); font-weight: 700; line-height: 1.25; }
+  .contador small { display: block; color: var(--gis-tenue); font-weight: 600; }
+  .unete { display: flex; gap: 1.4vw; align-items: center; margin-top: auto; }
   .qr { background: #fff; padding: .6em; border-radius: 14px; line-height: 0; flex: none; }
-  .unete h3 { font: 700 2.3em 'Cabin Sketch', cursive; margin: 0 0 .2em; }
-  .url { font-weight: 700; color: var(--menta); font-size: 1.15em; word-break: break-all; }
-  .stats { display: flex; gap: 1vw; margin-top: 1.2vw; }
-  .stats div { background: rgba(0,0,0,.22); border-radius: 12px; padding: .6em 1em; }
-  .stats b { font: 700 2.2em 'Cabin Sketch', cursive; color: var(--naranja); display: block; line-height: 1; }
-  .stats span { font-size: .85em; color: var(--gis-tenue); }
+  .unete h3 { font: 700 2.2em 'Cabin Sketch', cursive; margin: 0 0 .2em; }
+  .url { font-weight: 700; color: var(--amarillo); font-size: 1.1em; word-break: break-all; }
+  .jugando { margin-top: .5em; color: var(--gis-tenue); font-weight: 600; }
+  .jugando b { color: var(--ocre); }
 
-  .panel { background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 1.4vw 1.8vw; flex: 1; display: flex; flex-direction: column; min-height: 0; }
-  .panel h2 { font: 700 3.4em 'Cabin Sketch', cursive; margin: 0; color: var(--menta); line-height: 1; }
-  .panel .sub { color: var(--gis-tenue); margin: .2em 0 .8em; font-size: 1.05em; }
-  .filas { display: grid; gap: .5vh; flex: 1; min-height: 0; grid-template-rows: repeat(10, minmax(0, 1fr)); }
-  .fila { display: grid; grid-template-columns: 2.6em 2.4em 1fr 4.6em 5em; align-items: center; gap: 1em; padding: 0 1em; border-radius: 12px; background: rgba(36,38,37,.9); border: 2px solid rgba(155,232,201,.18); font-size: min(1.3em, 2.3vh); min-height: 0; overflow: hidden; }
+  .panel { background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 1.4vh 1.4vw; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .panel h2 { font: 700 2.6em 'Cabin Sketch', cursive; margin: 0; color: var(--amarillo); line-height: 1; display: flex; justify-content: space-between; align-items: baseline; }
+  .panel h2 small { font: 600 .32em Montserrat, sans-serif; color: var(--gis-tenue); }
+
+  /* ESCENARIO del Top 3 */
+  .escenario { position: relative; height: 47vh; margin-top: 1vh; border-radius: 14px; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, rgba(254,190,16,.22), transparent 60%), linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.25)); }
+  .escenario .piso { position: absolute; left: 0; right: 0; bottom: 0; height: 8%; background: linear-gradient(180deg, #0f5a3f, #0a3f2c); border-top: 2px solid rgba(254,190,16,.35); }
+  .podio { position: absolute; bottom: 8%; width: 22%; border-radius: 10px 10px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: .4em; text-align: center; box-shadow: inset 0 -10px 20px rgba(0,0,0,.2); }
+  .podio .num { font: 700 2.6em/1 'Cabin Sketch', cursive; color: var(--tinta); }
+  .podio .nom { font-weight: 800; color: var(--tinta); font-size: 1.05em; max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .podio .pts { font-weight: 800; color: var(--tinta); opacity: .8; font-size: .95em; }
+  .p1 { left: 39%; height: 30%; background: linear-gradient(180deg, #FEBE10, #DD971A); }
+  .p2 { left: 13%; height: 22%; background: linear-gradient(180deg, #e9eef0, #b9c3c7); }
+  .p3 { left: 65%; height: 18%; background: linear-gradient(180deg, #e3a35a, #B08208); }
+  .actor { position: absolute; width: 13%; aspect-ratio: 100/142; transform: translateX(-50%); transition: left 2.2s linear; z-index: 3; }
+  .actor .av { width: 100%; height: 100%; }
+  .actor.a1 { left: 50%; bottom: 38%; width: 15%; }
+  .actor.a2 { left: 24%; bottom: 30%; }
+  .actor.a3 { left: 76%; bottom: 26%; }
+  .trono { position: absolute; left: 50%; bottom: 36%; width: 21%; transform: translateX(-50%); z-index: 2; transition: transform .7s cubic-bezier(.3,1.4,.5,1), opacity .5s; }
+  .trono.fuera { transform: translateX(-50%) translateY(60%) scale(.6); opacity: 0; }
+  .burbuja { position: absolute; z-index: 5; background: #fffdf5; color: var(--tinta); font-weight: 800; padding: .5em .9em; border-radius: 14px; font-size: 1.15em; white-space: nowrap; transform: translateX(-50%); box-shadow: var(--sombra); transition: left 2.2s linear, opacity .3s; }
+  .burbuja::after { content: ''; position: absolute; left: 50%; bottom: -10px; margin-left: -8px; border: 8px solid transparent; border-top-color: #fffdf5; border-bottom: 0; }
+  .destello { position: absolute; z-index: 4; left: 50%; bottom: 62%; width: 30%; aspect-ratio: 1; transform: translate(-50%, 50%) scale(.2); border-radius: 50%; background: radial-gradient(circle, rgba(254,190,16,.9), rgba(254,190,16,0) 65%); opacity: 0; pointer-events: none; }
+  .destello.on { animation: destello 1.3s ease-out; }
+  @keyframes destello { 0% { opacity: 0; transform: translate(-50%, 50%) scale(.2); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 50%) scale(1.6); } }
+  .vacio-escenario { position: absolute; inset: 0; display: grid; place-items: center; color: var(--gis-tenue); font-size: 1.5em; text-align: center; padding: 1em; }
+
+  /* filas 4 al 10 */
+  .filas { display: grid; gap: .6vh; flex: 1; min-height: 0; grid-template-rows: repeat(7, minmax(0, 1fr)); margin-top: 1vh; }
+  .fila { display: grid; grid-template-columns: 2.6em 2.2em 1fr 4.6em 4.8em; align-items: center; gap: .9em; padding: 0 1em; border-radius: 12px; background: rgba(255,255,255,.06); border: 2px solid rgba(254,190,16,.16); font-size: min(1.25em, 2.2vh); min-height: 0; overflow: hidden; }
   .fila .lugar { font: 700 1.5em 'Cabin Sketch', cursive; text-align: center; color: var(--gis-tenue); }
-  .fila .avf { display: flex; align-items: center; justify-content: center; }
+  .fila .avf { display: flex; align-items: center; justify-content: center; height: 100%; }
   .fila .nom { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .fila .nom small { display: block; font-weight: 500; font-size: .62em; color: var(--gis-tenue); }
-  .fila .pts { font: 700 1.5em 'Cabin Sketch', cursive; color: var(--naranja); text-align: right; }
+  .fila .nom small { font-weight: 500; font-size: .7em; color: var(--gis-tenue); margin-left: .5em; }
+  .fila .pts { font: 700 1.5em 'Cabin Sketch', cursive; color: var(--amarillo); text-align: right; }
   .fila .tiempo { text-align: right; color: var(--gis-tenue); font-variant-numeric: tabular-nums; }
-  .fila.l1 { background: var(--menta); color: var(--tinta); border-color: var(--menta); }
-  .fila.l1 .lugar, .fila.l1 .tiempo, .fila.l1 small { color: var(--tinta); }
-  .fila.l1 .pts { color: var(--naranja-osc); }
-  .fila.l2 { border-color: var(--verde); } .fila.l3 { border-color: var(--naranja); }
   .fila.nueva { animation: entra 1.4s ease; }
-  @keyframes entra { 0% { transform: scale(1.06); box-shadow: 0 0 0 6px var(--naranja); } 100% { transform: none; box-shadow: none; } }
-  .vacio { color: var(--gis-tenue); font-size: 1.6em; margin-top: 2em; text-align: center; }
+  .fila.vacia { opacity: .35; }
+  @keyframes entra { 0% { transform: scale(1.05); box-shadow: 0 0 0 5px var(--amarillo); } 100% { transform: none; box-shadow: none; } }
 
-  #anuncio { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(20,22,21,.82); text-align: center; }
+  #anuncio { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(1,30,20,.86); text-align: center; }
   #anuncio .caja { animation: golpe .5s cubic-bezier(.3,1.5,.5,1) both; }
-  #anuncio .k { font: 700 3vw 'Cabin Sketch', cursive; color: var(--menta); }
-  #anuncio .n { font: 700 8vw/1 'Cabin Sketch', cursive; margin: .1em 0; }
-  #anuncio .p { font-size: 2.2vw; color: var(--naranja); font-weight: 800; }
+  #anuncio .k { font: 700 3vw 'Cabin Sketch', cursive; color: var(--amarillo); }
+  #anuncio .n { font: 700 7vw/1 'Cabin Sketch', cursive; margin: .1em 0; }
+  #anuncio .p { font-size: 2vw; color: var(--ocre); font-weight: 800; }
+  #anuncio .d { font-size: 1.5vw; color: var(--gis-tenue); margin-top: .6em; }
+  #aAv { width: 12vw; height: 17vw; margin: 0 auto 1vw; border-radius: 2vw; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: .5vw; }
+  #aAv .av { width: 100%; height: 100%; }
   @keyframes golpe { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
 
-  #activar { position: fixed; inset: 0; background: rgba(15,16,16,.9); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; }
+  #activar { position: fixed; inset: 0; background: rgba(1,30,20,.92); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; }
   #activar h2 { font: 700 4vw 'Cabin Sketch', cursive; margin: 0 0 .3em; }
   #engrane { position: fixed; right: 1vw; bottom: 1vw; z-index: 60; background: rgba(0,0,0,.35); border: 0; color: var(--gis-tenue); border-radius: 50%; width: 2.6em; height: 2.6em; cursor: pointer; font-size: 1.1em; opacity: .35; }
   #engrane:hover { opacity: 1; }
-  #ajustes { position: fixed; right: 1vw; bottom: 4.5em; width: 24em; z-index: 61; background: #222423; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 1em; font-size: 14px; box-shadow: var(--sombra); }
-  #ajustes .fila-b { display: flex; gap: .5em; margin-top: .8em; }
+  #ajustes { position: fixed; right: 1vw; bottom: 4.5em; width: 22em; z-index: 61; background: #03402c; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 1em; font-size: 14px; box-shadow: var(--sombra); }
+  #ajustes .fila-b { display: flex; flex-wrap: wrap; gap: .5em; margin-top: .8em; }
   .estado-con { position: fixed; left: 1vw; bottom: 1vw; font-size: 12px; color: var(--gis-tenue); opacity: .6; z-index: 60; }
 </style>
 </head>
@@ -74,34 +103,53 @@
     <span class="pastilla" style="align-self:flex-start">OCUN · Cuando El Niño toca la puerta</span>
     <h1 class="titulo-cien">100</h1>
     <div class="titulo-dijeron">estudiantes dijeron…</div>
-    <p class="lema">¿Sabes qué colonias de Tijuana han sufrido más con las lluvias? Las respuestas salen de los <b id="nRep">reportes reales</b>. Juega desde tu celular y entra al Top 10.</p>
+    <p class="lema">¿Sabes qué colonias de Tijuana han tenido más problemas con las lluvias? Las respuestas salen de los <b id="nRep">reportes reales</b>. Juega desde tu celular y entra al Top 10.</p>
+    <div class="contador"><b id="sPersonas">0</b><span>personas ya jugaron<small id="sPartidas">0 partidas en total</small></span></div>
     <div class="unete">
       <div class="qr" id="qr"></div>
-      <div><h3>¡Escanea y juega!</h3><div class="url" id="url"></div>
-        <div class="stats"><div><b id="sJugando">0</b><span>jugando ahora</span></div><div><b id="sTerm">0</b><span>partidas jugadas</span></div></div>
-      </div>
+      <div><h3>¡Escanea y juega!</h3><div class="url" id="url"></div><div class="jugando"><b id="sJugando">0</b> jugando ahora mismo</div></div>
     </div>
   </div>
   <div class="col">
     <div class="panel">
-      <h2>🏆 Top 10</h2>
-      <p class="sub">Más puntos gana. Si hay empate, gana el más rápido.</p>
+      <h2>🏆 Top 10 <small>Más puntos gana · si hay empate, el más rápido</small></h2>
+      <div class="escenario" id="escenario">
+        <svg class="trono" id="trono" viewBox="0 0 120 150" aria-hidden="true">
+          <path d="M14 150V40Q14 8 60 4Q106 8 106 40V150H92V96H28V150Z" fill="#B08208"/>
+          <path d="M22 92V44Q22 16 60 12Q98 16 98 44V92Z" fill="#7b2d3a"/>
+          <path d="M30 86V48Q30 24 60 20Q90 24 90 48V86Z" fill="#9b3a4a"/>
+          <rect x="8" y="88" width="104" height="16" rx="5" fill="#DD971A"/>
+          <rect x="16" y="90" width="88" height="10" rx="4" fill="#c0392b"/>
+          <circle cx="60" cy="8" r="6" fill="#FEBE10"/><circle cx="14" cy="44" r="5" fill="#FEBE10"/><circle cx="106" cy="44" r="5" fill="#FEBE10"/>
+          <path d="M8 104H22V150H8ZM98 104H112V150H98Z" fill="#8a6606"/>
+        </svg>
+        <div class="podio p2"><span class="num">2</span><span class="nom" id="n2"></span><span class="pts" id="pt2"></span></div>
+        <div class="podio p1"><span class="num">1</span><span class="nom" id="n1"></span><span class="pts" id="pt1"></span></div>
+        <div class="podio p3"><span class="num">3</span><span class="nom" id="n3"></span><span class="pts" id="pt3"></span></div>
+        <div class="actor a2" id="actor2"></div>
+        <div class="actor a3" id="actor3"></div>
+        <div class="actor a1" id="actor1"></div>
+        <div class="destello" id="destello"></div>
+        <div class="burbuja oculto" id="burbuja"></div>
+        <div class="piso"></div>
+        <div class="vacio-escenario oculto" id="vacioEscenario">¡El podio está vacío!<br>Escanea el código y sé el primero en sentarte en el trono 👑</div>
+      </div>
       <div class="filas" id="filas"></div>
     </div>
   </div>
 </section>
 
-<div id="anuncio" class="oculto"><div class="caja"><div id="aAv" style="width:11vw;height:14.3vw;margin:0 auto 1vw;border-radius:2vw;background:radial-gradient(circle at 50% 40%,#e8fff5,#9be8c9)"></div><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div></div></div>
+<div id="anuncio" class="oculto"><div class="caja"><div id="aAv"></div><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div><div class="d" id="aD"></div></div></div>
 
-<button id="engrane" title="Ajustes de voz">⚙</button>
+<button id="engrane" title="Ajustes">⚙</button>
 <div id="ajustes" class="oculto">
-  <b>Voz del conductor</b>
-  <label for="selVoz">Voz del navegador (español)</label>
-  <select id="selVoz"></select>
-  <label for="velVoz">Velocidad</label>
-  <input type="range" id="velVoz" min="0.7" max="1.4" step="0.05" value="1.02">
+  <b>Ajustes de la pantalla</b>
   <p class="tenue" id="audiosInfo" style="font-size:12px"></p>
-  <div class="fila-b"><button class="btn chico" id="probarVoz">Probar voz</button><button class="btn chico fantasma" id="pantallaCompleta">Pantalla completa</button></div>
+  <div class="fila-b">
+    <button class="btn chico" id="probarVoz">Probar voz</button>
+    <button class="btn chico" id="probarShow">Ver show del 1er lugar</button>
+    <button class="btn chico fantasma" id="pantallaCompleta">Pantalla completa</button>
+  </div>
 </div>
 <div class="estado-con" id="estadoCon">Conectando…</div>
 
@@ -109,141 +157,186 @@
 (() => {
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const leer = k => { try { return localStorage.getItem('ced_tv_' + k); } catch { return null; } };
-  const guardar = (k, v) => { try { localStorage.setItem('ced_tv_' + k, v); } catch { /* */ } };
   const espera = ms => new Promise(r => setTimeout(r, ms));
   const tiempo = ms => ms == null ? '–' : ms >= 60000 ? Math.floor(ms / 60000) + ':' + String(Math.floor(ms / 1000) % 60).padStart(2, '0') : (ms / 1000).toFixed(1) + ' s';
   const URL_JUEGO = location.origin + '/';
-  let sonido = false, audios = {}, ultimoTop = [], recientes = new Set();
+  let topActual = [], firmaTop = '', showActivo = false, anunciando = false, pendienteRender = null, recientes = new Set();
   let cola = Promise.resolve();
   const enCola = fn => (cola = cola.then(fn).catch(() => {}));
-
-  // ---------- sonidos generados
-  const sfx = {
-    ctx: null,
-    listo() { if (!sonido) return false; if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); if (this.ctx.state === 'suspended') this.ctx.resume(); return true; },
-    tono(f, t0, d, tipo = 'triangle', vol = .2) {
-      const c = this.ctx, o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
-      o.type = tipo; o.frequency.value = f;
-      g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
-      o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .05);
-    },
-    fanfarria() { if (!this.listo()) return; [523, 659, 784, 1047].forEach((f, i) => this.tono(f, i * .14, .55)); },
-    ding() { if (!this.listo()) return; this.tono(784, 0, .4, 'sine', .25); this.tono(1175, .1, .6, 'sine', .2); }
-  };
-
-  // ---------- voz
-  const Voz = {
-    voz: null, vel: Number(leer('vel')) || 1.02,
-    cargar() {
-      if (!('speechSynthesis' in window)) return;
-      const vs = speechSynthesis.getVoices().filter(v => /^es/i.test(v.lang));
-      const pref = leer('voz');
-      this.voz = vs.find(v => v.name === pref) || vs.find(v => /es[-_]MX/i.test(v.lang)) || vs.find(v => /es[-_]US/i.test(v.lang)) || vs[0] || null;
-      $('#selVoz').innerHTML = vs.map(v => `<option ${this.voz && v.name === this.voz.name ? 'selected' : ''} value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('') || '<option>Sin voces en español</option>';
-    },
-    decir(texto) {
-      if (!sonido || !('speechSynthesis' in window) || !texto) return Promise.resolve();
-      return new Promise(ok => {
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(texto);
-        if (this.voz) { u.voice = this.voz; u.lang = this.voz.lang; } else u.lang = 'es-MX';
-        u.rate = this.vel; u.pitch = .9;
-        let listo = false; const fin = () => { if (!listo) { listo = true; ok(); } };
-        u.onend = fin; u.onerror = fin; setTimeout(fin, 1500 + texto.length * 110);
-        speechSynthesis.speak(u);
-      });
-    }
-  };
-  function clip(nombre, alterno) {
-    if (!sonido) return Promise.resolve();
-    const src = audios[nombre];
-    if (!src) return Voz.decir(alterno);
-    return new Promise(ok => {
-      const a = new Audio(src);
-      let listo = false; const fin = () => { if (!listo) { listo = true; ok(); } };
-      a.onended = fin; a.onerror = () => Voz.decir(alterno).then(fin);
-      a.play().catch(() => Voz.decir(alterno).then(fin));
-      setTimeout(fin, 15000);
-    });
-  }
 
   // ---------- pantalla
   function pintarQR() {
     const el = $('#qr'); el.innerHTML = '';
-    const tam = Math.round(Math.min(innerWidth, innerHeight) * .26);
-    if (window.QRCode) new QRCode(el, { text: URL_JUEGO, width: tam, height: tam, colorDark: '#1d2120', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    const tam = Math.round(Math.min(innerWidth * .14, innerHeight * .24));
+    if (window.QRCode) new QRCode(el, { text: URL_JUEGO, width: tam, height: tam, colorDark: '#02301f', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
     $('#url').textContent = URL_JUEGO.replace(/^https?:\/\//, '').replace(/\/$/, '');
   }
-  $('#gotas').innerHTML = Array.from({ length: 40 }, () => `<i style="left:${Math.random() * 100}%;animation-duration:${(1.4 + Math.random() * 2).toFixed(2)}s;animation-delay:-${(Math.random() * 3).toFixed(2)}s"></i>`).join('');
+  $('#gotas').innerHTML = Array.from({ length: 36 }, () => `<i style="left:${Math.random() * 100}%;animation-duration:${(1.4 + Math.random() * 2).toFixed(2)}s;animation-delay:-${(Math.random() * 3).toFixed(2)}s"></i>`).join('');
 
-  function pintar(d) {
-    $('#sJugando').textContent = d.stats.jugando;
-    $('#sTerm').textContent = d.stats.terminadas;
-    const med = ['🥇', '🥈', '🥉'];
-    $('#filas').innerHTML = d.top.length ? d.top.map(r => `
-      <div class="fila l${r.lugar} ${recientes.has(r.id) ? 'nueva' : ''}">
-        <span class="lugar">${med[r.lugar - 1] || r.lugar}</span>
-        <span class="avf"><span class="av-mini" style="width:1.75em;height:2.28em">${Avatar.svg(r.avatar)}</span></span>
-        <span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span>
-        <span class="pts">${r.puntos}</span>
-        <span class="tiempo">${tiempo(r.ms)}</span>
-      </div>`).join('') : '<p class="vacio">Todavía nadie termina. ¡Escanea el código y sé el primero!</p>';
+  function pintarStats(s) {
+    $('#sPersonas').textContent = (s.personas || 0).toLocaleString('es-MX');
+    $('#sPartidas').textContent = `${(s.partidas || 0).toLocaleString('es-MX')} partida${s.partidas === 1 ? '' : 's'} en total`;
+    $('#sJugando').textContent = s.jugando;
   }
 
-  async function anunciar(n) {
-    $('#aK').textContent = n.lugar === 1 ? '¡NUEVO PRIMER LUGAR!' : `¡Entra al Top 10 en el lugar ${n.lugar}!`;
-    $('#aN').textContent = n.nombre;
-    $('#aAv').innerHTML = Avatar.svg(n.avatar);
-    $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
-    $('#anuncio').classList.remove('oculto');
-    n.lugar === 1 ? sfx.fanfarria() : sfx.ding();
-    // Primero suena la grabación del equipo; luego la voz del navegador dice lo que cambia (nombre, lugar y puntos)
-    if (n.lugar === 1) {
-      if (audios.primero) { await clip('primero', ''); await Voz.decir(`${n.nombre}, con ${n.puntos} puntos.`); }
-      else await Voz.decir(`¡Tenemos nuevo primer lugar! ${n.nombre}, con ${n.puntos} puntos.`);
-    } else {
-      if (audios.top) { await clip('top', ''); await Voz.decir(`${n.nombre}, lugar ${n.lugar}, con ${n.puntos} puntos.`); }
-      else await Voz.decir(`¡${n.nombre} entra al top diez en el lugar ${n.lugar}, con ${n.puntos} puntos!`);
+  function pintarTop(top) {
+    topActual = top;
+    firmaTop = top.map(r => r.id + ':' + r.puntos).join('|');
+    const t = i => top[i];
+    $('#vacioEscenario').classList.toggle('oculto', !!top.length);
+    $('#trono').classList.toggle('fuera', !t(0));
+    for (let i = 0; i < 3; i++) {
+      const r = t(i);
+      $('#n' + (i + 1)).textContent = r ? r.nombre : '';
+      $('#pt' + (i + 1)).textContent = r ? `${r.puntos} pts · ${tiempo(r.ms)}` : '';
+      const actor = $('#actor' + (i + 1));
+      actor.innerHTML = r ? Avatar.svg(r.avatar, i === 0 ? 'anim-idle anim-sentado con-corona' : 'anim-idle') : '';
     }
-    await espera(1800);
+    let html = '';
+    for (let i = 3; i < 10; i++) {
+      const r = t(i);
+      html += r ? `<div class="fila ${recientes.has(r.id) ? 'nueva' : ''}" data-id="${r.id}"><span class="lugar">${r.lugar}</span><span class="avf">${Avatar.mini(r.avatar, 28)}</span><span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pts">${r.puntos}</span><span class="tiempo">${tiempo(r.ms)}</span></div>`
+        : `<div class="fila vacia"><span class="lugar">${i + 1}</span><span></span><span class="nom tenue">¿Tú?</span><span></span><span></span></div>`;
+    }
+    $('#filas').innerHTML = html;
+  }
+  function recibirTop(top) {
+    const firma = top.map(r => r.id + ':' + r.puntos).join('|');
+    if (firma === firmaTop) return;
+    if (showActivo || anunciando) { pendienteRender = top; return; }
+    pintarTop(top);
+  }
+
+  // ---------- vida en el Top: todos se mueven un poco
+  const svgDe = el => el && el.querySelector('svg.av');
+  setInterval(() => {
+    if (showActivo) return;
+    const filas = [...document.querySelectorAll('#filas .av')];
+    if (filas.length) Avatar.animar(filas[Math.random() * filas.length | 0], ['saluda', 'mira-abajo', 'brinca', 'mira-izq', 'mira-der', 'mira-arriba'][Math.random() * 6 | 0], 1900);
+  }, 1100);
+  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor2')), Math.random() < .6 ? 'aplaude' : 'saluda', 2100); }, 5200);
+  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor3')), Math.random() < .5 ? 'brinca' : 'saluda', 1900); }, 4300);
+  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor1')), Math.random() < .5 ? 'mira-izq' : 'mira-der', 1600); }, 3700);
+
+  // ---------- SHOW DEL PRIMER LUGAR
+  // Camina a la derecha, busca a alguien mejor, no encuentra a nadie, se pone la corona y se sienta en el trono.
+  // Mientras tanto, todos los demás voltean a verlo.
+  function mirar(clase) {
+    const todos = [svgDe($('#actor2')), svgDe($('#actor3')), ...document.querySelectorAll('#filas .av')].filter(Boolean);
+    for (const s of todos) { s.classList.remove('anim-mira-der', 'anim-mira-izq', 'anim-mira-arriba', 'anim-mira-abajo', 'anim-saluda', 'anim-brinca'); if (clase) s.classList.add(clase(s)); }
+  }
+  function burbuja(texto, izquierda) {
+    const b = $('#burbuja');
+    if (!texto) { b.classList.add('oculto'); return; }
+    b.textContent = texto;
+    b.style.left = izquierda; b.style.bottom = '83%';
+    b.classList.remove('oculto');
+  }
+  async function showPrimerLugar() {
+    const actor = $('#actor1'), s = svgDe(actor);
+    if (!s || showActivo) return;
+    showActivo = true;
+    const lado = (el, der) => el === svgDe($('#actor2')) ? 'anim-mira-der' : el === svgDe($('#actor3')) ? (der ? 'anim-mira-der' : 'anim-mira-izq') : 'anim-mira-arriba';
+    // se levanta, guarda la corona y el trono se esconde
+    s.classList.remove('anim-sentado', 'con-corona');
+    $('#trono').classList.add('fuera');
+    mirar(el => lado(el, false));
+    await espera(800);
+    // camina a la derecha
+    s.classList.add('anim-camina');
+    actor.style.left = '88%';
+    burbuja('', '');
+    await espera(2300);
+    mirar(el => lado(el, true));
+    s.classList.remove('anim-camina');
+    // busca a alguien mejor
+    s.classList.add('anim-busca');
+    burbuja('¿Hay alguien mejor que yo? 🔍', '76%');
+    if (Voz.tiene('trono')) Voz.secuencia([{ evento: 'trono' }]);
+    await espera(2800);
+    s.classList.remove('anim-busca');
+    // no hay nadie
+    s.classList.add('anim-nada');
+    burbuja('¡Nadie! 🤷', '84%');
+    await espera(2100);
+    s.classList.remove('anim-nada');
+    burbuja('', '');
+    // regresa al centro
+    s.classList.add('anim-camina');
+    actor.style.left = '50%';
+    mirar(el => lado(el, false));
+    await espera(2300);
+    s.classList.remove('anim-camina');
+    // la corona brillante
+    $('#destello').classList.remove('on'); void $('#destello').offsetWidth; $('#destello').classList.add('on');
+    s.classList.add('con-corona');
+    Voz.fanfarria();
+    await espera(900);
+    // el trono aparece y se sienta
+    $('#trono').classList.remove('fuera');
+    await espera(500);
+    s.classList.add('anim-sentado');
+    burbuja('👑', '50%');
+    mirar(() => 'anim-aplaude');
+    await espera(2200);
+    burbuja('', '');
+    mirar(null);
+    actor.style.left = '';
+    showActivo = false;
+    if (pendienteRender) { const t = pendienteRender; pendienteRender = null; pintarTop(t); }
+  }
+  setInterval(() => { if (topActual.length) enCola(showPrimerLugar); }, 70000);
+
+  // ---------- anuncios
+  async function anunciar(n) {
+    anunciando = true;
+    const quien = (n.desplazados || []).map(x => (topActual.find(r => r.id === x.id) || {}).nombre).filter(Boolean)[0];
+    $('#aK').textContent = n.lugar === 1 ? '👑 ¡NUEVO PRIMER LUGAR!' : `🏆 ¡Entra al Top 10 en el lugar ${n.lugar}!`;
+    $('#aN').textContent = n.nombre;
+    $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
+    $('#aD').textContent = quien ? `Le ganó el lugar a ${quien}` : '';
+    $('#aAv').innerHTML = Avatar.svg(n.avatar, 'anim-idle' + (n.lugar === 1 ? ' con-corona' : ''));
+    setTimeout(() => Avatar.animar($('#aAv'), n.lugar === 1 ? 'brinca' : 'saluda', 1900), 300);
+    $('#anuncio').classList.remove('oculto');
+    if (n.lugar === 1) { Voz.fanfarria(); await espera(500); await Voz.secuencia([{ evento: 'nuevo_primero' }]); }
+    else { Voz.ding(); await espera(300); await Voz.secuencia([{ evento: 'entra_top' }, { lugar: n.lugar }]); }
+    await espera(1600);
     $('#anuncio').classList.add('oculto');
+    anunciando = false;
+    if (pendienteRender) { const t = pendienteRender; pendienteRender = null; pintarTop(t); }
+    if (n.lugar === 1) { await espera(600); await showPrimerLugar(); }
   }
 
   function conectar() {
     const es = new EventSource('/eventos');
     es.onopen = () => { $('#estadoCon').textContent = 'En vivo'; };
     es.onerror = () => { $('#estadoCon').textContent = 'Reconectando…'; };
-    es.addEventListener('estado', ev => { const d = JSON.parse(ev.data); ultimoTop = d.top; pintar(d); });
+    es.addEventListener('estado', ev => { const d = JSON.parse(ev.data); pintarStats(d.stats); recibirTop(d.top); });
     es.addEventListener('nuevoTop', ev => {
       const n = JSON.parse(ev.data);
-      const fila = ultimoTop.find(r => r.nombre === n.nombre && r.puntos === n.puntos);
-      if (fila) { recientes.add(fila.id); setTimeout(() => recientes.delete(fila.id), 5000); }
-      enCola(() => anunciar(n));
+      recientes.add(n.id); setTimeout(() => recientes.delete(n.id), 6000);
+      enCola(() => anunciar(n).catch(() => { $('#anuncio').classList.add('oculto'); anunciando = false; }));
     });
   }
 
   // ---------- ajustes
   $('#activar').addEventListener('click', async () => {
-    sonido = true; sfx.listo(); $('#activar').remove();
-    try { audios = await (await fetch('/api/audios')).json(); } catch { audios = {}; }
-    const n = Object.keys(audios).length;
-    $('#audiosInfo').textContent = n ? `Grabaciones propias: ${Object.keys(audios).join(', ')}` : 'Sin grabaciones propias en /audio: se usa la voz del navegador.';
-    enCola(() => clip('bienvenida', '¡Bienvenidos a Cien estudiantes dijeron! Escanea el código con tu celular y demuestra cuánto sabes de las lluvias en Tijuana.'));
+    Voz.desbloquear();
+    $('#activar').remove();
+    const n = Object.keys(Voz.urls).length;
+    $('#audiosInfo').textContent = n ? `Frases grabadas: ${n}. Se administran en /admin → Voces.` : 'Todavía no hay grabaciones: súbelas en /admin → Voces.';
+    enCola(() => Voz.secuencia([{ evento: 'bienvenida' }]));
   });
-  if ('speechSynthesis' in window) { Voz.cargar(); speechSynthesis.onvoiceschanged = () => Voz.cargar(); }
-  $('#selVoz').addEventListener('change', e => { guardar('voz', e.target.value); Voz.cargar(); });
-  $('#velVoz').value = Voz.vel;
-  $('#velVoz').addEventListener('input', e => { Voz.vel = Number(e.target.value); guardar('vel', Voz.vel); });
-  $('#probarVoz').addEventListener('click', () => enCola(() => clip('dijeron', '¡Cien estudiantes dijeron!')));
+  $('#probarVoz').addEventListener('click', () => enCola(() => Voz.secuencia([{ evento: 'dijeron' }])));
+  $('#probarShow').addEventListener('click', () => enCola(showPrimerLugar));
   $('#engrane').addEventListener('click', () => $('#ajustes').classList.toggle('oculto'));
   $('#pantallaCompleta').addEventListener('click', () => { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); });
   let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pintarQR, 300); });
-
-  // cada 3 minutos el conductor invita a jugar
-  setInterval(() => enCola(() => clip('invitacion', '¿Crees que sabes qué colonias se inundan más? Escanea el código y juega.')), 180000);
+  // cada 3 minutos Victor invita a jugar
+  setInterval(() => { if (Voz.tiene('invitacion')) enCola(() => Voz.secuencia([{ evento: 'invitacion' }])); }, 180000);
 
   fetch('/api/info').then(r => r.json()).then(i => { $('#nRep').textContent = `${i.reportes} reportes reales de Tijuana`; }).catch(() => {});
+  Voz.iniciar({ clave: 'ced_tv_voz' });
   pintarQR();
   conectar();
 })();

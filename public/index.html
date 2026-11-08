@@ -3,82 +3,96 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#024731">
-<title>100 estudiantes dijeron · OCUN UABC</title>
+<meta name="theme-color" content="#00723F">
+<link rel="icon" href="/img/icono.png">
+<title>100 estudiantes dijeron · Cuenca Cimarrona</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Lilita+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="/avatar.js"></script>
 <script src="/voz.js"></script>
+<script src="/iconos.js"></script>
 <style>
   body { min-height: 100dvh; }
-  .barra { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .75rem 1rem .65rem; position: sticky; top: 0; background: rgba(2,71,49,.95); backdrop-filter: blur(6px); z-index: 5; border-bottom: 1px solid rgba(255,255,255,.08); }
-  .barra .der { display: flex; gap: .8rem; align-items: center; font-weight: 700; flex: none; }
-  .barra .reloj { font-variant-numeric: tabular-nums; color: var(--amarillo); }
-  .barra .pts { color: var(--ocre); }
-  .sonido { background: rgba(255,255,255,.1); border: 0; border-radius: 10px; width: 2.4rem; height: 2.2rem; font-size: 1.1rem; cursor: pointer; color: var(--gis); }
-  /* sello OCUN: brilla al pasar el mouse y muestra a los creadores */
-  .sello { border: 0; cursor: pointer; text-align: left; line-height: 1.15; font-size: .72rem; padding: .45em .8em; position: relative; overflow: hidden; transition: box-shadow .25s, transform .15s; max-width: 70vw; }
-  .sello small { display: block; font-weight: 600; text-transform: none; letter-spacing: 0; font-size: .95em; opacity: .85; }
-  .sello::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-20deg); }
-  .sello:hover, .sello:focus-visible { box-shadow: 0 0 0 3px rgba(254,190,16,.35), 0 0 18px 4px rgba(254,190,16,.55); transform: translateY(-1px); }
-  .sello:hover::after, .sello:focus-visible::after { animation: destello 1s ease; }
+  .barra { position: sticky; top: 0; z-index: 6; background: rgba(255,255,255,.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--borde); padding: .75rem 1rem .6rem; display: flex; align-items: center; gap: .7rem; }
+  .barra .escudo-uabc { height: 40px; }
+  .barra .lockup img { width: 36px; height: 36px; }
+  .barra .lockup .marca { font-size: 1.12rem; }
+  .barra .der { margin-left: auto; display: flex; gap: .6rem; align-items: center; font-weight: 700; }
+  .barra .reloj, .barra .pts { display: inline-flex; align-items: center; gap: .25rem; font-variant-numeric: tabular-nums; }
+  .barra .reloj { color: var(--verde); }
+  .barra .pts { color: var(--ocre-texto); }
+  .sonido { background: var(--verde-claro); border: 0; border-radius: 10px; width: 2.5rem; height: 2.3rem; cursor: pointer; color: var(--verde); display: grid; place-items: center; }
+  /* listón OCUN: brilla al pasar el mouse y muestra a los creadores */
+  .liston { display: flex; width: 100%; align-items: center; justify-content: center; gap: .5rem; border: 0; cursor: pointer; background: var(--verde); color: #fff; font: 700 .82rem var(--f-texto); letter-spacing: .04em; text-transform: uppercase; padding: .55rem 1rem; position: relative; overflow: hidden; transition: box-shadow .25s, background .25s; }
+  .liston small { font-weight: 500; text-transform: none; letter-spacing: 0; opacity: .9; white-space: nowrap; }
+  @media (max-width: 520px) { .liston { font-size: .72rem; padding: .5rem .8rem; } .liston small { display: none; } }
+  .liston::after { content: ''; position: absolute; top: 0; left: -40%; width: 30%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-20deg); }
+  .liston:hover, .liston:focus-visible { background: #048049; box-shadow: inset 0 0 0 2px var(--ocre), 0 0 18px rgba(221,151,26,.6); outline: none; }
+  .liston:hover::after, .liston:focus-visible::after { animation: destello 1s ease; }
   @keyframes destello { to { left: 130%; } }
-  main { max-width: 520px; margin: 0 auto; padding: 1rem 1rem 3rem; }
-  h1.gis { font-size: clamp(2.2rem, 11vw, 3.2rem); line-height: 1; margin: .5rem 0 .3rem; }
-  h1 .cien { color: var(--amarillo); display: block; font-size: 1.6em; }
-  .sub { color: var(--gis-tenue); margin: 0 0 .8rem; line-height: 1.45; }
-  .contador { display: inline-flex; align-items: center; gap: .5rem; background: rgba(254,190,16,.12); border: 1px solid rgba(254,190,16,.35); color: var(--amarillo); border-radius: 99px; padding: .35rem .8rem; font-weight: 700; font-size: .88rem; margin-bottom: 1rem; }
-  .reglas { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: .45rem; }
-  .reglas li { display: flex; gap: .6rem; align-items: flex-start; font-size: .95rem; line-height: 1.4; }
-  .reglas li span { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; background: var(--amarillo); color: var(--tinta); font-weight: 800; font-size: .85rem; }
-  .paso-titulo { font: 700 1.35rem 'Cabin Sketch', cursive; color: var(--amarillo); margin: 0 0 .7rem; }
-  .error { background: rgba(226,86,63,.15); border: 1px solid rgba(226,86,63,.55); color: #ffd9d2; padding: .7rem .9rem; border-radius: 10px; margin-top: .8rem; font-size: .92rem; }
-  .aviso { font-size: .78rem; color: var(--gis-tenue); margin-top: 1rem; line-height: 1.45; }
-  .opcional { font-weight: 500; color: rgba(247,244,234,.5); }
+  main { max-width: 540px; margin: 0 auto; padding: 1rem 1rem 1rem; }
+  .portada { padding: 1.1rem 1.2rem 1.2rem; margin-bottom: 1rem; }
+  .portada .eyebrow { font: 700 .74rem var(--f-texto); text-transform: uppercase; letter-spacing: .08em; color: #d7efe2; display: flex; align-items: center; gap: .35rem; }
+  .portada h1 { font-size: clamp(2.3rem, 11vw, 3.1rem); line-height: .95; margin: .35rem 0 .4rem; }
+  .portada h1 span { color: var(--amarillo); }
+  .portada p { margin: 0; color: #e7f4ec; max-width: 26em; }
+  .contador { display: inline-flex; align-items: center; gap: .45rem; background: rgba(255,255,255,.14); color: #fff; border-radius: 99px; padding: .35rem .8rem; font-weight: 700; font-size: .86rem; margin-top: .9rem; }
+  .reglas { list-style: none; padding: 0; margin: 0; display: grid; gap: .5rem; }
+  .reglas li { display: flex; gap: .6rem; align-items: flex-start; font-size: .94rem; line-height: 1.4; }
+  .paso-titulo { font: 700 1.5rem var(--f-titulo); color: var(--verde-prof); margin: 0 0 .7rem; display: flex; align-items: center; gap: .45rem; }
+  .paso-titulo .ico { color: var(--verde); }
+  .error { background: var(--rojo-claro); border: 1px solid #f3b8be; color: var(--rojo); padding: .7rem .9rem; border-radius: 12px; margin-top: .8rem; font-size: .92rem; font-weight: 600; }
+  .aviso { font-size: .8rem; color: var(--texto-2); margin-top: 1rem; line-height: 1.45; }
+  .opcional { font-weight: 500; color: var(--texto-2); }
   .dos { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
   .dos label { margin-top: 0; }
   .si-no { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
-  .si-no button { padding: .75em; border-radius: 12px; border: 2px solid rgba(247,244,234,.22); background: rgba(0,0,0,.18); color: var(--gis); font: 700 1rem Montserrat, sans-serif; cursor: pointer; }
-  .si-no button.on { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); }
+  .si-no button { padding: .75em; border-radius: 12px; border: 2px solid var(--borde); background: #fff; color: var(--verde-prof); font: 700 1rem var(--f-texto); cursor: pointer; }
+  .si-no button.on { background: var(--verde); border-color: var(--verde); color: #fff; }
 
-  .etiqueta { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--amarillo); font-weight: 700; }
-  .pasos { display: flex; gap: .35rem; margin: .4rem 0 .8rem; }
-  .pasos i { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.14); }
-  .pasos i.hecho { background: var(--verde); } .pasos i.actual { background: var(--amarillo); }
-  .pregunta { font-size: 1.3rem; font-weight: 700; line-height: 1.35; margin: .2rem 0 .3rem; }
-  .ayuda { color: var(--gis-tenue); font-size: .88rem; margin: 0 0 .6rem; }
+  .etiqueta { font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ocre-texto); font-weight: 700; }
+  .pasos { display: flex; gap: .35rem; margin: .4rem 0 .7rem; }
+  .pasos i { flex: 1; height: 6px; border-radius: 99px; background: var(--borde); }
+  .pasos i.hecho { background: var(--verde); } .pasos i.actual { background: var(--ocre); }
+  .pregunta { font: 700 1.65rem/1.12 var(--f-titulo); color: var(--verde-prof); margin: .2rem 0 .3rem; }
+  .ayuda { color: var(--texto-2); font-size: .88rem; margin: 0 0 .5rem; display: flex; align-items: center; gap: .35rem; }
   .tachas { display: flex; gap: .5rem; justify-content: center; margin: .6rem 0 .9rem; }
-  .tachas span { font: 700 2.1rem 'Cabin Sketch', cursive; width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border-radius: 10px; border: 2px dashed rgba(247,244,234,.25); color: rgba(247,244,234,.18); }
-  .tachas span.on { color: var(--rojo); border-color: var(--rojo); border-style: solid; background: rgba(226,86,63,.14); }
+  .tachas span { width: 2.9rem; height: 2.9rem; display: grid; place-items: center; border-radius: 12px; border: 2px dashed #c6d8cd; color: #c6d8cd; background: #fff; }
+  .tachas span.on { color: #fff; border: 2px solid var(--rojo); background: var(--rojo); animation: tache .3s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes tache { from { transform: scale(1.5) rotate(-10deg); } to { transform: none; } }
   .fila-envio { display: flex; gap: .5rem; }
   .fila-envio input { flex: 1; font-size: 1.1rem; }
-  .feedback { min-height: 3rem; margin-top: .8rem; padding: .8rem 1rem; border-radius: 12px; font-weight: 700; text-align: center; font-size: 1.02rem; }
-  .feedback.ok { background: var(--amarillo); color: var(--tinta); animation: aparecer .3s both; }
-  .feedback.mal { background: rgba(226,86,63,.18); color: #ffd4cc; border: 1px solid rgba(226,86,63,.5); animation: sacudir .35s both; }
-  .feedback.info { background: rgba(255,255,255,.08); color: var(--gis); }
+  .juego-guia { margin-top: 2.8rem; }
+  .juego-guia .cimarron { width: 92px; }
+  .feedback { min-height: 3rem; padding: .8rem 1rem; border-radius: 14px; font-weight: 700; font-size: 1rem; border: 2px solid transparent; }
+  .feedback.ok { background: var(--verde-claro); color: var(--verde-prof); border-color: #a9d7bd; animation: aparecer .3s both; }
+  .feedback.mal { background: var(--rojo-claro); color: var(--rojo); border-color: #f3b8be; animation: sacudir .35s both; }
+  .feedback.info { background: var(--ocre-claro); color: var(--ocre-texto); border-color: #f1d9a6; }
   @keyframes sacudir { 0%,100%{transform:none} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
   .mini-tablero { display: grid; gap: .45rem; margin: 1rem 0; }
-  .casilla { display: flex; align-items: center; gap: .6rem; padding: .55rem .8rem; border-radius: 10px; border: 2px solid rgba(254,190,16,.28); min-height: 2.8rem; }
-  .casilla .n { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .85rem; background: rgba(254,190,16,.15); color: var(--amarillo); flex: none; }
+  .casilla { display: flex; align-items: center; gap: .6rem; padding: .55rem .8rem; border-radius: 12px; border: 2px solid var(--borde); background: #fff; min-height: 2.9rem; }
+  .casilla .n { width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .88rem; background: var(--verde-claro); color: var(--verde); flex: none; }
   .casilla .t { flex: 1; font-weight: 700; }
-  .casilla .p { font-weight: 800; color: var(--ocre); }
-  .casilla.mia { background: var(--amarillo); color: var(--tinta); border-color: var(--amarillo); animation: aparecer .35s both; }
-  .casilla.mia .n { background: var(--tinta); color: var(--amarillo); }
-  .casilla.mia .p { color: var(--ocre-osc); }
+  .casilla .p { font: 700 1.25rem var(--f-titulo); color: var(--ocre-texto); }
+  .casilla.mia { background: var(--verde); color: #fff; border-color: var(--verde); animation: voltea .45s ease both; }
+  .casilla.mia .n { background: #fff; color: var(--verde); }
+  .casilla.mia .p { color: var(--amarillo); }
+  @keyframes voltea { from { transform: rotateX(90deg); } to { transform: none; } }
   .pasar { margin-top: .4rem; }
   .transicion { text-align: center; padding: 3rem 0; }
-  .transicion .grande { font: 700 4rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1; }
+  .transicion .grande { font: 700 4.6rem var(--f-titulo); color: var(--verde); line-height: 1; }
 
-  .gracias { text-align: center; padding-top: 1.2rem; }
-  .av-grande { width: 150px; height: 205px; margin: 0 auto; border-radius: 18px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 8px; }
+  .gracias { text-align: center; padding-top: .8rem; }
+  .av-grande { width: 150px; height: 205px; margin: 0 auto; border-radius: 20px; background: radial-gradient(circle at 50% 38%, #fffdf7, var(--ocre-claro)); border: 1px solid #f1d9a6; padding-top: 8px; }
   .av-grande .av { width: 100%; height: 100%; }
-  .gracias h2 { font: 700 2.6rem 'Cabin Sketch', cursive; margin: .8rem 0 .2rem; }
-  .gracias .total { font: 700 4.4rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1; }
-  .gracias .lugar-txt { font-weight: 800; color: var(--amarillo); margin-top: .4rem; font-size: 1.1rem; }
+  .gracias h2 { font-size: 2.4rem; margin: .7rem 0 .3rem; }
+  .marcador-g { text-align: left; }
+  .marcador-g .total { font: 700 4rem/1 var(--f-titulo); color: var(--verde); }
+  .marcador-g .lugar-txt { font-weight: 800; color: var(--ocre-texto); margin-top: .3rem; display: flex; align-items: center; gap: .35rem; }
   .ondas { display: flex; gap: 4px; justify-content: center; height: 22px; align-items: flex-end; margin: 1.2rem 0 .4rem; }
-  .ondas i { width: 5px; background: var(--amarillo); border-radius: 3px; animation: onda .9s ease-in-out infinite; }
+  .ondas i { width: 5px; background: var(--verde); border-radius: 3px; animation: onda .9s ease-in-out infinite; }
   .ondas i:nth-child(2) { animation-delay: .15s } .ondas i:nth-child(3) { animation-delay: .3s } .ondas i:nth-child(4) { animation-delay: .45s } .ondas i:nth-child(5) { animation-delay: .6s }
   @keyframes onda { 0%,100% { height: 5px } 50% { height: 22px } }
   .conf { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 20; }
@@ -86,95 +100,119 @@
   @keyframes caer { to { transform: translateY(105vh) rotate(540deg); } }
 
   .perfil { display: flex; gap: 1rem; align-items: center; }
-  .perfil .av-box { width: 92px; height: 126px; flex: none; border-radius: 14px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 4px; }
+  .perfil .av-box { width: 92px; height: 126px; flex: none; border-radius: 14px; background: radial-gradient(circle at 50% 38%, #fffdf7, var(--ocre-claro)); border: 1px solid #f1d9a6; padding-top: 4px; }
   .perfil .av-box .av { width: 100%; height: 100%; }
-  .perfil h2 { margin: 0; font: 700 1.9rem 'Cabin Sketch', cursive; line-height: 1.05; }
-  .marcador { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .8rem; }
-  .marcador div { background: rgba(255,255,255,.07); border-radius: 12px; padding: .7rem .3rem; text-align: center; }
-  .marcador b { display: block; font: 700 1.8rem 'Cabin Sketch', cursive; color: var(--amarillo); line-height: 1.1; }
-  .marcador span { font-size: .72rem; color: var(--gis-tenue); }
+  .perfil h2 { margin: 0; font-size: 1.9rem; line-height: 1.02; }
+  .marcador { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .9rem; }
+  .marcador div { background: var(--verde-claro); border-radius: 12px; padding: .65rem .3rem; text-align: center; }
+  .marcador b { display: block; font: 700 1.9rem/1.05 var(--f-titulo); color: var(--verde); }
+  .marcador span { font-size: .72rem; color: var(--texto-2); font-weight: 600; }
+  .res-guia .cimarron { width: 92px; }
   .res-q { margin-bottom: 1rem; }
-  .res-q h3 { font-size: 1rem; margin: 0 0 .2rem; line-height: 1.35; }
-  .res-q .dato { font-size: .78rem; color: var(--gis-tenue); margin: 0 0 .6rem; }
-  .res-fila { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: 9px; margin-bottom: .3rem; background: rgba(255,255,255,.05); font-size: .92rem; }
-  .res-fila .ic { width: 1.3rem; text-align: center; }
+  .res-q h3 { font: 700 1.2rem/1.15 var(--f-titulo); margin: 0 0 .2rem; }
+  .res-q .dato { font-size: .8rem; color: var(--texto-2); margin: 0 0 .6rem; }
+  .res-fila { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: 10px; margin-bottom: .3rem; background: #f4f8f5; font-size: .92rem; border: 1px solid #e3ede7; }
+  .res-fila .ic { width: 1.4rem; display: grid; place-items: center; color: #b5c7bc; }
   .res-fila .t { flex: 1; font-weight: 600; }
-  .res-fila .r { color: var(--gis-tenue); font-size: .78rem; }
-  .res-fila .p { font-weight: 800; color: var(--ocre); min-width: 2rem; text-align: right; }
-  .res-fila.si { background: rgba(80,184,72,.22); }
-  .res-fila.si .t { color: #d7f5d3; }
-  .res-q .sub-pts { float: right; color: var(--amarillo); font-weight: 800; margin-left: .5rem; }
-  .retro { margin-top: .7rem; padding: .7rem .8rem; border-radius: 10px; font-size: .9rem; line-height: 1.45; }
-  .retro b { display: block; margin-bottom: .25rem; }
-  .retro.errores { background: rgba(226,86,63,.12); border-left: 4px solid var(--rojo); }
+  .res-fila .r { color: var(--texto-2); font-size: .78rem; font-weight: 500; }
+  .res-fila .p { font: 700 1.1rem var(--f-titulo); color: var(--ocre-texto); min-width: 2rem; text-align: right; }
+  .res-fila.si { background: var(--verde-claro); border-color: #bfe0cc; }
+  .res-fila.si .ic { color: var(--verde); }
+  .res-fila.si .t { color: var(--verde-prof); }
+  .res-q .sub-pts { float: right; color: var(--verde); font: 700 1.3rem var(--f-titulo); margin-left: .5rem; }
+  .retro { margin-top: .7rem; padding: .7rem .8rem; border-radius: 12px; font-size: .9rem; line-height: 1.45; }
+  .retro b { display: flex; align-items: center; gap: .35rem; margin-bottom: .25rem; }
+  .retro.errores { background: var(--rojo-claro); border-left: 4px solid var(--rojo); color: #4a1016; }
+  .retro.errores b { color: var(--rojo); }
   .retro.errores ul { margin: 0; padding-left: 1.1rem; }
   .retro.errores li { margin: .3rem 0; }
-  .retro.errores li span { color: #ffcabf; font-weight: 700; }
-  .retro.datos { background: rgba(32,65,154,.22); border-left: 4px solid #7f9be0; }
-  .retro.tip { background: rgba(221,151,26,.14); border-left: 4px solid var(--ocre); }
-  .retro.bien { background: rgba(80,184,72,.16); border-left: 4px solid var(--verde); }
+  .retro.errores li span { font-weight: 700; }
+  .retro.datos { background: var(--azul-claro); border-left: 4px solid var(--azul-texto); color: #102a4c; }
+  .retro.datos b { color: var(--azul-texto); }
+  .retro.tip { background: var(--ocre-claro); border-left: 4px solid var(--ocre); color: #3d2a00; }
+  .retro.tip b { color: var(--ocre-texto); }
+  .retro.bien { background: var(--verde-claro); border-left: 4px solid var(--verde); color: var(--verde-prof); }
+  .retro.bien b { color: var(--verde); }
   .top-lista { list-style: none; padding: 0; margin: 0; }
-  .top-lista li { display: flex; align-items: center; gap: .6rem; padding: .3rem .2rem; border-bottom: 1px dashed rgba(255,255,255,.13); }
-  .top-lista li .l { width: 1.8rem; text-align: center; font-weight: 800; color: var(--gis-tenue); }
+  .top-lista li { display: flex; align-items: center; gap: .6rem; padding: .35rem .3rem; border-bottom: 1px solid #edf3ef; }
+  .top-lista li .l { width: 1.8rem; height: 1.8rem; flex: none; display: grid; place-items: center; border-radius: 50%; font-weight: 800; font-size: .85rem; color: var(--texto-2); background: #f0f5f2; }
+  .top-lista li .l1 { background: var(--amarillo); color: var(--verde-prof); }
+  .top-lista li .l2 { background: #dfe6e9; color: #37474f; }
+  .top-lista li .l3 { background: #f0c48a; color: #5d3a00; }
   .top-lista li .nom { flex: 1; min-width: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .top-lista li .nom small { display: block; font-weight: 500; font-size: .72rem; color: var(--gis-tenue); }
-  .top-lista li .pt { color: var(--amarillo); font-weight: 800; }
-  .top-lista li .tm { color: var(--gis-tenue); font-size: .8rem; min-width: 3.4rem; text-align: right; font-variant-numeric: tabular-nums; }
-  .top-lista li.yo { background: rgba(254,190,16,.13); border-radius: 10px; }
-  .top-lista li.yo .nom { color: var(--amarillo); }
+  .top-lista li .nom small { display: block; font-weight: 500; font-size: .72rem; color: var(--texto-2); }
+  .top-lista li .pt { color: var(--verde); font: 700 1.2rem var(--f-titulo); }
+  .top-lista li .tm { color: var(--texto-2); font-size: .8rem; min-width: 3.4rem; text-align: right; font-variant-numeric: tabular-nums; }
+  .top-lista li.yo { background: var(--ocre-claro); border-radius: 10px; }
   .botones { display: grid; gap: .6rem; margin-top: 1.2rem; }
 
-  .toast { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); width: min(92vw, 440px); background: #0b3a29; border: 2px solid var(--amarillo); border-radius: 16px; padding: .9rem 1rem; display: flex; gap: .8rem; align-items: center; z-index: 40; box-shadow: var(--sombra); animation: subir .4s cubic-bezier(.3,1.4,.5,1) both; }
+  .toast { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); width: min(92vw, 440px); background: #fff; border: 2px solid var(--ocre); border-radius: 16px; padding: .9rem 1rem; display: flex; gap: .8rem; align-items: center; z-index: 40; box-shadow: var(--sombra); animation: subir .4s cubic-bezier(.3,1.4,.5,1) both; }
   .toast .av-mini { width: 46px; height: 64px; }
-  .toast b { color: var(--amarillo); }
+  .toast b { color: var(--verde-prof); }
   @keyframes subir { from { transform: translate(-50%, 120%); } to { transform: translate(-50%, 0); } }
 
-  .modal { position: fixed; inset: 0; background: rgba(1,30,20,.82); z-index: 60; display: grid; place-items: center; padding: 1rem; backdrop-filter: blur(3px); }
-  .modal .caja { background: var(--pizarra-2); border: 2px solid rgba(254,190,16,.45); border-radius: 18px; width: min(560px, 100%); max-height: 88vh; overflow: auto; padding: 1.2rem; position: relative; animation: aparecer .3s both; }
-  .modal .caja > .pastilla { margin-right: 2.8rem; }
-  .modal .cerrar { position: absolute; top: .6rem; right: .6rem; background: rgba(255,255,255,.1); border: 0; color: var(--gis); width: 2.2rem; height: 2.2rem; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
-  .creadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .8rem; margin-top: 1rem; }
-  .creador { background: rgba(255,255,255,.06); border-radius: 14px; padding: .7rem; text-align: center; }
-  .creador .av-box { width: 90px; height: 124px; margin: 0 auto .4rem; border-radius: 12px; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: 4px; }
+  .modal { position: fixed; inset: 0; background: rgba(0,61,36,.55); z-index: 60; display: grid; place-items: center; padding: 1rem; backdrop-filter: blur(3px); }
+  .modal .caja { background: #fff; border-radius: 20px; width: min(580px, 100%); max-height: 88vh; overflow: auto; position: relative; animation: aparecer .3s both; box-shadow: var(--sombra); }
+  .modal .cab { padding: 1.1rem 3.4rem 1.1rem 1.2rem; border-radius: 20px 20px 0 0; }
+  .modal .cab h2 { font-size: 2rem; margin: .3rem 0 .1rem; }
+  .modal .cab p { margin: 0; color: #e7f4ec; font-size: .92rem; }
+  .modal .cuerpo { padding: 1rem 1.2rem 1.3rem; }
+  .modal .cerrar { position: absolute; top: .7rem; right: .7rem; background: rgba(255,255,255,.18); border: 0; color: #fff; width: 2.3rem; height: 2.3rem; border-radius: 50%; cursor: pointer; display: grid; place-items: center; z-index: 2; }
+  .creadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .8rem; }
+  .creador { background: var(--verde-claro); border-radius: 14px; padding: .7rem; text-align: center; }
+  .creador .av-box { width: 90px; height: 124px; margin: 0 auto .4rem; border-radius: 12px; background: radial-gradient(circle at 50% 38%, #fffdf7, var(--ocre-claro)); padding-top: 4px; }
   .creador .av-box .av { width: 100%; height: 100%; }
-  .creador b { display: block; line-height: 1.2; }
-  .creador span { display: block; font-size: .78rem; color: var(--gis-tenue); margin-top: .2rem; }
-  .creador em { display: block; font-style: normal; font-size: .75rem; color: var(--amarillo); margin-top: .2rem; font-weight: 700; }
+  .creador b { display: block; line-height: 1.2; color: var(--verde-prof); }
+  .creador span { display: block; font-size: .78rem; color: var(--texto-2); margin-top: .2rem; }
+  .creador em { display: block; font-style: normal; font-size: .76rem; color: var(--ocre-texto); margin-top: .25rem; font-weight: 700; }
+  @media (max-width: 400px) { .barra .lockup .marca small { display: none; } .barra .lockup .marca { font-size: 1rem; } .barra .escudo-uabc { height: 34px; } }
 </style>
 </head>
 <body>
 <header class="barra">
-  <button class="pastilla sello" id="btnSello" type="button" title="¿Quién hizo este juego?">OCUN · UABC<small>Cuando El Niño toca la puerta</small></button>
+  <img class="escudo-uabc" src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+  <span class="separador"></span>
+  <span class="lockup"><img src="/img/sello.png" alt=""><span class="marca">Cuenca Cimarrona<small>UABC · FCQI</small></span></span>
   <div class="der">
-    <span class="reloj oculto" id="reloj">0:00</span>
-    <span class="pts oculto" id="hdrPuntosWrap"><span id="hdrPuntos">0</span> pts</span>
-    <button class="sonido" id="btnSonido" type="button" aria-label="Activar o silenciar sonido">🔊</button>
+    <span class="reloj oculto" id="reloj"><i data-ico="clock" data-t="16"></i><span id="relojTxt">0:00</span></span>
+    <span class="pts oculto" id="hdrPuntosWrap"><i data-ico="spark" data-t="16"></i><span id="hdrPuntos">0</span></span>
+    <button class="sonido" id="btnSonido" type="button" aria-label="Activar o silenciar sonido"></button>
   </div>
 </header>
+<button class="liston" id="btnSello" type="button" title="Conoce a quienes hicieron este juego">OCUN · Cuando El Niño toca la puerta <small>· ver creadores</small></button>
 
 <main>
   <!-- BIENVENIDA -->
   <section id="vBienvenida" class="oculto aparece">
-    <h1 class="gis"><span class="cien">100</span>estudiantes dijeron…</h1>
-    <p class="sub">Cuando El Niño toca la puerta. ¿Sabes qué colonias de Tijuana han tenido más problemas con las lluvias?</p>
-    <div class="contador" id="contador">👥 <span>Cargando…</span></div>
-    <ul class="reglas">
-      <li><span>1</span><div>Crea tu avatar: así aparecerás en el <b>Top 10</b>.</div></li>
-      <li><span>2</span><div><b id="nPreguntas">4</b> preguntas, una a la vez. Escribe colonias de Tijuana; las respuestas correctas salen de <b id="nReportes">reportes reales</b> por lluvias.</div></li>
-      <li><span>3</span><div>Tienes <b>3 oportunidades</b> por pregunta. Entre más reportes tenga la colonia, más puntos.</div></li>
-      <li><span>4</span><div>El reloj corre: si hay empate, gana quien terminó más rápido. Al final te explicamos cada respuesta.</div></li>
-    </ul>
-    <div class="tarjeta" style="margin-bottom:1rem">
-      <h2 class="paso-titulo">Tu avatar</h2>
+    <div class="encabezado-verde marca-agua portada">
+      <div class="eyebrow"><i data-ico="gamepad" data-t="15"></i> Juego de Cuenca Cimarrona</div>
+      <h1><span>100</span> estudiantes dijeron</h1>
+      <p>¿Qué colonias de Tijuana han tenido más problemas con las lluvias?</p>
+      <div class="contador" id="contador"><i data-ico="people" data-t="16"></i><span>Cargando</span></div>
+    </div>
+    <div class="guia" style="margin:2.6rem 0 1rem;align-items:center">
+      <div class="cimarron"><span class="globo">¡Aquí te explico!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
+      <div class="presenta tarjeta suave">
+        <ul class="reglas">
+          <li><span class="num-paso">1</span><div>Crea tu avatar: así sales en el <b>Top 10</b></div></li>
+          <li><span class="num-paso">2</span><div><b id="nPreguntas">4</b> preguntas, una a la vez. Escribe colonias de Tijuana</div></li>
+          <li><span class="num-paso">3</span><div><b>3 oportunidades</b> por pregunta. Más reportes, más puntos</div></li>
+          <li><span class="num-paso">4</span><div>Si hay empate, gana quien terminó más rápido</div></li>
+        </ul>
+        <p class="aviso" style="margin:.7rem 0 0">Las respuestas salen de <b id="nReportes">reportes reales</b> por lluvias en Tijuana</p>
+      </div>
+    </div>
+    <div class="tarjeta marca-agua" style="margin-bottom:1rem">
+      <h2 class="paso-titulo"><i data-ico="palette" data-t="22"></i>Tu avatar</h2>
       <div id="editorAvatar"></div>
     </div>
-    <form id="fRegistro" class="tarjeta" autocomplete="off" novalidate>
-      <h2 class="paso-titulo">Tus datos</h2>
+    <form id="fRegistro" class="tarjeta marca-agua" autocomplete="off" novalidate>
+      <h2 class="paso-titulo"><i data-ico="people" data-t="22"></i>Tus datos</h2>
       <div class="dos">
         <div><label for="rNombre">Nombre</label><input id="rNombre" maxlength="40" placeholder="Ej. Ana" autocapitalize="words" autocomplete="given-name"></div>
         <div><label for="rApellido">Apellido</label><input id="rApellido" maxlength="50" placeholder="Ej. García" autocapitalize="words" autocomplete="family-name"></div>
       </div>
-      <p class="aviso" style="margin-top:.4rem">Usa tu nombre real. En el ranking se verá así: <b id="vistaNombre">Ana G.</b></p>
+      <p class="aviso" style="margin-top:.45rem">Usa tu nombre real. En el ranking se verá así: <b id="vistaNombre">Ana G.</b></p>
       <label>¿Eres estudiante?</label>
       <div class="si-no" id="siNo"><button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button></div>
       <div id="bloqueCarrera" class="oculto">
@@ -183,13 +221,13 @@
         <input id="rCarreraOtra" class="oculto" maxlength="60" placeholder="Escribe tu carrera" style="margin-top:.5rem">
       </div>
       <label for="rColonia">¿En qué delegación o colonia vives? <span class="opcional">(opcional)</span></label>
-      <input id="rColonia" maxlength="60" placeholder="Ej. La Presa, Otay, Camino Verde…">
-      <button class="btn naranja ancho" style="margin-top:1.2rem;font-size:1.1rem" type="submit" id="btnJugar">¡Jugar!</button>
+      <input id="rColonia" maxlength="60" placeholder="Ej. La Presa, Otay, Camino Verde">
+      <button class="btn ancho" style="margin-top:1.2rem;font-size:1.1rem" type="submit" id="btnJugar"><i data-ico="gamepad"></i>Jugar</button>
       <div id="rError" class="error oculto"></div>
-      <p class="aviso">Tu carrera y tu colonia solo se usan para las estadísticas del proyecto OCUN (UABC). Sube el volumen: el juego tiene voz 🔊</p>
+      <p class="aviso">Tu carrera y colonia solo se usan para las estadísticas del proyecto. Sube el volumen: el juego tiene voz</p>
     </form>
     <div class="tarjeta" style="margin-top:1rem">
-      <h2 class="paso-titulo">🏆 Top 10</h2>
+      <h2 class="paso-titulo"><i data-ico="trophy" data-t="22"></i>Top 10</h2>
       <div id="topBienvenida"></div>
     </div>
   </section>
@@ -199,69 +237,86 @@
     <div class="etiqueta" id="jNumero"></div>
     <div class="pasos" id="jPasos"></div>
     <p class="pregunta" id="jPregunta"></p>
-    <p class="ayuda" id="jAyuda"></p>
+    <p class="ayuda"><i data-ico="map" data-t="16"></i><span id="jAyuda"></span></p>
     <div class="tachas" id="jTachas"></div>
     <form id="fResponder" class="fila-envio" autocomplete="off">
-      <input id="jInput" list="dlColonias" maxlength="80" placeholder="Escribe una colonia…" enterkeyhint="send" autocapitalize="words">
-      <button class="btn naranja" type="submit" id="jBtn">Va</button>
+      <input id="jInput" list="dlColonias" maxlength="80" placeholder="Escribe una colonia" enterkeyhint="send" autocapitalize="words">
+      <button class="btn naranja" type="submit" id="jBtn" aria-label="Enviar"><i data-ico="arrow"></i></button>
     </form>
-    <div class="feedback info" id="jFeedback">Escribe la colonia que creas que tiene más reportes.</div>
+    <div class="guia juego-guia">
+      <div class="cimarron"><span class="globo" id="jGlobo">¡Tú puedes!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
+      <div class="presenta"><div class="feedback info" id="jFeedback">Escribe la colonia que creas que tiene más reportes</div></div>
+    </div>
     <div class="mini-tablero" id="jTablero"></div>
-    <button class="btn fantasma ancho pasar" id="btnPasar">Pasar a la siguiente pregunta →</button>
+    <button class="btn fantasma ancho pasar" id="btnPasar">Pasar a la siguiente pregunta<i data-ico="skip" data-t="18"></i></button>
   </section>
 
   <section id="vTransicion" class="oculto transicion aparece">
     <div class="tenue" id="tTitulo">Pregunta terminada</div>
     <div class="grande" id="tPuntos">+0</div>
-    <p class="tenue" id="tTexto">Siguiente pregunta…</p>
+    <p class="tenue" id="tTexto">Siguiente pregunta</p>
   </section>
 
   <!-- GRACIAS -->
   <section id="vGracias" class="oculto gracias aparece">
     <div class="av-grande" id="gAvatar"></div>
     <h2 id="gTitulo">¡Gracias por jugar!</h2>
-    <div class="total" id="gPuntos">0</div>
-    <div class="tenue">puntos · <span id="gTiempo"></span></div>
-    <div class="lugar-txt" id="gLugar"></div>
+    <div class="guia" style="margin:2.2rem 0 0;text-align:left">
+      <div class="cimarron"><span class="globo">¡Gracias por jugar!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
+      <div class="presenta tarjeta suave marcador-g">
+        <div class="total" id="gPuntos">0</div>
+        <div class="tenue">puntos · <span id="gTiempo"></span></div>
+        <div class="lugar-txt" id="gLugar"></div>
+      </div>
+    </div>
     <div class="ondas" id="gOndas"><i></i><i></i><i></i><i></i><i></i></div>
-    <p class="tenue" style="font-size:.9rem;margin:.2rem 0 1rem">En un momento te mostramos las respuestas correctas…</p>
+    <p class="tenue" style="font-size:.9rem;margin:.2rem 0 1rem">En un momento verás las respuestas correctas</p>
     <button class="btn fantasma" id="btnVerResultados">Ver mis resultados ahora</button>
   </section>
 
   <!-- RESULTADOS -->
   <section id="vResultados" class="oculto aparece">
-    <div class="tarjeta">
-      <div class="perfil">
-        <div class="av-box" id="resAvatar"></div>
-        <div><div class="etiqueta">Resultados</div><h2 id="resNombre"></h2><div class="tenue" id="resTitulo" style="font-size:.9rem"></div></div>
+    <div class="guia res-guia" style="margin-top:2.4rem">
+      <div class="cimarron"><span class="globo">¡Así te fue!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
+      <div class="presenta tarjeta marca-agua">
+        <div class="perfil">
+          <div class="av-box" id="resAvatar"></div>
+          <div><div class="etiqueta">Resultados</div><h2 id="resNombre"></h2><div class="tenue" id="resTitulo" style="font-size:.9rem"></div></div>
+        </div>
       </div>
-      <div class="marcador">
-        <div><b id="resPuntos">0</b><span id="resMax">puntos</span></div>
-        <div><b id="resTiempo">0:00</b><span>tiempo</span></div>
-        <div><b id="resLugar">–</b><span id="resLugarTxt">lugar</span></div>
-      </div>
+    </div>
+    <div class="marcador">
+      <div><b id="resPuntos">0</b><span id="resMax">puntos</span></div>
+      <div><b id="resTiempo">0:00</b><span>tiempo</span></div>
+      <div><b id="resLugar">–</b><span id="resLugarTxt">lugar</span></div>
     </div>
     <div class="tarjeta" style="margin:1rem 0">
-      <h2 class="paso-titulo">🏆 Top 10 <span class="tenue" style="font:600 .75rem Montserrat">· en vivo</span></h2>
+      <h2 class="paso-titulo"><i data-ico="trophy" data-t="22"></i>Top 10 <span class="pastilla" style="font-size:.66rem">En vivo</span></h2>
       <div id="topResultados"></div>
     </div>
-    <h2 class="gis" style="font-size:1.7rem;margin:1.2rem 0 .3rem">Tu retroalimentación</h2>
+    <h2 class="paso-titulo" style="font-size:1.8rem;margin:1.4rem 0 .3rem"><i data-ico="book" data-t="24"></i>Tu retroalimentación</h2>
     <p class="tenue" style="margin:0 0 .8rem;font-size:.85rem" id="resFuente"></p>
     <div id="resPreguntas"></div>
-    <div class="botones"><button class="btn naranja ancho" id="btnOtra">Jugar otra vez</button></div>
-    <p class="aviso">Comparte con tu familia en qué colonias se reportan más problemas por lluvias. Informarse también es prevenir.</p>
+    <div class="botones"><button class="btn ancho" id="btnOtra"><i data-ico="reset"></i>Jugar otra vez</button></div>
+    <p class="aviso">Comparte con tu familia qué colonias tienen más reportes por lluvias</p>
   </section>
 </main>
+<footer class="pie-uabc">
+  <img src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+  <div><b>Universidad Autónoma de Baja California</b>Facultad de Ciencias Químicas e Ingeniería · Proyecto Cuenca Cimarrona · OCUN</div>
+</footer>
 <div class="conf" id="conf"></div>
 <div id="toast"></div>
 
 <div class="modal oculto" id="modalCreadores" role="dialog" aria-modal="true" aria-labelledby="tCreadores">
   <div class="caja">
-    <button class="cerrar" id="cerrarCreadores" aria-label="Cerrar">✕</button>
-    <span class="pastilla">OCUN · Emprendimiento y liderazgo</span>
-    <h2 class="gis" id="tCreadores" style="font-size:2rem;margin:.6rem 0 .2rem">Hecho por</h2>
-    <p class="tenue" style="margin:0">Estudiantes de la UABC, Facultad de Ciencias Químicas e Ingeniería, con el proyecto "Cuando El Niño toca la puerta".</p>
-    <div class="creadores" id="listaCreadores"></div>
+    <button class="cerrar" id="cerrarCreadores" aria-label="Cerrar"><i data-ico="close"></i></button>
+    <div class="cab encabezado-verde marca-agua">
+      <span class="pastilla ocre">OCUN · Emprendimiento y liderazgo</span>
+      <h2 id="tCreadores">Hecho por</h2>
+      <p>Estudiantes de la UABC, Facultad de Ciencias Químicas e Ingeniería · Cuando El Niño toca la puerta</p>
+    </div>
+    <div class="cuerpo"><div class="creadores" id="listaCreadores"></div></div>
   </div>
 </div>
 
@@ -279,7 +334,7 @@
   const relojFino = ms => ms == null ? '–' : (ms >= 60000 ? reloj(ms) : (ms / 1000).toFixed(1) + ' s');
 
   // ================= SONIDO =================
-  function pintarBotonSonido() { $('#btnSonido').textContent = Voz.activo ? '🔊' : '🔇'; }
+  function pintarBotonSonido() { $('#btnSonido').innerHTML = Icono(Voz.activo ? 'volume' : 'volumeOff', 20); }
   $('#btnSonido').addEventListener('click', () => { Voz.alternar(); pintarBotonSonido(); });
   let bienvenidaDada = false;
   function primerToque() {
@@ -314,8 +369,7 @@
   }
   function listaTop(lista, miId) {
     if (!lista.length) return '<p class="tenue" style="margin:0">Todavía nadie termina. ¡Sé el primero!</p>';
-    const med = ['🥇', '🥈', '🥉'];
-    return `<ol class="top-lista">${lista.map(r => `<li class="${r.id === miId ? 'yo' : ''}"><span class="l">${med[r.lugar - 1] || r.lugar}</span>${Avatar.mini(r.avatar, 32, r.lugar === 1 ? 'anim-idle con-corona' : 'anim-idle')}<span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pt">${r.puntos}</span><span class="tm">${relojFino(r.ms)}</span></li>`).join('')}</ol>`;
+    return `<ol class="top-lista">${lista.map(r => `<li class="${r.id === miId ? 'yo' : ''}"><span class="l l${r.lugar}">${r.lugar}</span>${Avatar.mini(r.avatar, 32, r.lugar === 1 ? 'anim-idle con-corona' : 'anim-idle')}<span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pt">${r.puntos}</span><span class="tm">${relojFino(r.ms)}</span></li>`).join('')}</ol>`;
   }
   // animaciones al azar en las listas del Top (saludan, miran, brincan)
   setInterval(() => {
@@ -328,7 +382,7 @@
   // ================= RELOJ =================
   function iniciarReloj() {
     clearInterval(tReloj);
-    tReloj = setInterval(() => { if (partida && !partida.terminada) $('#reloj').textContent = reloj(Date.now() - offset); }, 250);
+    tReloj = setInterval(() => { if (partida && !partida.terminada) $('#relojTxt').textContent = reloj(Date.now() - offset); }, 250);
   }
 
   // ================= PANTALLAS =================
@@ -344,24 +398,29 @@
     $('#jNumero').textContent = `Pregunta ${q.numero} de ${partida.total}`;
     $('#jPasos').innerHTML = Array.from({ length: partida.total }, (_, i) => `<i class="${i < q.numero - 1 ? 'hecho' : i === q.numero - 1 ? 'actual' : ''}"></i>`).join('');
     $('#jPregunta').textContent = q.texto;
-    $('#jAyuda').textContent = `Hay ${q.respuestas} colonias en el tablero.`;
+    $('#jAyuda').textContent = `Hay ${q.respuestas} colonias en el tablero`;
     pintarTablero(q);
     $('#jInput').disabled = $('#jBtn').disabled = enviando;
     if ($('#vJuego').classList.contains('oculto')) {
       mostrar('vJuego');
-      feedback('info', 'Escribe la colonia que creas que tiene más reportes.');
+      feedback('info', 'Escribe la colonia que creas que tiene más reportes');
+      globo('¡Tú puedes!');
       setTimeout(() => $('#jInput').focus(), 200);
     }
     if (preguntaAnunciada !== q.numero) { preguntaAnunciada = q.numero; Voz.secuencia([{ evento: 'pregunta' }]); }
   }
   function pintarTablero(q) {
-    $('#jTachas').innerHTML = Array.from({ length: q.maxTachas }, (_, i) => `<span class="${i < q.tachas ? 'on' : ''}">✕</span>`).join('');
+    $('#jTachas').innerHTML = Array.from({ length: q.maxTachas }, (_, i) => `<span class="${i < q.tachas ? 'on' : ''}">${Icono('close', 26)}</span>`).join('');
     const mias = new Map(q.encontradas.map(e => [e.indice, e]));
     $('#jTablero').innerHTML = Array.from({ length: q.respuestas }, (_, i) => {
       const m = mias.get(i);
       return m ? `<div class="casilla mia"><span class="n">${i + 1}</span><span class="t">${esc(m.texto)}</span><span class="p">${m.puntos}</span></div>`
         : `<div class="casilla"><span class="n">${i + 1}</span><span class="t tenue">?</span></div>`;
     }).join('');
+  }
+  function globo(texto) {
+    const g = $('#jGlobo'); if (!g) return;
+    g.textContent = texto; g.classList.remove('cambia'); void g.offsetWidth; g.classList.add('cambia');
   }
   function feedback(tipo, texto) {
     const el = $('#jFeedback');
@@ -372,7 +431,7 @@
     transicionando = true;
     $('#tTitulo').textContent = motivo;
     $('#tPuntos').textContent = '+' + puntosQ;
-    $('#tTexto').textContent = partida.terminada ? '¡Terminaste!' : 'Siguiente pregunta…';
+    $('#tTexto').textContent = partida.terminada ? '¡Terminaste!' : 'Siguiente pregunta';
     mostrar('vTransicion');
     await espera(1500);
     transicionando = false;
@@ -392,7 +451,7 @@
     $('#gTitulo').textContent = `¡Gracias, ${r.nombre}!`;
     $('#gPuntos').textContent = r.puntos;
     $('#gTiempo').textContent = relojFino(r.ms);
-    $('#gLugar').textContent = r.lugar ? (r.lugar === 1 ? '👑 ¡Primer lugar!' : r.lugar <= 10 ? `🏆 ¡Entraste al Top 10! Lugar ${r.lugar}` : `Lugar ${r.lugar} de ${r.jugadores}`) : '';
+    $('#gLugar').innerHTML = r.lugar ? (r.lugar === 1 ? `${Icono('crown', 18)} ¡Primer lugar!` : r.lugar <= 10 ? `${Icono('trophy', 18)} Top 10 · lugar ${r.lugar}` : `Lugar ${r.lugar} de ${r.jugadores}`) : '';
     mostrar('vGracias');
     $('#gOndas').classList.toggle('oculto', !Voz.activo);
     if (r.lugar && r.lugar <= 10) confeti();
@@ -408,7 +467,7 @@
   $('#btnVerResultados').addEventListener('click', () => { if (graciasActiva) { graciasActiva = false; pintarResultados(); escucharRanking(); } });
 
   function confeti() {
-    const c = $('#conf'), cols = ['#FEBE10', '#DD971A', '#50B848', '#00723F', '#f7f4ea'];
+    const c = $('#conf'), cols = ['#00723F', '#DD971A', '#50B848', '#FEBE10', '#003D24'];
     c.innerHTML = Array.from({ length: 40 }, (_, i) => `<i style="left:${Math.random() * 100}%;background:${cols[i % 5]};animation-delay:${(Math.random() * 1.2).toFixed(2)}s"></i>`).join('');
     setTimeout(() => { c.innerHTML = ''; }, 4500);
   }
@@ -426,7 +485,7 @@
     $('#resLugar').textContent = r.lugar || '–';
     $('#resLugarTxt').textContent = r.jugadores ? `de ${r.jugadores}` : 'lugar';
     $('#topResultados').innerHTML = listaTop(top.length ? top : r.top, r.id);
-    $('#resFuente').textContent = `Basado en ${r.reportes} reportes de incidentes por lluvia en Tijuana (Cruz Roja, dependencias y ciudadanía). Entre paréntesis: número de reportes.`;
+    $('#resFuente').textContent = `Basado en ${r.reportes} reportes de incidentes por lluvia en Tijuana (Cruz Roja, dependencias y ciudadanía). Entre paréntesis: número de reportes`;
     $('#resPreguntas').innerHTML = r.resultados.map((q, i) => {
       const acertadas = q.tablero.filter(t => t.acerto).length;
       return `
@@ -434,12 +493,12 @@
         <span class="sub-pts">+${q.puntos}</span>
         <h3>${i + 1}. ${esc(q.texto)}</h3>
         <p class="dato">${esc(q.dato)}</p>
-        ${q.tablero.map(t => `<div class="res-fila ${t.acerto ? 'si' : ''}"><span class="ic">${t.acerto ? '✅' : '•'}</span><span class="t">${esc(t.texto)} <span class="r">(${t.reportes})</span></span><span class="p">${t.puntos}</span></div>`).join('')}
-        ${q.errores && q.errores.length ? `<div class="retro errores"><b>❌ Por qué no estaban tus respuestas</b><ul>${q.errores.map(e => `<li><span>${esc(e.texto)}:</span> ${esc(e.motivo)}</li>`).join('')}</ul></div>`
-          : acertadas ? `<div class="retro bien"><b>✅ ¡Muy bien!</b>Encontraste ${acertadas} de ${q.tablero.length} colonias sin equivocarte.</div>`
-          : `<div class="retro errores"><b>⏭️ Pasaste esta pregunta</b>Revisa arriba cuáles eran las colonias con más reportes.</div>`}
-        ${q.exp ? `<div class="retro datos"><b>📊 Lo que dicen los datos</b>${esc(q.exp)}</div>` : ''}
-        ${q.tip ? `<div class="retro tip"><b>💡 Para prevenir</b>${esc(q.tip)}</div>` : ''}
+        ${q.tablero.map(t => `<div class="res-fila ${t.acerto ? 'si' : ''}"><span class="ic">${t.acerto ? Icono('check', 18) : Icono('pin', 16)}</span><span class="t">${esc(t.texto)} <span class="r">(${t.reportes})</span></span><span class="p">${t.puntos}</span></div>`).join('')}
+        ${q.errores && q.errores.length ? `<div class="retro errores"><b>${Icono('close', 16)} Por qué no estaban tus respuestas</b><ul>${q.errores.map(e => `<li><span>${esc(e.texto)}:</span> ${esc(e.motivo)}</li>`).join('')}</ul></div>`
+          : acertadas ? `<div class="retro bien"><b>${Icono('check', 16)} ¡Muy bien!</b>Encontraste ${acertadas} de ${q.tablero.length} colonias sin equivocarte</div>`
+          : `<div class="retro errores"><b>${Icono('skip', 16)} Pasaste esta pregunta</b>Arriba están las colonias con más reportes</div>`}
+        ${q.exp ? `<div class="retro datos"><b>${Icono('chart', 16)} Lo que dicen los datos</b>${esc(q.exp)}</div>` : ''}
+        ${q.tip ? `<div class="retro tip"><b>${Icono('shield', 16)} Para prevenir</b>${esc(q.tip)}</div>` : ''}
       </div>`;
     }).join('');
     mostrar('vResultados');
@@ -544,13 +603,13 @@
       const x = r.resultado;
       input.value = '';
       if (x.tipo === 'acierto') {
-        feedback('ok', `¡Correcto! "${x.texto}" +${x.puntos}`); vibrar(90);
+        feedback('ok', `¡Correcto! "${x.texto}" +${x.puntos}`); vibrar(90); globo(x.completo ? '¡Las tienes todas!' : '¡Muy bien!');
         Voz.secuencia([{ efecto: 'ding', pausa: 300 }, { evento: 'correcta' }, ...(x.completo ? [{ evento: 'tablero_completo' }] : [])]);
       } else if (x.tipo === 'tache') {
-        feedback('mal', `✕ Esa colonia no está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]);
+        feedback('mal', `Esa colonia no está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); globo(x.tachas >= 3 ? '¡A la siguiente!' : '¡Uy, casi!');
         Voz.secuencia([{ efecto: 'buzzer', pausa: 650 }, { evento: 'incorrecta' }, ...(x.tachas >= 3 ? [{ evento: 'sin_oportunidades' }] : [])]);
       } else if (x.tipo === 'repetida') {
-        feedback('info', `"${x.texto}" ya la tenías. Intenta otra.`);
+        feedback('info', `"${x.texto}" ya la tenías. Intenta otra`); globo('Prueba otra');
       }
       if (x.finPregunta) {
         const ganados = antes.puntos + (x.tipo === 'acierto' ? x.puntos : 0);
@@ -603,7 +662,7 @@
     try { lista = await api('/api/creadores'); } catch { /* */ }
     $('#listaCreadores').innerHTML = lista.length ? lista.map(c => `
       <div class="creador"><div class="av-box">${Avatar.svg(c.avatar, 'anim-idle')}</div><b>${esc(c.nombre)}</b>${c.carrera ? `<span>${esc(c.carrera)}</span>` : ''}${c.rol ? `<em>${esc(c.rol)}</em>` : ''}</div>`).join('')
-      : '<p class="tenue">Pronto aparecerán aquí los nombres del equipo.</p>';
+      : '<p class="tenue">Pronto aparecerán aquí los nombres del equipo</p>';
     clearInterval(tCreadores);
     tCreadores = setInterval(() => {
       const s = document.querySelectorAll('#listaCreadores .av');
@@ -619,13 +678,13 @@
   // ================= DATOS =================
   function actualizarContador(n) {
     if (n == null) return;
-    $('#contador').innerHTML = n ? `👥 <span>Ya jugaron <b>${n.toLocaleString('es-MX')}</b> persona${n === 1 ? '' : 's'}</span>` : '👥 <span>¡Sé de las primeras personas en jugar!</span>';
+    $('#contador').innerHTML = Icono('people', 16) + (n ? `<span>Ya jugaron <b>${n.toLocaleString('es-MX')}</b> persona${n === 1 ? '' : 's'}</span>` : '<span>¡Sé de las primeras personas en jugar!</span>');
   }
   async function cargarInfo() {
     try {
       info = await api('/api/info');
       const grupos = { FCQI: 'Ciencias Químicas e Ingeniería (FCQI)', Otras: 'Otras carreras' };
-      $('#rCarrera').innerHTML = '<option value="">Elige tu carrera…</option>' + Object.entries(grupos).map(([g, t]) => `<optgroup label="${t}">${info.carreras.filter(c => c.grupo === g).map(c => `<option>${esc(c.nombre)}</option>`).join('')}</optgroup>`).join('') + '<option value="__otra">Otra (escríbela)</option>';
+      $('#rCarrera').innerHTML = '<option value="">Elige tu carrera</option>' + Object.entries(grupos).map(([g, t]) => `<optgroup label="${t}">${info.carreras.filter(c => c.grupo === g).map(c => `<option>${esc(c.nombre)}</option>`).join('')}</optgroup>`).join('') + '<option value="__otra">Otra (escríbela)</option>';
       const prev = leer('carrera'); if (prev) $('#rCarrera').value = prev;
       $('#dlColonias').innerHTML = info.colonias.map(c => `<option value="${esc(c)}">`).join('');
       $('#nPreguntas').textContent = info.totalPreguntas;
@@ -640,7 +699,7 @@
   $('#rApellido').value = leer('apellido') || '';
   $('#rCarreraOtra').value = leer('carreraOtra') || '';
   $('#rColonia').value = leer('colonia') || '';
-  vistaPrevia(); pintarEstudiante(); pintarBotonSonido();
+  pintarIconos(); vistaPrevia(); pintarEstudiante(); pintarBotonSonido();
 
   (async () => {
     Voz.iniciar({ clave: 'ced2_voz' }).then(pintarBotonSonido);

@@ -3,120 +3,133 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel · 100 estudiantes dijeron</title>
+<title>Panel · 100 estudiantes dijeron · Cuenca Cimarrona</title>
+<link rel="icon" href="/img/icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Lilita+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="/avatar.js"></script>
 <script src="/voz.js"></script>
+<script src="/iconos.js"></script>
 <style>
   body { font-size: 15px; }
-  :root { --s-creen: #c4840f; --s-real: #5f8be6; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 4rem; }
-  header.adm { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin: .4rem 0 1rem; }
-  header.adm h1 { margin: 0; font-size: 2rem; }
-  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; position: sticky; top: 4px; z-index: 10; background: var(--pizarra); padding: .4rem 0; }
-  .tabs button { background: transparent; border: 2px solid rgba(255,255,255,.16); color: var(--gis); padding: .55em 1em; border-radius: 10px; font: 600 .95rem 'Montserrat'; cursor: pointer; }
-  .tabs button.on { background: var(--amarillo); color: var(--tinta); border-color: var(--amarillo); }
+  :root { --s-creen: #C9850F; --s-real: #1F5FB8; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 2rem; }
+  header.adm { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin: .6rem 0 1rem; }
+  header.adm .marcas { display: flex; align-items: center; gap: .9rem; }
+  header.adm h1 { margin: 0; font-size: 2rem; line-height: 1; }
+  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; position: sticky; top: 4px; z-index: 10; background: var(--fondo); padding: .5rem 0; border-bottom: 1px solid var(--borde); }
+  .tabs button { background: #fff; border: 1px solid var(--borde); color: var(--verde-prof); padding: .55em 1em; border-radius: 10px; font: 700 .92rem var(--f-texto); cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; }
+  .tabs button .ico { color: var(--verde); }
+  .tabs button.on { background: var(--verde); color: #fff; border-color: var(--verde); }
+  .tabs button.on .ico { color: #fff; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .8rem; }
   @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
-  h2.sec { font: 700 1.45rem 'Cabin Sketch', cursive; color: var(--amarillo); margin: 0 0 .5rem; }
-  h3.sub { font-size: 1rem; margin: 1rem 0 .4rem; }
+  h2.sec { font: 700 1.6rem var(--f-titulo); color: var(--verde-prof); margin: 0 0 .5rem; display: flex; align-items: center; gap: .4rem; }
+  h2.sec .ico { color: var(--verde); }
+  h3.sub { font: 700 1.1rem var(--f-titulo); color: var(--verde-prof); margin: 1rem 0 .4rem; }
   .fila { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .7rem; }
   table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-  th, td { text-align: left; padding: .45rem .45rem; border-bottom: 1px solid rgba(255,255,255,.09); vertical-align: middle; }
-  th { color: var(--gis-tenue); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+  th, td { text-align: left; padding: .45rem .45rem; border-bottom: 1px solid #e6efe9; vertical-align: middle; }
+  th { color: var(--texto-2); font-weight: 700; font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   tr.oculta td { opacity: .45; text-decoration: line-through; }
-  .kpi { background: rgba(255,255,255,.06); border-radius: 12px; padding: .9rem 1rem; border: 1px solid rgba(255,255,255,.09); }
-  .kpi b { display: block; font: 700 2.1rem 'Cabin Sketch', cursive; color: var(--gis); line-height: 1.1; }
-  .kpi span { font-size: .8rem; color: var(--gis-tenue); }
-  .kpi.grande { background: rgba(254,190,16,.12); border-color: rgba(254,190,16,.4); }
-  .kpi.grande b { color: var(--amarillo); font-size: 2.8rem; }
-  .msg { position: fixed; right: 1rem; bottom: 1rem; background: #01301f; border: 1px solid rgba(255,255,255,.2); padding: .8rem 1rem; border-radius: 12px; z-index: 99; max-width: 380px; box-shadow: var(--sombra); }
-  .msg.err { border-color: var(--rojo); }
-  .nota { font-size: .85rem; color: var(--gis-tenue); line-height: 1.5; }
-  .peligro { border: 1px solid rgba(226,86,63,.45); }
-  .chip { display: inline-block; padding: .12em .55em; border-radius: 99px; background: rgba(255,255,255,.09); font-size: .76rem; margin: .1em; }
-  .chip.si { background: rgba(80,184,72,.25); color: #d7f5d3; }
+  .kpi { background: #fff; border-radius: 14px; padding: .9rem 1rem; border: 1px solid var(--borde); box-shadow: var(--sombra-chica); }
+  .kpi b { display: block; font: 700 2.2rem/1.05 var(--f-titulo); color: var(--verde-prof); }
+  .kpi span { font-size: .8rem; color: var(--texto-2); }
+  .kpi.grande { background: var(--verde); border-color: var(--verde); position: relative; overflow: hidden; isolation: isolate; }
+  .kpi.grande b { color: #fff; font-size: 2.8rem; }
+  .kpi.grande span { color: #e7f4ec; }
+  .kpi.grande::after { content: ''; position: absolute; right: -12px; bottom: -12px; width: 90px; aspect-ratio: 480/469; background: #fff; opacity: .10; z-index: -1; -webkit-mask: url(/img/cimarron.webp) no-repeat center/contain; mask: url(/img/cimarron.webp) no-repeat center/contain; }
+  .msg { position: fixed; right: 1rem; bottom: 1rem; background: #fff; border: 1px solid var(--borde); border-left: 5px solid var(--verde); padding: .8rem 1rem; border-radius: 12px; z-index: 99; max-width: 380px; box-shadow: var(--sombra); font-weight: 600; color: var(--verde-prof); }
+  .msg.err { border-left-color: var(--rojo); color: var(--rojo); }
+  .nota { font-size: .86rem; color: var(--texto-2); line-height: 1.5; }
+  .peligro { border: 1px solid #f3b8be; background: var(--rojo-claro); }
+  .chip { display: inline-block; padding: .14em .6em; border-radius: 99px; background: var(--verde-claro); color: var(--verde-prof); font-size: .76rem; margin: .1em; font-weight: 600; }
+  .chip.si { background: var(--verde); color: #fff; }
   .q-edit { margin-bottom: 1rem; }
   .q-edit textarea { min-height: 2.6em; resize: vertical; }
   .q-edit .tab-txt { min-height: 9em; font-family: ui-monospace, Menlo, monospace; font-size: .85rem; }
   .muestra { max-height: 560px; overflow: auto; }
-  /* gráficas */
-  .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .85rem; color: var(--gis); margin: .2rem 0 .6rem; }
+  .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .85rem; color: var(--texto); margin: .2rem 0 .6rem; font-weight: 600; }
   .leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
   .pareadas { display: grid; gap: .55rem; }
-  .par { display: grid; grid-template-columns: minmax(130px, 30%) 1fr; gap: .7rem; align-items: center; padding: .2rem .3rem; border-radius: 8px; }
-  .par:hover { background: rgba(255,255,255,.05); }
-  .par .et { font-size: .88rem; font-weight: 600; line-height: 1.2; }
-  .par .et small { display: block; font-weight: 500; color: var(--gis-tenue); font-size: .74rem; }
+  .par { display: grid; grid-template-columns: minmax(130px, 30%) 1fr; gap: .7rem; align-items: center; padding: .25rem .35rem; border-radius: 8px; }
+  .par:hover { background: var(--verde-claro); }
+  .par .et { font-size: .88rem; font-weight: 700; line-height: 1.2; color: var(--verde-prof); }
+  .par .et small { display: block; font-weight: 500; color: var(--texto-2); font-size: .74rem; }
   .barras2 { display: grid; gap: 2px; }
-  .b { height: 13px; display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: var(--gis); font-variant-numeric: tabular-nums; }
+  .b { height: 13px; display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: var(--texto); font-variant-numeric: tabular-nums; font-weight: 600; }
   .b span { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
   .b.creen span { background: var(--s-creen); }
   .b.real span { background: var(--s-real); }
-  .columnas { display: flex; align-items: flex-end; gap: 3px; height: 160px; padding-top: 1.2rem; border-bottom: 1px solid rgba(255,255,255,.2); }
-  .columnas .c { flex: 1; background: var(--s-creen); border-radius: 4px 4px 0 0; min-height: 1px; position: relative; }
-  .columnas .c:hover { filter: brightness(1.25); }
-  .ejes { display: flex; gap: 3px; font-size: .7rem; color: var(--gis-tenue); margin-top: .3rem; }
+  .columnas { display: flex; align-items: flex-end; gap: 3px; height: 160px; padding-top: 1.2rem; border-bottom: 1px solid #b9cfc2; }
+  .columnas .c { flex: 1; background: var(--verde); border-radius: 4px 4px 0 0; min-height: 1px; }
+  .columnas .c:hover { background: var(--verde-prof); }
+  .ejes { display: flex; gap: 3px; font-size: .7rem; color: var(--texto-2); margin-top: .3rem; }
   .ejes span { flex: 1; text-align: center; overflow: hidden; white-space: nowrap; }
   .hbar { display: grid; grid-template-columns: minmax(120px, 34%) 1fr auto; gap: .6rem; align-items: center; font-size: .88rem; margin-bottom: .35rem; }
   .hbar .et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .hbar .riel { height: 13px; }
-  .hbar .riel div { height: 100%; background: var(--s-real); border-radius: 0 4px 4px 0; min-width: 2px; }
-  .hbar .val { color: var(--gis-tenue); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
-  #tip { position: fixed; z-index: 200; pointer-events: none; background: #fffdf5; color: #02301f; padding: .45rem .65rem; border-radius: 8px; font-size: .82rem; font-weight: 600; box-shadow: var(--sombra); max-width: 260px; display: none; }
-  details.tabla summary { cursor: pointer; color: var(--gis-tenue); font-size: .82rem; margin-top: .6rem; }
-  /* voces */
-  .voz { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .hbar .riel div { height: 100%; background: var(--verde); border-radius: 0 4px 4px 0; min-width: 2px; }
+  .hbar .val { color: var(--texto-2); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
+  #tip { position: fixed; z-index: 200; pointer-events: none; background: var(--verde-prof); color: #fff; padding: .45rem .65rem; border-radius: 8px; font-size: .82rem; font-weight: 500; box-shadow: var(--sombra); max-width: 260px; display: none; }
+  details.tabla summary { cursor: pointer; color: var(--verde); font-weight: 700; font-size: .82rem; margin-top: .6rem; }
+  .voz { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid #e6efe9; }
   @media (max-width: 760px) { .voz { grid-template-columns: 1fr; } }
-  .voz h3 { margin: 0; font-size: 1.02rem; }
-  .voz .donde { font-size: .78rem; color: var(--gis-tenue); }
+  .voz h3 { margin: 0; font: 700 1.15rem var(--f-titulo); }
+  .voz .donde { font-size: .78rem; color: var(--texto-2); }
   .voz .sug { margin: .4rem 0 0; padding-left: 1.1rem; font-size: .88rem; }
-  .voz .sug li { margin: .15rem 0; color: #fff3cc; }
-  .grab { display: flex; align-items: center; gap: .4rem; background: rgba(255,255,255,.06); border-radius: 10px; padding: .3rem .5rem; margin-bottom: .35rem; font-size: .82rem; }
+  .voz .sug li { margin: .15rem 0; color: var(--ocre-texto); font-weight: 600; }
+  .grab { display: flex; align-items: center; gap: .4rem; background: var(--verde-claro); border-radius: 10px; padding: .3rem .5rem; margin-bottom: .35rem; font-size: .82rem; }
   .grab audio { height: 32px; flex: 1; min-width: 0; }
-  .sin { font-size: .82rem; color: var(--gis-tenue); }
+  .sin { font-size: .82rem; color: var(--texto-2); }
   .grabando { animation: parpadea 1s infinite; background: var(--rojo) !important; color: #fff !important; }
   @keyframes parpadea { 50% { opacity: .6; } }
   .lugares { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .7rem; }
-  .lugares .voz { display: block; border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: .7rem; }
-  /* creadores */
-  .creador-card { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: .9rem; margin-bottom: .8rem; }
+  .lugares .voz { display: block; border: 1px solid var(--borde); border-radius: 12px; padding: .7rem; background: #fff; }
+  .creador-card { border: 1px solid var(--borde); border-radius: 14px; padding: .9rem; margin-bottom: .8rem; background: #fff; }
   .creador-card .cab { display: flex; gap: .8rem; align-items: center; }
   .creador-card .cab .av-mini { width: 54px; height: 76px; }
   .creador-card .campos { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; flex: 1; }
   @media (max-width: 760px) { .creador-card .campos { grid-template-columns: 1fr; } }
   .creador-card label { margin: 0 0 .2rem; }
+  .login-caja { max-width: 440px; margin: 10vh auto; text-align: center; }
+  .login-caja img.escudo { height: 110px; margin: 0 auto .6rem; display: block; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <section id="login" class="tarjeta oculto" style="max-width:420px;margin:12vh auto">
-    <h1 class="gis" style="margin:0 0 .4rem;font-size:2rem">Panel del juego</h1>
-    <p class="tenue">Escribe la clave de administración (variable ADMIN_KEY de Railway).</p>
+  <section id="login" class="tarjeta marca-agua login-caja oculto">
+    <img class="escudo" src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+    <span class="lockup" style="justify-content:center"><img src="/img/sello.png" alt=""><span class="marca">Cuenca Cimarrona</span></span>
+    <h1 style="margin:.6rem 0 .3rem;font-size:2rem">Panel del juego</h1>
+    <p class="tenue">Escribe la clave de administración (variable ADMIN_KEY de Railway)</p>
     <form id="fLogin"><input id="clave" type="password" placeholder="Clave" required><button class="btn naranja ancho" style="margin-top:.8rem">Entrar</button></form>
   </section>
 
   <section id="app" class="oculto">
     <header class="adm">
-      <div><span class="pastilla">OCUN · UABC Tijuana</span><h1 class="gis">Panel · 100 estudiantes dijeron</h1></div>
+      <div class="marcas">
+        <img class="escudo-uabc" src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+        <span class="separador"></span>
+        <span class="lockup"><img src="/img/sello.png" alt=""><span class="marca">Cuenca Cimarrona<small>Panel · 100 estudiantes dijeron</small></span></span>
+      </div>
       <div class="fila" style="margin:0">
-        <a class="btn chico" href="/tv" target="_blank">Abrir pantalla (Top 10)</a>
-        <a class="btn chico fantasma" href="/" target="_blank">Página de jugadores</a>
+        <a class="btn chico" href="/tv" target="_blank"><i data-ico="trophy" data-t="16"></i>Abrir pantalla (Top 10)</a>
+        <a class="btn chico fantasma" href="/" target="_blank"><i data-ico="external" data-t="16"></i>Página de jugadores</a>
         <button class="btn chico fantasma" id="salir">Salir</button>
       </div>
     </header>
     <nav class="tabs" id="tabs">
-      <button data-t="ranking" class="on">Ranking y partidas</button>
-      <button data-t="dashboard">📊 Dashboard</button>
-      <button data-t="voces">🎙️ Voces</button>
-      <button data-t="creadores">👥 Creadores</button>
-      <button data-t="preguntas">Preguntas y respuestas</button>
-      <button data-t="exportar">Exportar datos</button>
+      <button data-t="ranking" class="on"><i data-ico="trophy" data-t="17"></i>Ranking y partidas</button>
+      <button data-t="dashboard"><i data-ico="chart" data-t="17"></i>Dashboard</button>
+      <button data-t="voces"><i data-ico="mic" data-t="17"></i>Voces</button>
+      <button data-t="creadores"><i data-ico="people" data-t="17"></i>Creadores</button>
+      <button data-t="preguntas"><i data-ico="book" data-t="17"></i>Preguntas y respuestas</button>
+      <button data-t="exportar"><i data-ico="download" data-t="17"></i>Exportar datos</button>
     </nav>
 
     <!-- RANKING -->
@@ -149,7 +162,7 @@
     <!-- VOCES -->
     <div data-p="voces" class="oculto">
       <div class="tarjeta" style="margin-bottom:1rem">
-        <h2 class="sec">🎙️ La voz de Victor</h2>
+        <h2 class="sec"><i data-ico="mic" data-t="24"></i>La voz de Victor</h2>
         <p class="nota">Cada frase del juego puede tener <b>varias versiones</b>; el juego elige una al azar para que no suene repetido. Graba aquí mismo con el micrófono o sube un audio (.mp3, .m4a, notas de voz). Se guardan en la base de datos: <b>no hay que subir nada a GitHub</b>. Los celulares y la TV las usan al momento.</p>
         <p class="nota">Los nombres de los jugadores no se pueden grabar por adelantado: <b>aparecen en pantalla</b> mientras suena la frase. El lugar sí se dice con su voz usando las grabaciones "Lugar 1" a "Lugar 10" (al final de esta página).</p>
         <label style="display:flex;gap:.5rem;align-items:center;color:var(--gis);font-size:.95rem"><input type="checkbox" id="vTTS" style="width:auto"> Si una frase no tiene grabación, que la diga la voz de computadora</label>
@@ -162,7 +175,7 @@
     <!-- CREADORES -->
     <div data-p="creadores" class="oculto">
       <div class="tarjeta">
-        <h2 class="sec">👥 Creadores del juego</h2>
+        <h2 class="sec"><i data-ico="people" data-t="24"></i>Creadores del juego</h2>
         <p class="nota">Aparecen en la página de los jugadores al tocar el sello <b>"OCUN · Cuando El Niño toca la puerta"</b> de la esquina. Cada persona puede tener su avatar.</p>
         <div id="cLista"></div>
         <div class="fila"><button class="btn chico fantasma" id="cAgregar">+ Agregar persona</button><span style="flex:1"></span><button class="btn naranja" id="cGuardar">Guardar creadores</button></div>
@@ -201,6 +214,10 @@
     </div>
   </section>
 </div>
+<footer class="pie-uabc" style="max-width:1200px">
+  <img src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+  <div><b>Universidad Autónoma de Baja California</b>Facultad de Ciencias Químicas e Ingeniería · Proyecto Cuenca Cimarrona · OCUN</div>
+</footer>
 <div id="msg" class="msg oculto"></div>
 <div id="tip"></div>
 
@@ -318,10 +335,10 @@
             <div class="kpi"><b>${q.puntosPromedio}</b><span>puntos promedio en esta pregunta</span></div>
             <div class="kpi"><b>${nf(q.jugaron)}</b><span>jugadores · ${nf(q.intentos)} respuestas escritas</span></div>
           </div>
-          <div class="leyenda"><span><i style="background:var(--s-creen)"></i>Lo que creen</span><span><i style="background:var(--s-real)"></i>Lo que es real</span><span class="nota">⭐ = está en el tablero</span></div>
+          <div class="leyenda"><span><i style="background:var(--s-creen)"></i>Lo que creen</span><span><i style="background:var(--s-real)"></i>Lo que es real</span><span class="nota">${Icono('check', 14)} = está en el tablero</span></div>
           <div class="pareadas">${q.comparacion.map(c => `
             <div class="par" data-tip="<b>${esc(c.colonia)}</b><br>La escribieron ${c.jugadores} jugador(es): ${c.pctCreen}% de las respuestas<br>Tiene ${c.reportes} reporte(s): ${c.pctReal}% de los reportes">
-              <div class="et">${c.enTablero ? '⭐ ' : ''}${esc(c.colonia)}<small>${c.reportes} reporte${c.reportes === 1 ? '' : 's'}</small></div>
+              <div class="et">${c.enTablero ? Icono('check', 14) + ' ' : ''}${esc(c.colonia)}<small>${c.reportes} reporte${c.reportes === 1 ? '' : 's'}</small></div>
               <div class="barras2"><div class="b creen"><span style="width:${c.pctCreen / max * 85}%"></span>${c.pctCreen}%</div><div class="b real"><span style="width:${c.pctReal / max * 85}%"></span>${c.pctReal}%</div></div>
             </div>`).join('') || '<p class="tenue">Sin respuestas todavía.</p>'}</div>
           ${q.mitos.length ? `<h3 class="sub">Lo que más respondieron y NO estaba en el tablero</h3><p class="nota">${q.mitos.map(m => `<span class="chip">${esc(m.texto)} · ${m.n} vez${m.n === 1 ? '' : 'es'}${m.reportes != null ? ` · ${m.reportes} reporte${m.reportes === 1 ? '' : 's'}` : ''}</span>`).join(' ')}</p>` : ''}
@@ -361,8 +378,8 @@
       return `<div class="voz" data-ev="${e.id}">
         <div><h3>${esc(e.titulo)}</h3><div class="donde">${esc(e.donde)} · ${esc(e.cuando)}</div>
           ${e.numero ? '' : `<ul class="sug">${e.sugerencias.map(s => `<li>"${esc(s)}"</li>`).join('')}</ul>`}</div>
-        <div>${gs.length ? gs.map(g => `<div class="grab"><audio controls preload="none" src="${g.url}"></audio><button class="btn chico fantasma" data-borrar="${g.id}" title="Borrar">🗑</button></div>`).join('') : `<div class="sin">Sin grabación${vocesData.tts ? ' (usa la voz de computadora)' : ' (no suena nada)'}</div>`}
-          <div class="fila" style="margin-top:.4rem">${FORMATO != null ? `<button class="btn chico" data-grabar="${e.id}">🎙️ Grabar</button>` : ''}<label class="btn chico fantasma" style="margin:0">📁 Subir audio<input type="file" accept="audio/*" data-subir="${e.id}" hidden></label></div>
+        <div>${gs.length ? gs.map(g => `<div class="grab"><audio controls preload="none" src="${g.url}"></audio><button class="btn chico fantasma" data-borrar="${g.id}" title="Borrar">${Icono('trash', 16)}</button></div>`).join('') : `<div class="sin">Sin grabación${vocesData.tts ? ' (usa la voz de computadora)' : ' (no suena nada)'}</div>`}
+          <div class="fila" style="margin-top:.4rem">${FORMATO != null ? `<button class="btn chico" data-grabar="${e.id}">${Icono('mic', 16)}Grabar</button>` : ''}<label class="btn chico fantasma" style="margin:0">${Icono('upload', 16)}Subir audio<input type="file" accept="audio/*" data-subir="${e.id}" hidden></label></div>
           <div class="prev"></div></div></div>`;
     };
     $('#vLista').innerHTML = Voz.EVENTOS.filter(e => !e.numero).map(bloque).join('');
@@ -388,7 +405,7 @@
       grabadora.ondataavailable = ev => { if (ev.data.size) trozos.push(ev.data); };
       grabadora.onstop = () => {
         stream.getTracks().forEach(t => t.stop());
-        bGrabar.classList.remove('grabando'); bGrabar.textContent = '🎙️ Grabar';
+        bGrabar.classList.remove('grabando'); bGrabar.innerHTML = Icono('mic', 16) + 'Grabar';
         const blob = new Blob(trozos, { type: grabadora.mimeType || FORMATO || 'audio/webm' });
         const url = URL.createObjectURL(blob);
         caja.innerHTML = `<div class="grab" style="margin-top:.4rem"><audio controls src="${url}"></audio><button class="btn chico" data-ok>Guardar</button><button class="btn chico fantasma" data-no>Descartar</button></div>`;
@@ -396,7 +413,7 @@
         caja.querySelector('[data-no]').onclick = () => { caja.innerHTML = ''; };
       };
       grabadora.start();
-      bGrabar.classList.add('grabando'); bGrabar.textContent = '⏹ Detener';
+      bGrabar.classList.add('grabando'); bGrabar.innerHTML = Icono('stop', 16) + 'Detener';
     } catch { aviso('No se pudo usar el micrófono. Revisa los permisos del navegador.', true); }
   });
   document.addEventListener('change', e => {
@@ -422,7 +439,7 @@
             <div><label>Qué hizo</label><input data-k="rol" value="${esc(c.rol)}" maxlength="60" placeholder="Ej. Programación, voz, diseño"></div>
           </div>
         </div>
-        <div class="fila"><button class="btn chico fantasma" data-av="${i}">🎨 Editar avatar</button><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
+        <div class="fila"><button class="btn chico fantasma" data-av="${i}">${Icono('palette', 16)}Editar avatar</button><button class="btn chico rojo" data-del="${i}">Quitar</button></div>
         <div class="editor-c oculto" style="margin-top:.8rem"></div>
       </div>`).join('') || '<p class="tenue">Todavía no hay creadores. Agrega a tu equipo.</p>';
   }
@@ -460,9 +477,9 @@
         <textarea data-i="${i}" data-k="texto" maxlength="200">${esc(q.texto)}</textarea>
         <label>Qué cuenta como respuesta (se muestra en resultados)</label>
         <input data-i="${i}" data-k="dato" maxlength="200" value="${esc(q.dato || '')}">
-        <label>📊 Lo que dicen los datos (retroalimentación al final)</label>
+        <label>Lo que dicen los datos (retroalimentación al final)</label>
         <textarea data-i="${i}" data-k="exp" maxlength="600">${esc(q.exp || '')}</textarea>
-        <label>💡 Consejo de prevención</label>
+        <label>Consejo de prevención</label>
         <textarea data-i="${i}" data-k="tip" maxlength="600">${esc(q.tip || '')}</textarea>
         <label>Tablero (respuestas correctas)</label>
         <textarea class="tab-txt" data-i="${i}" data-k="tablero">${esc(tabATexto(q.tablero))}</textarea>
@@ -502,6 +519,7 @@
     } catch (e) { aviso(e.message, true); }
   });
 
+  pintarIconos();
   if (clave) entrar(); else $('#login').classList.remove('oculto');
 })();
 </script>

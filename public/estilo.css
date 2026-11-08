@@ -1,80 +1,149 @@
-/* Paleta institucional UABC (Manual de Identidad Gráfica, ed. 2022)
-   Verde PANTONE 356 #00723F · Ocre PANTONE 131 #DD971A · Verde 369 #50B848 · Amarillo 124 #FEBE10
-   Verde oscuro 3435 #024731 · Ocre oscuro 132 #B08208 · Azul del escudo #20419A
-   El fondo es un pizarrón verde (verde oscuro UABC) con gis claro: toque académico. */
+/* Estilos · Cuenca Cimarrona (proyecto UABC · FCQI)
+   Colores, letras y movimiento según la guía "Estilos · Cuenca Cimarrona"
+   Verde UABC #00723F  · botones, menú y bloques de énfasis
+   Ocre UABC  #DD971A  · avisos, números de paso y detalles
+   Verde profundo #003D24 · títulos y texto sobre ocre
+   Ocre texto #8A5A00  · texto chico en tono ocre
+   Verde claro #E6F4EC · fondos de tarjetas
+   Ocre claro #FFF1D6  · fondos de avisos
+   Letras: Lilita One (marca) · Barlow Condensed (títulos) · DM Sans (texto)
+   El escudo UABC se usa tal como está: sin recortarlo, cambiarle colores ni deformarlo */
 :root {
-  --verde-uabc: #00723F;
+  --verde: #00723F;
   --ocre: #DD971A;
-  --verde-claro: #50B848;
+  --verde-prof: #003D24;
+  --ocre-texto: #8A5A00;
+  --verde-claro: #E6F4EC;
+  --ocre-claro: #FFF1D6;
+  --verde-sec: #50B848;
   --amarillo: #FEBE10;
-  --verde-osc-uabc: #024731;
-  --ocre-osc: #B08208;
   --azul: #20419A;
 
-  --pizarra: #024731;
-  --pizarra-2: #03583c;
-  --gis: #f7f4ea;
-  --gis-tenue: #c4d6cb;
-  /* nombres usados en las páginas */
-  --menta: var(--amarillo);      /* resaltado principal */
-  --verde: var(--verde-claro);
-  --verde-osc: var(--verde-uabc);
+  --fondo: #F6FAF7;
+  --tarjeta: #FFFFFF;
+  --borde: #D5E5DB;
+  --texto: #17291F;
+  --texto-2: #4D6156;
+  --rojo: #B3121F;
+  --rojo-claro: #FFEBEE;
+  --azul-claro: #EAF2FF;
+  --azul-texto: #0B4FA8;
+
+  /* nombres que usan las páginas */
+  --pizarra: var(--fondo);
+  --gis: var(--texto);
+  --gis-tenue: var(--texto-2);
+  --menta: var(--verde);
   --naranja: var(--ocre);
-  --naranja-osc: var(--ocre-osc);
-  --rojo: #e2563f;
-  --tinta: #02301f;
-  --radio: 14px;
-  --sombra: 0 10px 28px rgba(0, 0, 0, .35);
+  --naranja-osc: var(--ocre-texto);
+  --tinta: var(--verde-prof);
+  --verde-osc: var(--verde-prof);
+
+  --radio: 16px;
+  --sombra: 0 10px 30px rgba(0, 61, 36, .14);
+  --sombra-chica: 0 2px 8px rgba(0, 61, 36, .08);
+  --f-marca: 'Lilita One', 'DM Sans', system-ui, sans-serif;
+  --f-titulo: 'Barlow Condensed', 'DM Sans', system-ui, sans-serif;
+  --f-texto: 'DM Sans', system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
 body {
-  background-color: var(--pizarra);
-  background-image:
-    radial-gradient(ellipse at 18% 8%, rgba(255, 255, 255, .08), transparent 55%),
-    radial-gradient(ellipse at 85% 92%, rgba(254, 190, 16, .05), transparent 50%),
-    repeating-linear-gradient(115deg, rgba(255, 255, 255, .016) 0 2px, transparent 2px 7px);
-  background-attachment: fixed;
-  color: var(--gis);
-  font-family: 'Montserrat', system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--f-texto);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
 }
-/* franja institucional verde y ocre arriba */
-body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 100; background: linear-gradient(90deg, var(--verde-uabc) 0 70%, var(--ocre) 70% 100%); }
-.gis { font-family: 'Cabin Sketch', 'Montserrat', cursive; letter-spacing: .5px; font-weight: 700; }
-.serif { font-family: 'Merriweather', Georgia, serif; }
-.pastilla {
-  display: inline-block; background: var(--amarillo); color: var(--tinta); font-weight: 700;
-  border-radius: 8px; padding: .4em .9em; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase;
-}
+/* franja institucional verde y ocre */
+body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 100; background: linear-gradient(90deg, var(--verde) 0 72%, var(--ocre) 72% 100%); }
+h1, h2, h3, .titulo, .gis { font-family: var(--f-titulo); font-weight: 700; letter-spacing: 0; color: var(--verde-prof); }
+.marca { font-family: var(--f-marca); font-weight: 400; color: var(--verde); letter-spacing: .2px; }
+
+/* ---------- botones */
 .btn {
-  appearance: none; border: 0; border-radius: 12px; padding: .85em 1.2em; cursor: pointer;
-  font: 700 1rem 'Montserrat', sans-serif; background: var(--amarillo); color: var(--tinta);
-  transition: transform .08s, filter .15s, background .15s; text-decoration: none; display: inline-flex;
-  align-items: center; justify-content: center; gap: .4em;
+  appearance: none; border: 0; border-radius: 12px; padding: .85em 1.25em; cursor: pointer;
+  font: 700 1rem var(--f-texto); background: var(--verde); color: #fff; box-shadow: 0 3px 0 var(--verde-prof);
+  transition: transform .08s, box-shadow .08s, filter .15s; text-decoration: none; display: inline-flex;
+  align-items: center; justify-content: center; gap: .45em; line-height: 1.15;
 }
-.btn:hover { filter: brightness(1.06); }
-.btn:active { transform: scale(.97); }
+.btn:hover { filter: brightness(1.07); }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--verde-prof); }
+.btn:focus-visible { outline: 3px solid var(--ocre); outline-offset: 2px; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
-.btn.naranja { background: var(--ocre); color: #241500; }
-.btn.verde { background: var(--verde-uabc); color: #fff; }
-.btn.rojo { background: var(--rojo); color: #fff; }
-.btn.fantasma { background: transparent; color: var(--gis); border: 2px solid rgba(247, 244, 234, .3); }
-.btn.activo { outline: 3px solid var(--amarillo); outline-offset: 2px; }
-.btn.chico { padding: .5em .8em; font-size: .85rem; border-radius: 9px; }
+.btn.naranja { background: var(--ocre); color: var(--verde-prof); box-shadow: 0 3px 0 var(--ocre-texto); }
+.btn.verde { background: var(--verde); color: #fff; }
+.btn.rojo { background: var(--rojo); color: #fff; box-shadow: 0 3px 0 #7a0c15; }
+.btn.fantasma { background: #fff; color: var(--verde); border: 2px solid var(--verde); box-shadow: none; }
+.btn.fantasma:active { transform: translateY(1px); }
+.btn.activo { outline: 3px solid var(--ocre); outline-offset: 2px; }
+.btn.chico { padding: .5em .85em; font-size: .88rem; border-radius: 10px; box-shadow: 0 2px 0 var(--verde-prof); }
+.btn.chico.fantasma { box-shadow: none; }
+.btn.chico.naranja { box-shadow: 0 2px 0 var(--ocre-texto); }
 .btn.ancho { width: 100%; }
+.btn svg { flex: none; }
+
+/* ---------- formularios */
 input, select, textarea {
-  width: 100%; font: 500 1rem 'Montserrat', sans-serif; padding: .8em .9em; border-radius: 12px;
-  border: 2px solid rgba(247, 244, 234, .22); background: rgba(0, 0, 0, .22); color: var(--gis); outline: none;
+  width: 100%; font: 500 1rem var(--f-texto); padding: .8em .9em; border-radius: 12px;
+  border: 2px solid var(--borde); background: #fff; color: var(--texto); outline: none; transition: border-color .15s, box-shadow .15s;
 }
-input::placeholder, textarea::placeholder { color: rgba(247, 244, 234, .45); }
-input:focus, select:focus, textarea:focus { border-color: var(--amarillo); }
-input.mal, select.mal { border-color: var(--rojo); }
-select option, select optgroup { color: #111; background: #fff; }
-label { display: block; font-size: .85rem; color: var(--gis-tenue); margin: 1em 0 .4em; font-weight: 600; }
-.tarjeta { background: rgba(255, 255, 255, .055); border: 1px solid rgba(255, 255, 255, .11); border-radius: var(--radio); padding: 1.1rem; }
+input::placeholder, textarea::placeholder { color: #8fa398; }
+input:focus, select:focus, textarea:focus { border-color: var(--verde); box-shadow: 0 0 0 4px rgba(0, 114, 63, .14); }
+input.mal, select.mal { border-color: var(--rojo); box-shadow: 0 0 0 4px rgba(179, 18, 31, .12); }
+label { display: block; font-size: .88rem; color: var(--verde-prof); margin: 1em 0 .4em; font-weight: 700; }
+
+/* ---------- tarjetas */
+.tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.1rem; box-shadow: var(--sombra-chica); }
+.tarjeta.suave { background: var(--verde-claro); border-color: #cfe6d8; box-shadow: none; }
+.tarjeta.aviso { background: var(--ocre-claro); border-color: #f1d9a6; box-shadow: none; }
+.pastilla {
+  display: inline-block; background: var(--verde-claro); color: var(--verde-prof); font-weight: 700;
+  border-radius: 999px; padding: .35em .85em; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase;
+}
+.pastilla.ocre { background: var(--ocre-claro); color: var(--ocre-texto); }
+.num-paso { display: inline-grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--ocre); color: var(--verde-prof); font-weight: 800; font-size: .9rem; flex: none; }
+
+/* Encabezado verde (con silueta blanca al 10 %) */
+.encabezado-verde { position: relative; overflow: hidden; background: var(--verde); color: #fff; border-radius: var(--radio); padding: 1rem 1.2rem; }
+.encabezado-verde h1, .encabezado-verde h2, .encabezado-verde h3 { color: #fff; }
+
+/* Silueta del Cimarrón: solo de fondo, esquina inferior derecha, puede recortarse por el borde, nunca girarse */
+.marca-agua { position: relative; overflow: hidden; isolation: isolate; }
+.marca-agua::after {
+  content: ''; position: absolute; right: -14px; bottom: -14px; width: 150px; aspect-ratio: 480 / 469; z-index: -1; pointer-events: none;
+  background: var(--verde-prof); opacity: .08;
+  -webkit-mask: url(/img/cimarron.webp) no-repeat center / contain; mask: url(/img/cimarron.webp) no-repeat center / contain;
+}
+.encabezado-verde.marca-agua::after { background: #fff; opacity: .10; }
+
+/* ---------- Cimarrón guía: siempre a la izquierda de lo que presenta, entra deslizándose y flota 5 px */
+.guia { display: flex; align-items: flex-end; gap: .6rem; }
+.guia .cimarron { position: relative; flex: none; width: 104px; min-width: 88px; animation: guia-entra .6s cubic-bezier(.2, .9, .3, 1.2) both; }
+.guia .cimarron img { display: block; width: 100%; height: auto; animation: guia-flota 3s ease-in-out .6s infinite; }
+.guia .presenta { flex: 1; min-width: 0; }
+.globo { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-35%); background: #fff; color: var(--verde-prof); border: 3px solid var(--verde-prof); border-radius: 14px; padding: .3em .7em; font: 700 .86rem var(--f-texto); white-space: nowrap; box-shadow: var(--sombra-chica); z-index: 2; }
+.globo::after { content: ''; position: absolute; left: 30%; bottom: -10px; border: 7px solid transparent; border-top-color: var(--verde-prof); border-bottom: 0; }
+.globo.cambia { animation: globo-pop .35s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes guia-entra { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@keyframes guia-flota { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes globo-pop { from { transform: translateX(-35%) scale(.7); } to { transform: translateX(-35%) scale(1); } }
+
+/* ---------- logotipos */
+.escudo-uabc { display: block; height: 44px; width: auto; }
+.lockup { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; }
+.lockup img { width: 40px; height: 40px; border-radius: 50%; }
+.lockup .marca { font-size: 1.25rem; line-height: .95; }
+.lockup .marca small { display: block; font: 700 .62rem var(--f-texto); color: var(--texto-2); letter-spacing: .06em; text-transform: uppercase; margin-top: .2em; }
+.separador { width: 1px; align-self: stretch; background: var(--borde); }
+
+.pie-uabc { display: flex; gap: 1rem; align-items: center; padding: 1.2rem 1rem 2rem; max-width: 720px; margin: 1.5rem auto 0; border-top: 1px solid var(--borde); color: var(--texto-2); font-size: .8rem; line-height: 1.4; }
+.pie-uabc img { height: 64px; width: auto; flex: none; }
+.pie-uabc b { color: var(--verde-prof); display: block; font-size: .86rem; }
+
+.ico { display: inline-block; vertical-align: -.18em; flex: none; }
 .oculto { display: none !important; }
-.tenue { color: var(--gis-tenue); }
+.tenue { color: var(--texto-2); }
 .centro { text-align: center; }
 @keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .aparece { animation: aparecer .35s ease both; }

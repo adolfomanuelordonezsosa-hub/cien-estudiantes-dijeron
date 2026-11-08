@@ -276,28 +276,28 @@
 @keyframes av-brilla{0%,100%{filter:drop-shadow(0 0 1px #FEBE10)}50%{filter:drop-shadow(0 0 5px #FEBE10) brightness(1.15)}}
 @keyframes av-chispa{0%,100%{opacity:.2}50%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.av *{animation:none!important;transition:none!important}}
-.av-mini{display:inline-block;vertical-align:middle;border-radius:8px;background:radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a);overflow:hidden;flex:none}
+.av-mini{display:inline-block;vertical-align:middle;border-radius:8px;background:radial-gradient(circle at 50% 38%,#fffdf7,#FFF1D6);border:1px solid #f1d9a6;overflow:hidden;flex:none}
 .av-mini .av{width:100%;height:100%}
-/* editor */
+/* editor (estilo Cuenca Cimarrona) */
 .av-editor{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:start}
-.av-editor .av-prev{width:110px;height:150px;border-radius:14px;background:radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a);position:sticky;top:70px;overflow:hidden;padding-top:6px}
+.av-editor .av-prev{width:110px;height:150px;border-radius:14px;background:radial-gradient(circle at 50% 38%,#fffdf7,#FFF1D6);border:1px solid #f1d9a6;position:sticky;top:120px;overflow:hidden;padding-top:6px}
 .av-editor .av-prev .av{width:100%;height:100%}
 .av-tipos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
-.av-tipos button{border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--gis,#f6f3e8);border-radius:12px;padding:8px 4px;font:800 14px Montserrat,system-ui,sans-serif;cursor:pointer}
-.av-tipos button.on{border-color:var(--amarillo,#FEBE10);background:var(--amarillo,#FEBE10);color:var(--tinta,#024731)}
+.av-tipos button{border:2px solid #D5E5DB;background:#fff;color:#003D24;border-radius:12px;padding:8px 4px;font:700 14px 'DM Sans',system-ui,sans-serif;cursor:pointer}
+.av-tipos button.on{border-color:#00723F;background:#00723F;color:#fff}
 .av-tabs{display:flex;flex-wrap:wrap;gap:6px}
-.av-tab{border:0;background:rgba(255,255,255,.1);color:var(--gis,#f6f3e8);border-radius:999px;padding:6px 10px;font:700 13px Montserrat,system-ui,sans-serif;cursor:pointer}
-.av-tab.on{background:var(--amarillo,#FEBE10);color:var(--tinta,#024731)}
+.av-tab{border:0;background:#E6F4EC;color:#003D24;border-radius:999px;padding:6px 11px;font:700 13px 'DM Sans',system-ui,sans-serif;cursor:pointer}
+.av-tab.on{background:#DD971A;color:#003D24}
 .av-sw{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.av-sw button{width:32px;height:32px;border-radius:50%;border:3px solid rgba(0,0,0,.35);box-shadow:0 0 0 2px rgba(255,255,255,.25);cursor:pointer;padding:0}
-.av-sw button.on{box-shadow:0 0 0 3px var(--amarillo,#FEBE10)}
+.av-sw button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #D5E5DB;cursor:pointer;padding:0}
+.av-sw button.on{box-shadow:0 0 0 3px #00723F}
 .av-op{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
-.av-op button{border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);border-radius:10px;padding:3px 2px 4px;cursor:pointer;font:700 10.5px Montserrat,system-ui,sans-serif;color:var(--gis-tenue,#cfdcd2);line-height:1.15}
-.av-op button.on{border-color:var(--amarillo,#FEBE10);color:var(--gis,#f6f3e8);background:rgba(254,190,16,.12)}
+.av-op button{border:2px solid #D5E5DB;background:#fff;border-radius:10px;padding:3px 2px 4px;cursor:pointer;font:700 10.5px 'DM Sans',system-ui,sans-serif;color:#4D6156;line-height:1.15}
+.av-op button.on{border-color:#00723F;color:#003D24;background:#E6F4EC}
 .av-op .mini{display:block;height:46px;margin:0 auto 2px;width:40px}
 .av-op .mini .av{width:100%;height:100%}
-.av-lbl{font:800 12px Montserrat,system-ui,sans-serif;color:var(--gis-tenue,#cfdcd2);margin-top:10px}
-.av-rnd{border:0;background:none;color:var(--amarillo,#FEBE10);font:800 14px Montserrat,system-ui,sans-serif;margin-top:10px;cursor:pointer;padding:0}
+.av-lbl{font:700 12px 'DM Sans',system-ui,sans-serif;color:#003D24;margin-top:10px}
+.av-rnd{border:0;background:none;color:#8A5A00;font:700 14px 'DM Sans',system-ui,sans-serif;margin-top:10px;cursor:pointer;padding:0}
 @media (max-width:380px){.av-editor{grid-template-columns:88px 1fr}.av-editor .av-prev{width:88px;height:120px}.av-op{grid-template-columns:repeat(3,1fr)}}`;
 
   function instalar() {
@@ -328,7 +328,7 @@
       humano: [['piel', 'Piel'], ['peinado', 'Peinado'], ['pelo', 'Color de pelo'], ['ropa', 'Ropa'], ['abajo', 'Abajo'], ['sombrero', 'Sombrero'], ['acc', 'Accesorios']],
       animal: [['especie', 'Animal'], ['pelaje', 'Pelaje'], ['detalle', 'Detalle'], ['ropa', 'Ropa'], ['abajo', 'Abajo'], ['sombrero', 'Sombrero'], ['acc', 'Accesorios']]
     };
-    cont.innerHTML = `<div class="av-editor"><div class="av-prev"></div><div><div class="av-tipos"><button type="button" data-t="M">👩 Mujer</button><button type="button" data-t="H">👨 Hombre</button><button type="button" data-t="A">🐾 Animal</button></div><div class="av-tabs"></div><div class="av-opc"></div><button type="button" class="av-rnd">🎲 Sorpréndeme</button></div></div>`;
+    cont.innerHTML = `<div class="av-editor"><div class="av-prev"></div><div><div class="av-tipos"><button type="button" data-t="M">Mujer</button><button type="button" data-t="H">Hombre</button><button type="button" data-t="A">Animal</button></div><div class="av-tabs"></div><div class="av-opc"></div><button type="button" class="av-rnd">Sorpréndeme</button></div></div>`;
     const prev = cont.querySelector('.av-prev'), tabs = cont.querySelector('.av-tabs'), opc = cont.querySelector('.av-opc');
     const partes = () => PARTES[tipo === 'A' ? 'animal' : 'humano'];
     const cod = () => armar(tipo, d);

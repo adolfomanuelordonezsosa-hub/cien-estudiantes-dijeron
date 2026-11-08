@@ -3,155 +3,186 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Top 10 · 100 estudiantes dijeron</title>
+<title>Top 10 · 100 estudiantes dijeron · Cuenca Cimarrona</title>
+<link rel="icon" href="/img/icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Lilita+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/estilo.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="/avatar.js"></script>
 <script src="/voz.js"></script>
+<script src="/iconos.js"></script>
 <style>
   html, body { height: 100%; overflow: hidden; }
-  body { font-size: clamp(12px, 1.05vw, 24px); }
-  .escena { position: absolute; inset: 0; padding: 2.2vh 2.6vw; display: grid; grid-template-columns: 1fr 1.5fr; gap: 2.6vw; }
+  body { font-size: clamp(12px, 1.05vw, 24px); background: var(--fondo); }
+  .escena { position: absolute; inset: 0; padding: 2.4vh 2.4vw 2vh; display: grid; grid-template-columns: 1fr 1.5fr; gap: 2.2vw; }
   .gotas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-  .gotas i { position: absolute; top: -5vh; width: 3px; height: 2.2vh; border-radius: 3px; background: #9fd4b8; opacity: .35; animation: caer linear infinite; }
+  .gotas i { position: absolute; top: -5vh; width: 2px; height: 2.4vh; border-radius: 3px; background: #7fb3dd; opacity: .28; animation: caer linear infinite; }
   @keyframes caer { to { transform: translateY(112vh) rotate(12deg); } }
-  .col { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 0; }
-  .titulo-cien { font: 700 min(10vw, 19vh)/0.85 'Cabin Sketch', cursive; color: var(--amarillo); margin: .25em 0 0; }
-  .titulo-dijeron { font: 700 min(3.8vw, 7vh)/1 'Cabin Sketch', cursive; margin: .05em 0 .3em; }
-  .lema { font-size: 1.25em; color: var(--gis-tenue); line-height: 1.4; margin: 0 0 1em; }
-  .contador { display: flex; align-items: center; gap: .8em; background: rgba(254,190,16,.1); border: 2px solid rgba(254,190,16,.4); border-radius: 16px; padding: .7em 1em; }
-  .contador b { font: 700 3.2em/1 'Cabin Sketch', cursive; color: var(--amarillo); }
-  .contador span { color: var(--gis); font-weight: 700; line-height: 1.25; }
-  .contador small { display: block; color: var(--gis-tenue); font-weight: 600; }
-  .unete { display: flex; gap: 1.4vw; align-items: center; margin-top: auto; }
-  .qr { background: #fff; padding: .6em; border-radius: 14px; line-height: 0; flex: none; }
-  .unete h3 { font: 700 2.2em 'Cabin Sketch', cursive; margin: 0 0 .2em; }
-  .url { font-weight: 700; color: var(--amarillo); font-size: 1.1em; word-break: break-all; }
-  .jugando { margin-top: .5em; color: var(--gis-tenue); font-weight: 600; }
-  .jugando b { color: var(--ocre); }
+  .col { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 0; gap: 1.6vh; }
+  .marcas { display: flex; align-items: center; gap: 1vw; }
+  .marcas .escudo-uabc { height: 7.5vh; }
+  .marcas .lockup img { width: 6vh; height: 6vh; }
+  .marcas .lockup .marca { font-size: 1.9em; }
+  .marcas .lockup .marca small { font-size: .38em; }
+  .portada { padding: 2vh 1.6vw 2.2vh; }
+  .portada .eyebrow { font: 700 .9em var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: #d7efe2; }
+  .portada h1 { font-size: min(5.6vw, 10.5vh); line-height: .92; margin: .15em 0 .2em; }
+  .portada h1 span { color: var(--amarillo); }
+  .portada p { margin: 0; color: #e7f4ec; font-size: 1.15em; line-height: 1.35; }
+  .contador { display: flex; align-items: center; gap: .9em; padding: 1.4vh 1.2vw; }
+  .contador .ico { color: var(--verde); }
+  .contador b { font: 700 3.4em/1 var(--f-titulo); color: var(--verde); }
+  .contador span { color: var(--verde-prof); font-weight: 700; line-height: 1.25; font-size: 1.05em; }
+  .contador small { display: block; color: var(--texto-2); font-weight: 500; }
+  .escanea { margin-top: auto; padding-top: 4vh; }
+  .escanea .cimarron { width: min(9.5vw, 19vh); }
+  .escanea .globo { font-size: 1.05em; }
+  .qr-caja { display: flex; gap: 1.2vw; align-items: center; }
+  .qr { background: #fff; padding: .5em; border-radius: 12px; line-height: 0; flex: none; border: 2px solid var(--verde-claro); }
+  .qr-caja h3 { font-size: 2em; margin: 0 0 .15em; }
+  .url { font-weight: 700; color: var(--verde); font-size: 1.1em; word-break: break-all; }
+  .jugando { margin-top: .5em; color: var(--texto-2); font-weight: 600; display: flex; align-items: center; gap: .35em; }
+  .jugando b { color: var(--ocre-texto); }
 
-  .panel { background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 1.4vh 1.4vw; flex: 1; display: flex; flex-direction: column; min-height: 0; }
-  .panel h2 { font: 700 2.6em 'Cabin Sketch', cursive; margin: 0; color: var(--amarillo); line-height: 1; display: flex; justify-content: space-between; align-items: baseline; }
-  .panel h2 small { font: 600 .32em Montserrat, sans-serif; color: var(--gis-tenue); }
+  .panel { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 0; overflow: hidden; }
+  .panel-cab { display: flex; justify-content: space-between; align-items: center; padding: 1.2vh 1.4vw; border-radius: var(--radio) var(--radio) 0 0; }
+  .panel-cab h2 { font-size: 2.5em; margin: 0; line-height: 1; display: flex; align-items: center; gap: .3em; }
+  .panel-cab h2 .ico { color: var(--amarillo); }
+  .panel-cab small { font: 500 .95em var(--f-texto); color: #e7f4ec; }
+  .panel-cuerpo { padding: 1.2vh 1.2vw 1.4vh; display: flex; flex-direction: column; flex: 1; min-height: 0; }
 
-  /* ESCENARIO del Top 3 */
-  .escenario { position: relative; height: 47vh; margin-top: 1vh; border-radius: 14px; overflow: hidden;
-    background: radial-gradient(ellipse at 50% 0%, rgba(254,190,16,.22), transparent 60%), linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.25)); }
-  .escenario .piso { position: absolute; left: 0; right: 0; bottom: 0; height: 8%; background: linear-gradient(180deg, #0f5a3f, #0a3f2c); border-top: 2px solid rgba(254,190,16,.35); }
-  .podio { position: absolute; bottom: 8%; width: 22%; border-radius: 10px 10px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: .4em; text-align: center; box-shadow: inset 0 -10px 20px rgba(0,0,0,.2); }
-  .podio .num { font: 700 2.6em/1 'Cabin Sketch', cursive; color: var(--tinta); }
-  .podio .nom { font-weight: 800; color: var(--tinta); font-size: 1.05em; max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .podio .pts { font-weight: 800; color: var(--tinta); opacity: .8; font-size: .95em; }
+  .escenario { position: relative; height: 45vh; border-radius: 14px; overflow: hidden; border: 1px solid var(--borde);
+    background: radial-gradient(ellipse at 50% 0%, rgba(254,190,16,.35), transparent 55%), linear-gradient(180deg, #eaf4fb 0%, #f7fbf8 62%, #eef6f0 100%); }
+  .escenario .piso { position: absolute; left: 0; right: 0; bottom: 0; height: 8%; background: linear-gradient(180deg, #4f9b5b, #2f7a3e); }
+  .escenario .piso::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; height: 6px; background: repeating-linear-gradient(90deg, #5fae66 0 10px, #4f9b5b 10px 20px); }
+  .podio { position: absolute; bottom: 8%; width: 22%; border-radius: 10px 10px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: .4em; text-align: center; box-shadow: inset 0 -10px 18px rgba(0,0,0,.12); }
+  .podio .num { font: 700 2.6em/1 var(--f-titulo); color: var(--verde-prof); }
+  .podio .nom { font-weight: 800; color: var(--verde-prof); font-size: 1em; line-height: 1.15; max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .podio .pts { font-weight: 700; color: var(--verde-prof); opacity: .85; font-size: .9em; }
   .p1 { left: 39%; height: 30%; background: linear-gradient(180deg, #FEBE10, #DD971A); }
-  .p2 { left: 13%; height: 22%; background: linear-gradient(180deg, #e9eef0, #b9c3c7); }
-  .p3 { left: 65%; height: 18%; background: linear-gradient(180deg, #e3a35a, #B08208); }
+  .p2 { left: 13%; height: 25%; background: linear-gradient(180deg, #f1f4f5, #c9d2d6); }
+  .p3 { left: 65%; height: 21%; background: linear-gradient(180deg, #f2c58f, #c98a3d); }
   .actor { position: absolute; width: 13%; aspect-ratio: 100/142; transform: translateX(-50%); transition: left 2.2s linear; z-index: 3; }
   .actor .av { width: 100%; height: 100%; }
   .actor.a1 { left: 50%; bottom: 38%; width: 15%; }
-  .actor.a2 { left: 24%; bottom: 30%; }
-  .actor.a3 { left: 76%; bottom: 26%; }
-  .trono { position: absolute; left: 50%; bottom: 36%; width: 21%; transform: translateX(-50%); z-index: 2; transition: transform .7s cubic-bezier(.3,1.4,.5,1), opacity .5s; }
+  .actor.a2 { left: 24%; bottom: 33%; }
+  .actor.a3 { left: 76%; bottom: 29%; }
+  .trono { position: absolute; left: 50%; bottom: 36%; width: 21%; transform: translateX(-50%); z-index: 2; transition: transform .7s cubic-bezier(.3,1.4,.5,1), opacity .5s; filter: drop-shadow(0 6px 8px rgba(0,61,36,.2)); }
   .trono.fuera { transform: translateX(-50%) translateY(60%) scale(.6); opacity: 0; }
-  .burbuja { position: absolute; z-index: 5; background: #fffdf5; color: var(--tinta); font-weight: 800; padding: .5em .9em; border-radius: 14px; font-size: 1.15em; white-space: nowrap; transform: translateX(-50%); box-shadow: var(--sombra); transition: left 2.2s linear, opacity .3s; }
-  .burbuja::after { content: ''; position: absolute; left: 50%; bottom: -10px; margin-left: -8px; border: 8px solid transparent; border-top-color: #fffdf5; border-bottom: 0; }
-  .destello { position: absolute; z-index: 4; left: 50%; bottom: 62%; width: 30%; aspect-ratio: 1; transform: translate(-50%, 50%) scale(.2); border-radius: 50%; background: radial-gradient(circle, rgba(254,190,16,.9), rgba(254,190,16,0) 65%); opacity: 0; pointer-events: none; }
+  .burbuja { position: absolute; z-index: 5; background: #fff; color: var(--verde-prof); border: 3px solid var(--verde-prof); font-weight: 700; padding: .4em .85em; border-radius: 14px; font-size: 1.1em; white-space: nowrap; transform: translateX(-50%); box-shadow: var(--sombra-chica); transition: left 2.2s linear, opacity .3s; }
+  .burbuja::after { content: ''; position: absolute; left: 50%; bottom: -11px; margin-left: -8px; border: 8px solid transparent; border-top-color: var(--verde-prof); border-bottom: 0; }
+  .destello { position: absolute; z-index: 4; left: 50%; bottom: 62%; width: 30%; aspect-ratio: 1; transform: translate(-50%, 50%) scale(.2); border-radius: 50%; background: radial-gradient(circle, rgba(254,190,16,.95), rgba(254,190,16,0) 65%); opacity: 0; pointer-events: none; }
   .destello.on { animation: destello 1.3s ease-out; }
   @keyframes destello { 0% { opacity: 0; transform: translate(-50%, 50%) scale(.2); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 50%) scale(1.6); } }
-  .vacio-escenario { position: absolute; inset: 0; display: grid; place-items: center; color: var(--gis-tenue); font-size: 1.5em; text-align: center; padding: 1em; }
+  .vacio-escenario { position: absolute; inset: 0; display: grid; place-items: center; color: var(--verde-prof); font-size: 1.5em; font-weight: 700; text-align: center; padding: 1em; }
 
-  /* filas 4 al 10 */
-  .filas { display: grid; gap: .6vh; flex: 1; min-height: 0; grid-template-rows: repeat(7, minmax(0, 1fr)); margin-top: 1vh; }
-  .fila { display: grid; grid-template-columns: 2.6em 2.2em 1fr 4.6em 4.8em; align-items: center; gap: .9em; padding: 0 1em; border-radius: 12px; background: rgba(255,255,255,.06); border: 2px solid rgba(254,190,16,.16); font-size: min(1.25em, 2.2vh); min-height: 0; overflow: hidden; }
-  .fila .lugar { font: 700 1.5em 'Cabin Sketch', cursive; text-align: center; color: var(--gis-tenue); }
+  .filas { display: grid; gap: .6vh; flex: 1; min-height: 0; grid-template-rows: repeat(7, minmax(0, 1fr)); margin-top: 1.2vh; }
+  .fila { display: grid; grid-template-columns: 2.4em 2.2em 1fr 4.4em 4.8em; align-items: center; gap: .9em; padding: 0 1em; border-radius: 12px; background: #fff; border: 1px solid var(--borde); font-size: min(1.25em, 2.2vh); min-height: 0; overflow: hidden; }
+  .fila .lugar { width: 1.8em; height: 1.8em; display: grid; place-items: center; border-radius: 50%; background: var(--verde-claro); color: var(--verde); font: 700 1.05em var(--f-titulo); }
   .fila .avf { display: flex; align-items: center; justify-content: center; height: 100%; }
-  .fila .nom { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .fila .nom small { font-weight: 500; font-size: .7em; color: var(--gis-tenue); margin-left: .5em; }
-  .fila .pts { font: 700 1.5em 'Cabin Sketch', cursive; color: var(--amarillo); text-align: right; }
-  .fila .tiempo { text-align: right; color: var(--gis-tenue); font-variant-numeric: tabular-nums; }
+  .fila .nom { font-weight: 800; color: var(--verde-prof); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fila .nom small { font-weight: 500; font-size: .72em; color: var(--texto-2); margin-left: .5em; }
+  .fila .pts { font: 700 1.5em var(--f-titulo); color: var(--verde); text-align: right; }
+  .fila .tiempo { text-align: right; color: var(--texto-2); font-variant-numeric: tabular-nums; }
   .fila.nueva { animation: entra 1.4s ease; }
-  .fila.vacia { opacity: .35; }
-  @keyframes entra { 0% { transform: scale(1.05); box-shadow: 0 0 0 5px var(--amarillo); } 100% { transform: none; box-shadow: none; } }
+  .fila.vacia { opacity: .55; background: transparent; border-style: dashed; }
+  @keyframes entra { 0% { transform: scale(1.05); box-shadow: 0 0 0 5px var(--ocre); } 100% { transform: none; box-shadow: none; } }
 
-  #anuncio { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(1,30,20,.86); text-align: center; }
-  #anuncio .caja { animation: golpe .5s cubic-bezier(.3,1.5,.5,1) both; }
-  #anuncio .k { font: 700 3vw 'Cabin Sketch', cursive; color: var(--amarillo); }
-  #anuncio .n { font: 700 7vw/1 'Cabin Sketch', cursive; margin: .1em 0; }
-  #anuncio .p { font-size: 2vw; color: var(--ocre); font-weight: 800; }
-  #anuncio .d { font-size: 1.5vw; color: var(--gis-tenue); margin-top: .6em; }
-  #aAv { width: 12vw; height: 17vw; margin: 0 auto 1vw; border-radius: 2vw; background: radial-gradient(circle at 50% 38%,#fffdf5,#f3dc9a); padding-top: .5vw; }
+  #anuncio { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(0,61,36,.72); text-align: center; backdrop-filter: blur(4px); }
+  #anuncio .caja { background: #fff; border-radius: 28px; padding: 3vh 4vw 3.4vh; min-width: 40vw; box-shadow: var(--sombra); border-top: 10px solid var(--verde); animation: golpe .5s cubic-bezier(.3,1.5,.5,1) both; }
+  #anuncio .k { font: 700 2.6vw var(--f-titulo); color: var(--ocre-texto); display: flex; align-items: center; justify-content: center; gap: .3em; }
+  #anuncio .n { font: 700 6.2vw/1 var(--f-titulo); color: var(--verde-prof); margin: .05em 0; }
+  #anuncio .p { font-size: 1.8vw; color: var(--verde); font-weight: 800; }
+  #anuncio .d { font-size: 1.4vw; color: var(--texto-2); margin-top: .5em; }
+  #aAv { width: 12vw; height: 17vw; margin: 0 auto 1vw; border-radius: 2vw; background: radial-gradient(circle at 50% 38%, #fffdf7, var(--ocre-claro)); border: 1px solid #f1d9a6; padding-top: .5vw; }
   #aAv .av { width: 100%; height: 100%; }
   @keyframes golpe { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
 
-  #activar { position: fixed; inset: 0; background: rgba(1,30,20,.92); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; }
-  #activar h2 { font: 700 4vw 'Cabin Sketch', cursive; margin: 0 0 .3em; }
-  #engrane { position: fixed; right: 1vw; bottom: 1vw; z-index: 60; background: rgba(0,0,0,.35); border: 0; color: var(--gis-tenue); border-radius: 50%; width: 2.6em; height: 2.6em; cursor: pointer; font-size: 1.1em; opacity: .35; }
+  #activar { position: fixed; inset: 0; background: var(--verde); z-index: 100; display: grid; place-items: center; text-align: center; cursor: pointer; color: #fff; }
+  #activar img { width: 16vh; height: 16vh; border-radius: 50%; background: #fff; }
+  #activar h2 { font-size: 4.4vw; margin: .3em 0 .1em; color: #fff; }
+  #activar p { font-size: 1.4em; color: #e7f4ec; margin: 0; }
+  #engrane { position: fixed; right: 1vw; bottom: 1vw; z-index: 60; background: #fff; border: 1px solid var(--borde); color: var(--verde); border-radius: 50%; width: 2.6em; height: 2.6em; cursor: pointer; opacity: .45; display: grid; place-items: center; }
   #engrane:hover { opacity: 1; }
-  #ajustes { position: fixed; right: 1vw; bottom: 4.5em; width: 22em; z-index: 61; background: #03402c; border: 1px solid rgba(255,255,255,.15); border-radius: 14px; padding: 1em; font-size: 14px; box-shadow: var(--sombra); }
+  #ajustes { position: fixed; right: 1vw; bottom: 4.5em; width: 23em; z-index: 61; background: #fff; border: 1px solid var(--borde); border-radius: 14px; padding: 1em; font-size: 14px; box-shadow: var(--sombra); }
   #ajustes .fila-b { display: flex; flex-wrap: wrap; gap: .5em; margin-top: .8em; }
-  .estado-con { position: fixed; left: 1vw; bottom: 1vw; font-size: 12px; color: var(--gis-tenue); opacity: .6; z-index: 60; }
+  .estado-con { position: fixed; left: 1vw; bottom: .6vw; font-size: 12px; color: var(--texto-2); opacity: .7; z-index: 60; }
 </style>
 </head>
 <body>
-<div id="activar"><div><h2>Toca la pantalla para empezar</h2><p class="tenue" style="font-size:1.4em">Esto activa la voz del conductor y los sonidos.</p></div></div>
+<div id="activar"><div><img src="/img/sello.png" alt=""><h2>Toca la pantalla para empezar</h2><p>Esto activa la voz del conductor y los sonidos</p></div></div>
 
 <section class="escena">
   <div class="gotas" id="gotas"></div>
   <div class="col">
-    <span class="pastilla" style="align-self:flex-start">OCUN · Cuando El Niño toca la puerta</span>
-    <h1 class="titulo-cien">100</h1>
-    <div class="titulo-dijeron">estudiantes dijeron…</div>
-    <p class="lema">¿Sabes qué colonias de Tijuana han tenido más problemas con las lluvias? Las respuestas salen de los <b id="nRep">reportes reales</b>. Juega desde tu celular y entra al Top 10.</p>
-    <div class="contador"><b id="sPersonas">0</b><span>personas ya jugaron<small id="sPartidas">0 partidas en total</small></span></div>
-    <div class="unete">
-      <div class="qr" id="qr"></div>
-      <div><h3>¡Escanea y juega!</h3><div class="url" id="url"></div><div class="jugando"><b id="sJugando">0</b> jugando ahora mismo</div></div>
+    <div class="marcas">
+      <img class="escudo-uabc" src="/img/escudo-uabc.png" alt="Escudo de la Universidad Autónoma de Baja California">
+      <span class="separador"></span>
+      <span class="lockup"><img src="/img/sello.png" alt=""><span class="marca">Cuenca Cimarrona<small>UABC · Facultad de Ciencias Químicas e Ingeniería</small></span></span>
+    </div>
+    <div class="encabezado-verde marca-agua portada">
+      <div class="eyebrow">OCUN · Cuando El Niño toca la puerta</div>
+      <h1><span>100</span> estudiantes dijeron</h1>
+      <p>¿Qué colonias de Tijuana han tenido más problemas con las lluvias? Las respuestas salen de <b id="nRep">reportes reales</b></p>
+    </div>
+    <div class="tarjeta suave contador"><i data-ico="people" data-t="44"></i><b id="sPersonas">0</b><span>personas ya jugaron<small id="sPartidas">0 partidas en total</small></span></div>
+    <div class="guia escanea">
+      <div class="cimarron"><span class="globo">¡Escanea y juega!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
+      <div class="presenta tarjeta qr-caja">
+        <div class="qr" id="qr"></div>
+        <div><h3>Juega desde tu celular</h3><div class="url" id="url"></div><div class="jugando"><i data-ico="gamepad" data-t="18"></i><b id="sJugando">0</b> jugando ahora</div></div>
+      </div>
     </div>
   </div>
   <div class="col">
-    <div class="panel">
-      <h2>🏆 Top 10 <small>Más puntos gana · si hay empate, el más rápido</small></h2>
-      <div class="escenario" id="escenario">
-        <svg class="trono" id="trono" viewBox="0 0 120 150" aria-hidden="true">
-          <path d="M14 150V40Q14 8 60 4Q106 8 106 40V150H92V96H28V150Z" fill="#B08208"/>
-          <path d="M22 92V44Q22 16 60 12Q98 16 98 44V92Z" fill="#7b2d3a"/>
-          <path d="M30 86V48Q30 24 60 20Q90 24 90 48V86Z" fill="#9b3a4a"/>
-          <rect x="8" y="88" width="104" height="16" rx="5" fill="#DD971A"/>
-          <rect x="16" y="90" width="88" height="10" rx="4" fill="#c0392b"/>
-          <circle cx="60" cy="8" r="6" fill="#FEBE10"/><circle cx="14" cy="44" r="5" fill="#FEBE10"/><circle cx="106" cy="44" r="5" fill="#FEBE10"/>
-          <path d="M8 104H22V150H8ZM98 104H112V150H98Z" fill="#8a6606"/>
-        </svg>
-        <div class="podio p2"><span class="num">2</span><span class="nom" id="n2"></span><span class="pts" id="pt2"></span></div>
-        <div class="podio p1"><span class="num">1</span><span class="nom" id="n1"></span><span class="pts" id="pt1"></span></div>
-        <div class="podio p3"><span class="num">3</span><span class="nom" id="n3"></span><span class="pts" id="pt3"></span></div>
-        <div class="actor a2" id="actor2"></div>
-        <div class="actor a3" id="actor3"></div>
-        <div class="actor a1" id="actor1"></div>
-        <div class="destello" id="destello"></div>
-        <div class="burbuja oculto" id="burbuja"></div>
-        <div class="piso"></div>
-        <div class="vacio-escenario oculto" id="vacioEscenario">¡El podio está vacío!<br>Escanea el código y sé el primero en sentarte en el trono 👑</div>
+    <div class="panel tarjeta">
+      <div class="panel-cab encabezado-verde marca-agua">
+        <h2><i data-ico="trophy" data-t="34"></i>Top 10</h2>
+        <small>Más puntos gana · si hay empate, el más rápido</small>
       </div>
-      <div class="filas" id="filas"></div>
+      <div class="panel-cuerpo">
+        <div class="escenario" id="escenario">
+          <svg class="trono" id="trono" viewBox="0 0 120 150" aria-hidden="true">
+            <path d="M14 150V40Q14 8 60 4Q106 8 106 40V150H92V96H28V150Z" fill="#B08208"/>
+            <path d="M22 92V44Q22 16 60 12Q98 16 98 44V92Z" fill="#00723F"/>
+            <path d="M30 86V48Q30 24 60 20Q90 24 90 48V86Z" fill="#048049"/>
+            <rect x="8" y="88" width="104" height="16" rx="5" fill="#DD971A"/>
+            <rect x="16" y="90" width="88" height="10" rx="4" fill="#003D24"/>
+            <circle cx="60" cy="8" r="6" fill="#FEBE10"/><circle cx="14" cy="44" r="5" fill="#FEBE10"/><circle cx="106" cy="44" r="5" fill="#FEBE10"/>
+            <path d="M8 104H22V150H8ZM98 104H112V150H98Z" fill="#8a6606"/>
+          </svg>
+          <div class="podio p2"><span class="num">2</span><span class="nom" id="n2"></span><span class="pts" id="pt2"></span></div>
+          <div class="podio p1"><span class="num">1</span><span class="nom" id="n1"></span><span class="pts" id="pt1"></span></div>
+          <div class="podio p3"><span class="num">3</span><span class="nom" id="n3"></span><span class="pts" id="pt3"></span></div>
+          <div class="actor a2" id="actor2"></div>
+          <div class="actor a3" id="actor3"></div>
+          <div class="actor a1" id="actor1"></div>
+          <div class="destello" id="destello"></div>
+          <div class="burbuja oculto" id="burbuja"></div>
+          <div class="piso"></div>
+          <div class="vacio-escenario oculto" id="vacioEscenario">El podio está vacío<br>Escanea el código y sé el primero en sentarte en el trono</div>
+        </div>
+        <div class="filas" id="filas"></div>
+      </div>
     </div>
   </div>
 </section>
 
 <div id="anuncio" class="oculto"><div class="caja"><div id="aAv"></div><div class="k" id="aK"></div><div class="n" id="aN"></div><div class="p" id="aP"></div><div class="d" id="aD"></div></div></div>
 
-<button id="engrane" title="Ajustes">⚙</button>
+<button id="engrane" title="Ajustes"><i data-ico="gear" data-t="20"></i></button>
 <div id="ajustes" class="oculto">
-  <b>Ajustes de la pantalla</b>
+  <b style="color:var(--verde-prof)">Ajustes de la pantalla</b>
   <p class="tenue" id="audiosInfo" style="font-size:12px"></p>
   <div class="fila-b">
-    <button class="btn chico" id="probarVoz">Probar voz</button>
-    <button class="btn chico" id="probarShow">Ver show del 1er lugar</button>
-    <button class="btn chico fantasma" id="pantallaCompleta">Pantalla completa</button>
+    <button class="btn chico" id="probarVoz"><i data-ico="volume" data-t="16"></i>Probar voz</button>
+    <button class="btn chico naranja" id="probarShow"><i data-ico="crown" data-t="16"></i>Show del 1er lugar</button>
+    <button class="btn chico fantasma" id="pantallaCompleta"><i data-ico="fullscreen" data-t="16"></i>Pantalla completa</button>
   </div>
 </div>
-<div class="estado-con" id="estadoCon">Conectando…</div>
+<div class="estado-con" id="estadoCon">Conectando</div>
 
 <script>
 (() => {
@@ -168,7 +199,7 @@
   function pintarQR() {
     const el = $('#qr'); el.innerHTML = '';
     const tam = Math.round(Math.min(innerWidth * .14, innerHeight * .24));
-    if (window.QRCode) new QRCode(el, { text: URL_JUEGO, width: tam, height: tam, colorDark: '#02301f', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    if (window.QRCode) new QRCode(el, { text: URL_JUEGO, width: tam, height: tam, colorDark: '#003D24', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
     $('#url').textContent = URL_JUEGO.replace(/^https?:\/\//, '').replace(/\/$/, '');
   }
   $('#gotas').innerHTML = Array.from({ length: 36 }, () => `<i style="left:${Math.random() * 100}%;animation-duration:${(1.4 + Math.random() * 2).toFixed(2)}s;animation-delay:-${(Math.random() * 3).toFixed(2)}s"></i>`).join('');
@@ -196,7 +227,7 @@
     for (let i = 3; i < 10; i++) {
       const r = t(i);
       html += r ? `<div class="fila ${recientes.has(r.id) ? 'nueva' : ''}" data-id="${r.id}"><span class="lugar">${r.lugar}</span><span class="avf">${Avatar.mini(r.avatar, 28)}</span><span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pts">${r.puntos}</span><span class="tiempo">${tiempo(r.ms)}</span></div>`
-        : `<div class="fila vacia"><span class="lugar">${i + 1}</span><span></span><span class="nom tenue">¿Tú?</span><span></span><span></span></div>`;
+        : `<div class="fila vacia"><span class="lugar">${i + 1}</span><span></span><span class="nom tenue">Este lugar puede ser tuyo</span><span></span><span></span></div>`;
     }
     $('#filas').innerHTML = html;
   }
@@ -251,13 +282,13 @@
     s.classList.remove('anim-camina');
     // busca a alguien mejor
     s.classList.add('anim-busca');
-    burbuja('¿Hay alguien mejor que yo? 🔍', '76%');
+    burbuja('¿Hay alguien mejor?', '78%');
     if (Voz.tiene('trono')) Voz.secuencia([{ evento: 'trono' }]);
     await espera(2800);
     s.classList.remove('anim-busca');
     // no hay nadie
     s.classList.add('anim-nada');
-    burbuja('¡Nadie! 🤷', '84%');
+    burbuja('¡Nadie!', '84%');
     await espera(2100);
     s.classList.remove('anim-nada');
     burbuja('', '');
@@ -276,7 +307,7 @@
     $('#trono').classList.remove('fuera');
     await espera(500);
     s.classList.add('anim-sentado');
-    burbuja('👑', '50%');
+    burbuja('¡Sigo siendo el rey!', '50%');
     mirar(() => 'anim-aplaude');
     await espera(2200);
     burbuja('', '');
@@ -291,7 +322,7 @@
   async function anunciar(n) {
     anunciando = true;
     const quien = (n.desplazados || []).map(x => (topActual.find(r => r.id === x.id) || {}).nombre).filter(Boolean)[0];
-    $('#aK').textContent = n.lugar === 1 ? '👑 ¡NUEVO PRIMER LUGAR!' : `🏆 ¡Entra al Top 10 en el lugar ${n.lugar}!`;
+    $('#aK').innerHTML = n.lugar === 1 ? `${Icono('crown', 34)} ¡Nuevo primer lugar!` : `${Icono('trophy', 34)} ¡Entra al Top 10 en el lugar ${n.lugar}!`;
     $('#aN').textContent = n.nombre;
     $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
     $('#aD').textContent = quien ? `Le ganó el lugar a ${quien}` : '';
@@ -324,7 +355,7 @@
     Voz.desbloquear();
     $('#activar').remove();
     const n = Object.keys(Voz.urls).length;
-    $('#audiosInfo').textContent = n ? `Frases grabadas: ${n}. Se administran en /admin → Voces.` : 'Todavía no hay grabaciones: súbelas en /admin → Voces.';
+    $('#audiosInfo').textContent = n ? `Frases grabadas: ${n}. Se administran en /admin → Voces` : 'Todavía no hay grabaciones: súbelas en /admin → Voces';
     enCola(() => Voz.secuencia([{ evento: 'bienvenida' }]));
   });
   $('#probarVoz').addEventListener('click', () => enCola(() => Voz.secuencia([{ evento: 'dijeron' }])));
@@ -336,6 +367,7 @@
   setInterval(() => { if (Voz.tiene('invitacion')) enCola(() => Voz.secuencia([{ evento: 'invitacion' }])); }, 180000);
 
   fetch('/api/info').then(r => r.json()).then(i => { $('#nRep').textContent = `${i.reportes} reportes reales de Tijuana`; }).catch(() => {});
+  pintarIconos();
   Voz.iniciar({ clave: 'ced_tv_voz' });
   pintarQR();
   conectar();

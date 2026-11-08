@@ -52,6 +52,15 @@ Escenario con podio: el 1er lugar se sienta en un trono con corona; cada 70 segu
 
 Ranking y partidas · 📊 Dashboard (lo que creen vs. lo que es real por pregunta, partidas por día y hora, puntajes, carreras, dónde viven, contador de personas) · 🎙️ Voces · 👥 Creadores (aparecen al tocar el sello "OCUN · Cuando El Niño toca la puerta" en la página de jugadores) · Preguntas y respuestas · Exportar datos.
 
+## Estilo visual (guía "Estilos · Cuenca Cimarrona")
+
+- Colores: Verde UABC `#00723F`, Ocre UABC `#DD971A`, Verde profundo `#003D24`, Ocre texto `#8A5A00`, Verde claro `#E6F4EC`, Ocre claro `#FFF1D6`
+- Letras: Lilita One (marca), Barlow Condensed (títulos), DM Sans (texto)
+- Escudo UABC (`public/img/escudo-uabc.png`) tal como está, en el encabezado y el pie de cada página
+- Cimarrón guía (`public/img/cimarron.webp`): uno por pantalla, a la izquierda de lo que presenta, entra deslizándose y flota 5 px, con globo de 2 a 4 palabras
+- Silueta del Cimarrón como marca de agua en tarjetas (8 %) y encabezados verdes (blanco 10 %)
+- Iconos de línea en `public/iconos.js`
+
 ## Variables en Railway
 
 - `MONGODB_URI`: cadena de MongoDB Atlas (sin ella los datos se pierden en cada redeploy).

@@ -257,6 +257,15 @@
 .anim-nada .av-bd{transform:rotate(-70deg)}
 .anim-nada .av-cabeza{animation:av-niega .7s ease-in-out 3}
 .anim-nada .av-todo{transform:translateY(-1.5px)}
+.anim-presume .av-todo{transform:scale(1.03)}
+.anim-presume .av-cabeza{transform:rotate(-5deg) translateY(-1px)}
+.anim-presume .av-cara{transform:translate(1px,-2px)}
+.anim-presume .av-bi{transform:rotate(24deg)}
+.anim-presume .av-bd{transform:rotate(-24deg)}
+.anim-presume.anim-mira-izq .av-cabeza{transform:rotate(-9deg) translateY(-1px)}
+.anim-presume.anim-mira-der .av-cabeza{transform:rotate(3deg) translateY(-1px)}
+.anim-presume.anim-mira-abajo .av-cabeza{transform:rotate(2deg)}
+.anim-presume.anim-mira-abajo .av-cara{transform:translateY(3px)}
 .anim-sentado .av-pi,.anim-sentado .av-pd{transform:scaleY(.4)}
 .anim-sentado .av-todo{transform:translateY(19px)}
 .anim-sentado .av-bi{transform:rotate(-18deg)}

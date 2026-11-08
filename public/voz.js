@@ -11,6 +11,7 @@
     { id: 'pregunta', titulo: 'Sale una pregunta', donde: 'Celular', cuando: 'Al aparecer cada pregunta', texto: '¡Ahí va la pregunta!', sugerencias: ['¡Ahí va la pregunta!', '¡Pon atención, ahí te va!', 'Preguntamos a 100 estudiantes…'] },
     { id: 'correcta', titulo: 'Respuesta correcta', donde: 'Celular', cuando: 'Cuando la colonia sí está en el tablero', texto: '¡Está en el tablero!', sugerencias: ['¡100 estudiantes dijeron!', '¡Está en el tablero!', '¡Eso, muy bien!', '¡Bravo, campeón!'] },
     { id: 'incorrecta', titulo: 'Respuesta incorrecta', donde: 'Celular', cuando: 'Cuando la colonia no está en el tablero', texto: '¡No está en el tablero!', sugerencias: ['¡No está en el tablero!', '¡Uy, casi!', '¡Nooo, esa no!', 'Mmm… no, esa no es.'] },
+    { id: 'tiempo', titulo: 'Se acabó el tiempo', donde: 'Celular', cuando: 'Cuando se acaban los 10 segundos de una vida', texto: '¡Se acabó el tiempo!', sugerencias: ['¡Se acabó el tiempo!', '¡Uy, se te fue el tiempo!'] },
     { id: 'sin_oportunidades', titulo: 'Se acabaron las oportunidades', donde: 'Celular', cuando: 'Al tercer error de una pregunta', texto: 'Se acabaron tus oportunidades.', sugerencias: ['¡Se acabaron tus oportunidades! Vamos a la siguiente.', 'Ni modo, ¡a la siguiente!'] },
     { id: 'tablero_completo', titulo: 'Encontró todas', donde: 'Celular', cuando: 'Cuando encuentra todas las colonias de una pregunta', texto: '¡Las encontraste todas!', sugerencias: ['¡Las encontraste todas! ¡Qué bárbaro!', '¡Tablero completo!'] },
     { id: 'gracias', titulo: 'Gracias por jugar', donde: 'Celular', cuando: 'Al terminar la última pregunta', texto: '¡Gracias por jugar! Ahora veamos las respuestas correctas.', sugerencias: ['¡Gracias por jugar! Ahora veamos las respuestas correctas.', '¡Muchas gracias por participar! Mira cómo te fue.'] },
@@ -18,7 +19,6 @@
     { id: 'nuevo_primero', titulo: 'Nuevo primer lugar', donde: 'Celular y TV', cuando: 'Cuando alguien queda en primer lugar', texto: '¡Tenemos nuevo campeón! ¡Primer lugar!', sugerencias: ['¡Atención! ¡Tenemos nuevo campeón! ¡Primer lugar!', '¡Abran paso, que llegó el nuevo número uno!'] },
     { id: 'te_rebasaron', titulo: 'Le quitaron su lugar', donde: 'Celular (de quien bajó)', cuando: 'Si alguien le gana su lugar mientras tiene abierta la página', texto: 'Perdón, campeón, pero hay alguien más gallo que tú.', sugerencias: ['Perdón, campeón, pero hay alguien más gallo que tú.', '¡Uy! Te acaban de ganar el lugar. ¡Juega otra vez y recupéralo!'] },
     { id: 'salio_top', titulo: 'Salió del Top 10', donde: 'Celular (de quien salió)', cuando: 'Si alguien lo saca del Top 10 mientras tiene abierta la página', texto: 'Ni modo, campeón, te sacaron del Top 10. ¡Juega otra vez!', sugerencias: ['Ni modo, campeón, te sacaron del Top 10. ¡Juega otra vez!'] },
-    { id: 'trono', titulo: 'Show del primer lugar', donde: 'TV', cuando: 'Cuando el número 1 busca a alguien mejor y se sienta en su trono', texto: '¿Hay alguien mejor? … ¡Nadie! El trono sigue siendo suyo.', sugerencias: ['¿Hay alguien mejor? … ¡Nadie! El trono sigue siendo suyo.', '¡Que alguien le gane! … ¿Nadie? ¡Larga vida al campeón!'] },
     { id: 'dijeron', titulo: '"100 estudiantes dijeron"', donde: 'TV', cuando: 'Botón "Probar voz" de la TV', texto: '¡Cien estudiantes dijeron!', sugerencias: ['¡100 estudiantes dijeron!'] }
   ];
   const NUM = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez'];
@@ -64,7 +64,6 @@
         s.buffer = b; s.connect(this.ctx.destination); s.start(0);
         if (this.ctx.state === 'suspended') this.ctx.resume();
       } catch { this.ctx = null; }
-      try { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } } catch { /* */ }
       try { this.audioEl = new Audio(); this.audioEl.play().catch(() => {}); } catch { /* */ }
       return this.decodificar();
     },
@@ -120,7 +119,10 @@
         setTimeout(ok, 12000);
       });
     },
+    // Nunca se usa voz de computadora: si una frase no tiene grabación, no suena nada
     decir(texto, tk) {
+      return Promise.resolve();
+      // eslint-disable-next-line no-unreachable
       if (!this.activo || !this.tts || !texto || !('speechSynthesis' in window) || tk !== this.token) return Promise.resolve();
       return new Promise(ok => {
         const u = new SpeechSynthesisUtterance(texto);
@@ -136,8 +138,7 @@
       if (!this.activo || tk !== this.token) return;
       const u = this.elegir(id);
       if (u) return this.tocarUrl(u, tk);
-      const e = EVENTOS.find(x => x.id === id);
-      if (e) return this.decir(e.texto, tk);
+      // sin grabación: silencio (nunca voz robótica)
     },
     // efectos de sonido
     tono(f, t0, d, tipo = 'triangle', vol = .2) {

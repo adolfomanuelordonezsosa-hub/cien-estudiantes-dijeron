@@ -81,6 +81,30 @@
   .casilla.mia .p { color: var(--amarillo); }
   @keyframes voltea { from { transform: rotateX(90deg); } to { transform: none; } }
   .pasar { margin-top: .4rem; }
+  .vidas-fila { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: .5rem 0 .3rem; }
+  .vidas-fila .tachas { margin: 0; }
+  .cuenta { width: 3.2rem; height: 3.2rem; border-radius: 50%; display: grid; place-items: center; font: 700 1.6rem var(--f-titulo); color: var(--verde); border: 3px solid var(--verde); background: #fff; }
+  .cuenta.prisa { color: var(--rojo); border-color: var(--rojo); animation: latido .5s ease infinite alternate; }
+  @keyframes latido { to { transform: scale(1.08); } }
+  .barra-tiempo { height: 8px; border-radius: 99px; background: var(--borde); overflow: hidden; margin: .4rem 0 .6rem; }
+  .barra-tiempo div { height: 100%; width: 100%; background: var(--verde); border-radius: 99px; transition: background .3s; }
+  .barra-tiempo.prisa div { background: var(--rojo); }
+  .opciones { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .6rem 0 .2rem; }
+  .op { display: flex; align-items: center; gap: .4rem; min-height: 3.3rem; padding: .55rem .7rem; border-radius: 12px; border: 2px solid var(--borde); background: #fff; color: var(--verde-prof); font: 700 .95rem/1.15 var(--f-texto); text-align: left; cursor: pointer; transition: transform .08s, border-color .15s, background .15s; box-shadow: 0 2px 0 #d5e5db; }
+  .op:hover { border-color: var(--verde); }
+  .op:active { transform: translateY(2px); box-shadow: none; }
+  .op span { flex: 1; }
+  .op b { font: 700 1.15rem var(--f-titulo); color: var(--amarillo); }
+  .op.bien { background: var(--verde); border-color: var(--verde); color: #fff; box-shadow: none; cursor: default; animation: voltea .4s ease both; }
+  .op.mal { background: var(--rojo-claro); border-color: #f3b8be; color: var(--rojo); box-shadow: none; cursor: default; text-decoration: line-through; }
+  .op:disabled { cursor: default; }
+  .rv-cab { text-align: center; padding: .6rem 0 .2rem; }
+  .rv-cab h2 { font-size: 2.2rem; margin: .2rem 0; }
+  .rv-cab .rv-pts { font: 700 3rem/1 var(--f-titulo); color: var(--verde); }
+  .rv-cab .rv-pts small { font: 600 .9rem var(--f-texto); color: var(--texto-2); }
+  .aviso-legal { margin-top: 1rem; background: #fff; border: 1px dashed #b9cfc2; border-radius: 12px; padding: .7rem .85rem; font-size: .76rem; color: var(--texto-2); line-height: 1.45; }
+  .aviso-legal b { color: var(--verde-prof); display: flex; align-items: center; gap: .3rem; margin-bottom: .2rem; }
+  .ver-top { margin-top: .7rem; }
   .transicion { text-align: center; padding: 3rem 0; }
   .transicion .grande { font: 700 4.6rem var(--f-titulo); color: var(--verde); line-height: 1; }
 
@@ -226,9 +250,11 @@
       <div id="rError" class="error oculto"></div>
       <p class="aviso">Tu carrera y colonia solo se usan para las estadísticas del proyecto. Sube el volumen: el juego tiene voz</p>
     </form>
+    <div class="aviso-legal"><b><i data-ico="info" data-t="14"></i>Aviso</b>Esta aplicación es una parodia educativa sin fines de lucro para concientizar sobre riesgos climáticos. No está afiliada a ninguna cadena de televisión. Las voces fueron generadas por inteligencia artificial y no pertenecen a actores reales. Es gratis: no tiene publicidad, no cobra y no recibe donaciones</div>
     <div class="tarjeta" style="margin-top:1rem">
       <h2 class="paso-titulo"><i data-ico="trophy" data-t="22"></i>Top 10</h2>
       <div id="topBienvenida"></div>
+      <button class="btn fantasma chico ver-top" data-top100 type="button"><i data-ico="people" data-t="16"></i>Ver Top 100</button>
     </div>
   </section>
 
@@ -237,24 +263,29 @@
     <div class="etiqueta" id="jNumero"></div>
     <div class="pasos" id="jPasos"></div>
     <p class="pregunta" id="jPregunta"></p>
-    <p class="ayuda"><i data-ico="map" data-t="16"></i><span id="jAyuda"></span></p>
-    <div class="tachas" id="jTachas"></div>
-    <form id="fResponder" class="fila-envio" autocomplete="off">
-      <input id="jInput" list="dlColonias" maxlength="80" placeholder="Escribe una colonia" enterkeyhint="send" autocapitalize="words">
-      <button class="btn naranja" type="submit" id="jBtn" aria-label="Enviar"><i data-ico="arrow"></i></button>
-    </form>
+    <div class="vidas-fila"><div class="tachas" id="jTachas"></div><div class="cuenta" id="jCuenta" aria-label="Segundos restantes">10</div></div>
+    <div class="barra-tiempo" id="jBarraWrap"><div id="jBarra"></div></div>
+    <p class="ayuda"><i data-ico="info" data-t="16"></i><span id="jAyuda"></span></p>
+    <div class="opciones" id="jOpciones"></div>
     <div class="guia juego-guia">
       <div class="cimarron"><span class="globo" id="jGlobo">¡Tú puedes!</span><img src="/img/cimarron.webp" alt="Cimarrón guía" width="480" height="469"></div>
-      <div class="presenta"><div class="feedback info" id="jFeedback">Escribe la colonia que creas que tiene más reportes</div></div>
+      <div class="presenta"><div class="feedback info" id="jFeedback">Tienes 10 segundos por vida</div></div>
     </div>
     <div class="mini-tablero" id="jTablero"></div>
-    <button class="btn fantasma ancho pasar" id="btnPasar">Pasar a la siguiente pregunta<i data-ico="skip" data-t="18"></i></button>
+    <button class="btn fantasma ancho pasar" id="btnPasar">No sé, pasar a la siguiente<i data-ico="skip" data-t="18"></i></button>
   </section>
 
-  <section id="vTransicion" class="oculto transicion aparece">
-    <div class="tenue" id="tTitulo">Pregunta terminada</div>
-    <div class="grande" id="tPuntos">+0</div>
-    <p class="tenue" id="tTexto">Siguiente pregunta</p>
+  <!-- RETROALIMENTACIÓN DE CADA PREGUNTA -->
+  <section id="vRevision" class="oculto aparece">
+    <div class="etiqueta" id="rvNumero"></div>
+    <div class="rv-cab"><h2 id="rvTitulo"></h2><div class="rv-pts" id="rvPuntos"></div></div>
+    <div class="tarjeta res-q marca-agua" style="margin-top:.6rem">
+      <h3 id="rvPregunta"></h3>
+      <p class="dato" id="rvDato"></p>
+      <div id="rvTablero"></div>
+      <div id="rvRetro"></div>
+    </div>
+    <button class="btn ancho" id="btnSiguiente" style="margin-top:1rem"></button>
   </section>
 
   <!-- GRACIAS -->
@@ -293,6 +324,7 @@
     <div class="tarjeta" style="margin:1rem 0">
       <h2 class="paso-titulo"><i data-ico="trophy" data-t="22"></i>Top 10 <span class="pastilla" style="font-size:.66rem">En vivo</span></h2>
       <div id="topResultados"></div>
+      <button class="btn fantasma chico ver-top" data-top100 type="button"><i data-ico="people" data-t="16"></i>Ver Top 100</button>
     </div>
     <h2 class="paso-titulo" style="font-size:1.8rem;margin:1.4rem 0 .3rem"><i data-ico="book" data-t="24"></i>Tu retroalimentación</h2>
     <p class="tenue" style="margin:0 0 .8rem;font-size:.85rem" id="resFuente"></p>
@@ -316,7 +348,16 @@
       <h2 id="tCreadores">Hecho por</h2>
       <p>Estudiantes de la UABC, Facultad de Ciencias Químicas e Ingeniería · Cuando El Niño toca la puerta</p>
     </div>
-    <div class="cuerpo"><div class="creadores" id="listaCreadores"></div></div>
+    <div class="cuerpo"><div class="creadores" id="listaCreadores"></div>
+      <div class="aviso-legal"><b>Aviso</b>Esta aplicación es una parodia educativa sin fines de lucro para concientizar sobre riesgos climáticos. No está afiliada a ninguna cadena de televisión. Las voces fueron generadas por inteligencia artificial y no pertenecen a actores reales. Es gratis: no tiene publicidad, no cobra y no recibe donaciones</div></div>
+  </div>
+</div>
+
+<div class="modal oculto" id="modalTop" role="dialog" aria-modal="true" aria-labelledby="tTop">
+  <div class="caja">
+    <button class="cerrar" id="cerrarTop" aria-label="Cerrar"><i data-ico="close"></i></button>
+    <div class="cab encabezado-verde marca-agua"><span class="pastilla ocre">Ranking</span><h2 id="tTop">Top 100</h2><p>Más puntos gana · si hay empate, el más rápido</p></div>
+    <div class="cuerpo"><div id="listaTop100"><p class="tenue">Cargando</p></div></div>
   </div>
 </div>
 
@@ -352,7 +393,7 @@
   let avatar = Avatar.fix(leer('avatar') || Avatar.aleatorio());
   let esEstudiante = leer('estudiante') === 'si' ? true : leer('estudiante') === 'no' ? false : null;
   let miLugar = null;
-  const vistas = ['vBienvenida', 'vJuego', 'vTransicion', 'vGracias', 'vResultados'];
+  const vistas = ['vBienvenida', 'vJuego', 'vRevision', 'vGracias', 'vResultados'];
 
   async function api(url, body) {
     const r = await fetch(url, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { cache: 'no-store' });
@@ -362,7 +403,7 @@
   }
   function mostrar(v) {
     for (const x of vistas) $('#' + x).classList.toggle('oculto', x !== v);
-    const jugando = v === 'vJuego' || v === 'vTransicion';
+    const jugando = v === 'vJuego' || v === 'vTransicion' || v === 'vRevision';
     $('#reloj').classList.toggle('oculto', !jugando);
     $('#hdrPuntosWrap').classList.toggle('oculto', !jugando);
     window.scrollTo(0, 0);
@@ -382,7 +423,13 @@
   // ================= RELOJ =================
   function iniciarReloj() {
     clearInterval(tReloj);
-    tReloj = setInterval(() => { if (partida && !partida.terminada) $('#relojTxt').textContent = reloj(Date.now() - offset); }, 250);
+    let pausaLocal = 0, desde = null;
+    tReloj = setInterval(() => {
+      if (!partida || partida.terminada) return;
+      if (enRevisionLocal) { if (!desde) desde = Date.now(); return; }
+      if (desde) { pausaLocal += Date.now() - desde; desde = null; }
+      $('#relojTxt').textContent = reloj(Date.now() - offset - pausaLocal);
+    }, 250);
   }
 
   // ================= PANTALLAS =================
@@ -390,7 +437,27 @@
     if (!partida) { mostrar('vBienvenida'); $('#topBienvenida').innerHTML = listaTop(top); return; }
     $('#hdrPuntos').textContent = partida.puntos;
     if (partida.terminada) return pintarResultados();
-    if (!transicionando) pintarPregunta();
+    if (!transicionando && !enRevisionLocal) pintarPregunta();
+  }
+  // ----- temporizador: 10 segundos por vida
+  let tVida = null, finVida = 0, enRevisionLocal = false;
+  function pararVida() { clearInterval(tVida); tVida = null; }
+  function iniciarVida() {
+    pararVida();
+    if (!partida || partida.terminada) return;
+    const seg = partida.pregunta.segundos || 10;
+    finVida = Date.now() + seg * 1000;
+    const pintar = () => {
+      const resta = Math.max(0, finVida - Date.now());
+      const s = Math.ceil(resta / 1000);
+      $('#jCuenta').textContent = s;
+      $('#jBarra').style.width = (resta / (seg * 1000) * 100) + '%';
+      const prisa = resta <= 3000;
+      $('#jCuenta').classList.toggle('prisa', prisa); $('#jBarraWrap').classList.toggle('prisa', prisa);
+      if (resta <= 0) { pararVida(); responder({ tiempo: true }); }
+    };
+    pintar();
+    tVida = setInterval(pintar, 100);
   }
   let preguntaAnunciada = null;
   function pintarPregunta() {
@@ -398,16 +465,25 @@
     $('#jNumero').textContent = `Pregunta ${q.numero} de ${partida.total}`;
     $('#jPasos').innerHTML = Array.from({ length: partida.total }, (_, i) => `<i class="${i < q.numero - 1 ? 'hecho' : i === q.numero - 1 ? 'actual' : ''}"></i>`).join('');
     $('#jPregunta').textContent = q.texto;
-    $('#jAyuda').textContent = `Hay ${q.respuestas} colonias en el tablero`;
+    $('#jAyuda').textContent = q.tipo === 'opcion' ? `Toca los ${q.respuestas} que más se reportan` : `Toca las ${q.respuestas} colonias con más reportes`;
     pintarTablero(q);
-    $('#jInput').disabled = $('#jBtn').disabled = enviando;
+    pintarOpciones(q);
     if ($('#vJuego').classList.contains('oculto')) {
       mostrar('vJuego');
-      feedback('info', 'Escribe la colonia que creas que tiene más reportes');
+      feedback('info', `Tienes ${q.segundos || 10} segundos por vida`);
       globo('¡Tú puedes!');
-      setTimeout(() => $('#jInput').focus(), 200);
     }
-    if (preguntaAnunciada !== q.numero) { preguntaAnunciada = q.numero; Voz.secuencia([{ evento: 'pregunta' }]); }
+    if (preguntaAnunciada !== q.numero) { preguntaAnunciada = q.numero; Voz.secuencia([{ evento: 'pregunta' }]); iniciarVida(); }
+  }
+  function pintarOpciones(q, bloquear) {
+    const encontradas = new Map(q.encontradas.map(e => [e.texto, e]));
+    const malas = new Set(q.fallidas || []);
+    $('#jOpciones').innerHTML = q.opciones.map(o => {
+      const e = encontradas.get(o);
+      if (e) return `<button class="op bien" disabled>${Icono('check', 18)}<span>${esc(o)}</span><b>${e.puntos}</b></button>`;
+      if (malas.has(o)) return `<button class="op mal" disabled>${Icono('close', 18)}<span>${esc(o)}</span></button>`;
+      return `<button class="op" data-op="${esc(o)}" ${bloquear || enviando ? 'disabled' : ''}><span>${esc(o)}</span></button>`;
+    }).join('');
   }
   function pintarTablero(q) {
     $('#jTachas').innerHTML = Array.from({ length: q.maxTachas }, (_, i) => `<span class="${i < q.tachas ? 'on' : ''}">${Icono('close', 26)}</span>`).join('');
@@ -427,6 +503,36 @@
     el.className = 'feedback'; void el.offsetWidth; el.className = 'feedback ' + tipo;
     el.textContent = texto;
   }
+  // ----- retroalimentación al terminar cada pregunta
+  function mostrarRevision(rv, motivo) {
+    pararVida();
+    enRevisionLocal = true;
+    const max = rv.maxPuntos || 100;
+    $('#rvNumero').textContent = `Pregunta ${rv.numero} de ${rv.total}`;
+    $('#rvTitulo').textContent = motivo || (rv.puntos >= max ? '¡Perfecto!' : rv.puntos ? '¡Bien!' : 'Esta vez no');
+    $('#rvPuntos').innerHTML = `+${rv.puntos} <small>de ${max} puntos</small>`;
+    $('#rvPregunta').textContent = rv.texto;
+    $('#rvDato').textContent = rv.dato;
+    $('#rvTablero').innerHTML = rv.tablero.map(x => `<div class="res-fila ${x.acerto ? 'si' : ''}"><span class="ic">${x.acerto ? Icono('check', 18) : Icono('pin', 16)}</span><span class="t">${esc(x.texto)} <span class="r">(${x.reportes} reporte${x.reportes === 1 ? '' : 's'})</span></span><span class="p">${x.puntos}</span></div>`).join('');
+    let retro = '';
+    if (rv.errores.length) retro += `<div class="retro errores"><b>${Icono('close', 16)} Por qué no era correcta</b><ul>${rv.errores.map(e => `<li><span>${esc(e.texto)}:</span> ${esc(e.motivo)}</li>`).join('')}</ul></div>`;
+    if (rv.sinTiempo) retro += `<div class="retro errores"><b>${Icono('clock', 16)} Se te acabó el tiempo ${rv.sinTiempo === 1 ? 'una vez' : rv.sinTiempo + ' veces'}</b>Tienes 10 segundos por vida</div>`;
+    if (!rv.errores.length && !rv.sinTiempo && rv.puntos) retro += `<div class="retro bien"><b>${Icono('check', 16)} ¡Sin errores!</b>Muy bien</div>`;
+    if (rv.exp) retro += `<div class="retro datos"><b>${Icono('chart', 16)} Lo que dicen los datos</b>${esc(rv.exp)}</div>`;
+    if (rv.tip) retro += `<div class="retro tip"><b>${Icono('shield', 16)} Para prevenir</b>${esc(rv.tip)}</div>`;
+    $('#rvRetro').innerHTML = retro;
+    $('#btnSiguiente').innerHTML = rv.ultima ? `${Icono('trophy', 18)}Ver mis resultados` : `Siguiente pregunta${Icono('arrow', 18)}`;
+    $('#btnSiguiente').dataset.ultima = rv.ultima ? '1' : '';
+    mostrar('vRevision');
+  }
+  $('#btnSiguiente').addEventListener('click', async () => {
+    if (enviando) return;
+    if ($('#btnSiguiente').dataset.ultima) { enRevisionLocal = false; return pantallaGracias(); }
+    enviando = true;
+    try { const r = await api('/api/continuar', { id }); partida = r.partida; } catch (e) { if (e.status === 404) { enviando = false; return olvidar(); } }
+    enviando = false; enRevisionLocal = false;
+    render();
+  });
   async function transicion(puntosQ, motivo) {
     transicionando = true;
     $('#tTitulo').textContent = motivo;
@@ -525,7 +631,7 @@
         mostrarToast(d.avatar, `<b>${esc(d.nombre)}</b> te ganó el lugar. Ahora vas en el <b>lugar ${yo.despues}</b>.`);
         Voz.secuencia([{ efecto: 'buzzer', pausa: 500 }, { evento: 'te_rebasaron' }, { lugar: yo.despues }]);
       } else {
-        mostrarToast(d.avatar, `<b>${esc(d.nombre)}</b> te sacó del Top 10. ¡Juega otra vez para recuperarlo!`);
+        mostrarToast(d.avatar, `<b>${esc(d.nombre)}</b> te sacó del Top 100. ¡Juega otra vez para recuperarlo!`);
         Voz.secuencia([{ efecto: 'buzzer', pausa: 500 }, { evento: 'salio_top' }]);
       }
       vibrar([80, 60, 80]);
@@ -589,37 +695,40 @@
   });
 
   // ================= JUEGO =================
-  $('#fResponder').addEventListener('submit', async ev => {
-    ev.preventDefault();
+  $('#jOpciones').addEventListener('click', e => {
+    const b = e.target.closest('[data-op]');
+    if (!b || b.disabled || enviando) return;
     Voz.desbloquear();
-    const input = $('#jInput');
-    const texto = input.value.trim();
-    if (!texto || enviando) return;
-    enviando = true; $('#jBtn').disabled = true;
+    responder({ texto: b.dataset.op });
+  });
+  async function responder(datos) {
+    if (enviando || !partida || partida.terminada) return;
+    enviando = true; pararVida();
     const antes = partida.pregunta;
+    pintarOpciones(antes, true);
     try {
-      const r = await api('/api/responder', { id, texto });
+      const r = await api('/api/responder', { id, ...datos });
       partida = r.partida;
       const x = r.resultado;
-      input.value = '';
       if (x.tipo === 'acierto') {
         feedback('ok', `¡Correcto! "${x.texto}" +${x.puntos}`); vibrar(90); globo(x.completo ? '¡Las tienes todas!' : '¡Muy bien!');
         Voz.secuencia([{ efecto: 'ding', pausa: 300 }, { evento: 'correcta' }, ...(x.completo ? [{ evento: 'tablero_completo' }] : [])]);
       } else if (x.tipo === 'tache') {
-        feedback('mal', `Esa colonia no está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); globo(x.tachas >= 3 ? '¡A la siguiente!' : '¡Uy, casi!');
+        feedback('mal', `No está en el tablero (${x.tachas}/3)`); vibrar([70, 50, 70]); globo(x.tachas >= 3 ? '¡A la siguiente!' : '¡Uy, casi!');
         Voz.secuencia([{ efecto: 'buzzer', pausa: 650 }, { evento: 'incorrecta' }, ...(x.tachas >= 3 ? [{ evento: 'sin_oportunidades' }] : [])]);
-      } else if (x.tipo === 'repetida') {
-        feedback('info', `"${x.texto}" ya la tenías. Intenta otra`); globo('Prueba otra');
+      } else if (x.tipo === 'tiempo') {
+        feedback('mal', `¡Se acabó el tiempo! (${x.tachas}/3)`); vibrar([70, 50, 70]); globo('¡Más rápido!');
+        Voz.secuencia([{ efecto: 'buzzer', pausa: 650 }, { evento: 'tiempo' }, ...(x.tachas >= 3 ? [{ evento: 'sin_oportunidades' }] : [])]);
       }
+      $('#hdrPuntos').textContent = partida.puntos;
       if (x.finPregunta) {
-        const ganados = antes.puntos + (x.tipo === 'acierto' ? x.puntos : 0);
-        const motivo = x.tipo === 'tache' ? 'Se acabaron tus 3 oportunidades' : '¡Encontraste todas!';
         enviando = false;
-        pintarTablero(x.tipo === 'acierto' ? { ...antes, encontradas: [...antes.encontradas, { indice: x.indice, texto: x.texto, puntos: x.puntos }] } : { ...antes, tachas: x.tachas });
-        $('#jInput').disabled = $('#jBtn').disabled = true;
-        $('#hdrPuntos').textContent = partida.puntos;
-        await espera(x.tipo === 'tache' ? 3000 : 2600);
-        return transicion(ganados, motivo);
+        const q2 = { ...antes, tachas: x.tachas != null ? x.tachas : antes.tachas, encontradas: x.tipo === 'acierto' ? [...antes.encontradas, { indice: x.indice, texto: x.texto, puntos: x.puntos }] : antes.encontradas, fallidas: x.tipo === 'tache' ? [...(antes.fallidas || []), datos.texto] : antes.fallidas };
+        pintarTablero(q2); pintarOpciones(q2, true);
+        enRevisionLocal = true;
+        await espera(1600);
+        const motivo = x.completo ? '¡Las encontraste todas!' : x.tipo === 'tiempo' ? 'Se acabó el tiempo' : x.tipo === 'tache' ? 'Se acabaron tus vidas' : '';
+        return mostrarRevision(x.revision, motivo);
       }
     } catch (e) {
       if (e.status === 404) { enviando = false; return olvidar(); }
@@ -628,31 +737,46 @@
     }
     enviando = false;
     render();
-    if (!$('#jInput').disabled) $('#jInput').focus();
-  });
+    iniciarVida();
+  }
 
   $('#btnPasar').addEventListener('click', async () => {
     if (!partida || partida.terminada || enviando) return;
     const q = partida.pregunta;
-    if (!q.encontradas.length && q.tachas < q.maxTachas && !confirm('¿Pasar sin contestar esta pregunta?')) return;
+
     enviando = true;
+    pararVida();
     Voz.detener();
     try {
       const r = await api('/api/pasar', { id, numero: q.numero });
       partida = r.partida;
       enviando = false;
-      return transicion(q.puntos, 'Pregunta terminada');
+      if (r.revision) return mostrarRevision(r.revision, 'Pasaste esta pregunta');
+      return render();
     } catch (e) { if (e.status === 404) { enviando = false; return olvidar(); } feedback('info', e.message); }
     enviando = false;
   });
 
   function olvidar() {
-    id = null; partida = null; miLugar = null; guardar('partida', null); clearInterval(tReloj); graciasActiva = false;
+    id = null; partida = null; miLugar = null; guardar('partida', null); clearInterval(tReloj); graciasActiva = false; pararVida(); enRevisionLocal = false;
     if (fuenteEventos) { fuenteEventos.close(); fuenteEventos = null; }
     Voz.detener();
     cargarTop().then(render);
   }
   $('#btnOtra').addEventListener('click', olvidar);
+
+  // ================= TOP 100 =================
+  document.addEventListener('click', async e => {
+    if (!e.target.closest('[data-top100]')) return;
+    $('#modalTop').classList.remove('oculto');
+    try {
+      const d = await api('/api/ranking?n=100');
+      $('#listaTop100').innerHTML = listaTop(d.top, partida && partida.id) || '';
+    } catch { $('#listaTop100').innerHTML = '<p class="tenue">No se pudo cargar</p>'; }
+  });
+  const cerrarTop = () => $('#modalTop').classList.add('oculto');
+  $('#cerrarTop').addEventListener('click', cerrarTop);
+  $('#modalTop').addEventListener('click', e => { if (e.target.id === 'modalTop') cerrarTop(); });
 
   // ================= CREADORES =================
   let tCreadores = null;
@@ -707,7 +831,10 @@
     if (id) {
       try {
         partida = await api('/api/partida?id=' + encodeURIComponent(id));
-        if (!partida.terminada) { offset = Date.now() - partida.transcurrido; iniciarReloj(); }
+        if (!partida.terminada) {
+          if (partida.enRevision) { try { partida = (await api('/api/continuar', { id })).partida; } catch { /* */ } }
+          offset = Date.now() - partida.transcurrido; iniciarReloj();
+        }
         else escucharRanking();
       } catch { id = null; guardar('partida', null); }
     }

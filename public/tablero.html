@@ -58,7 +58,7 @@
   .escenario .piso { position: absolute; left: 0; right: 0; bottom: 0; height: 8%; background: linear-gradient(180deg, #4f9b5b, #2f7a3e); }
   .escenario .piso::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; height: 6px; background: repeating-linear-gradient(90deg, #5fae66 0 10px, #4f9b5b 10px 20px); }
   .podio { position: absolute; bottom: 8%; width: 22%; border-radius: 10px 10px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: .4em; text-align: center; box-shadow: inset 0 -10px 18px rgba(0,0,0,.12); }
-  .podio .num { font: 700 2.6em/1 var(--f-titulo); color: var(--verde-prof); }
+  .podio .num { font: 700 2.1em/1 var(--f-titulo); color: var(--verde-prof); }
   .podio .nom { font-weight: 800; color: var(--verde-prof); font-size: 1em; line-height: 1.15; max-width: 95%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .podio .pts { font-weight: 700; color: var(--verde-prof); opacity: .85; font-size: .9em; }
   .p1 { left: 39%; height: 30%; background: linear-gradient(180deg, #FEBE10, #DD971A); }
@@ -66,7 +66,7 @@
   .p3 { left: 65%; height: 21%; background: linear-gradient(180deg, #f2c58f, #c98a3d); }
   .actor { position: absolute; width: 13%; aspect-ratio: 100/142; transform: translateX(-50%); transition: left 2.2s linear; z-index: 3; }
   .actor .av { width: 100%; height: 100%; }
-  .actor.a1 { left: 50%; bottom: 38%; width: 15%; }
+  .actor.a1 { left: 50%; bottom: 38%; width: 16%; }
   .actor.a2 { left: 24%; bottom: 33%; }
   .actor.a3 { left: 76%; bottom: 29%; }
   .trono { position: absolute; left: 50%; bottom: 36%; width: 21%; transform: translateX(-50%); z-index: 2; transition: transform .7s cubic-bezier(.3,1.4,.5,1), opacity .5s; filter: drop-shadow(0 6px 8px rgba(0,61,36,.2)); }
@@ -78,8 +78,10 @@
   @keyframes destello { 0% { opacity: 0; transform: translate(-50%, 50%) scale(.2); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 50%) scale(1.6); } }
   .vacio-escenario { position: absolute; inset: 0; display: grid; place-items: center; color: var(--verde-prof); font-size: 1.5em; font-weight: 700; text-align: center; padding: 1em; }
 
-  .filas { display: grid; gap: .6vh; flex: 1; min-height: 0; grid-template-rows: repeat(7, minmax(0, 1fr)); margin-top: 1.2vh; }
-  .fila { display: grid; grid-template-columns: 2.4em 2.2em 1fr 4.4em 4.8em; align-items: center; gap: .9em; padding: 0 1em; border-radius: 12px; background: #fff; border: 1px solid var(--borde); font-size: min(1.25em, 2.2vh); min-height: 0; overflow: hidden; }
+  .filas { flex: 1; min-height: 0; margin-top: .6vh; overflow: hidden; position: relative; }
+  .filas .lista { display: flex; flex-direction: column; gap: 6px; transition: transform .8s ease; }
+  .rango { font: 700 .85em var(--f-texto); color: var(--texto-2); text-transform: uppercase; letter-spacing: .06em; margin-top: 1vh; }
+  .fila { flex: none; display: grid; grid-template-columns: 2.4em 2.2em 1fr 4.4em 4.8em; align-items: center; gap: .9em; padding: 0 1em; border-radius: 12px; background: #fff; border: 1px solid var(--borde); font-size: min(1.25em, 2.2vh); overflow: hidden; }
   .fila .lugar { width: 1.8em; height: 1.8em; display: grid; place-items: center; border-radius: 50%; background: var(--verde-claro); color: var(--verde); font: 700 1.05em var(--f-titulo); }
   .fila .avf { display: flex; align-items: center; justify-content: center; height: 100%; }
   .fila .nom { font-weight: 800; color: var(--verde-prof); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -144,15 +146,7 @@
       </div>
       <div class="panel-cuerpo">
         <div class="escenario" id="escenario">
-          <svg class="trono" id="trono" viewBox="0 0 120 150" aria-hidden="true">
-            <path d="M14 150V40Q14 8 60 4Q106 8 106 40V150H92V96H28V150Z" fill="#B08208"/>
-            <path d="M22 92V44Q22 16 60 12Q98 16 98 44V92Z" fill="#00723F"/>
-            <path d="M30 86V48Q30 24 60 20Q90 24 90 48V86Z" fill="#048049"/>
-            <rect x="8" y="88" width="104" height="16" rx="5" fill="#DD971A"/>
-            <rect x="16" y="90" width="88" height="10" rx="4" fill="#003D24"/>
-            <circle cx="60" cy="8" r="6" fill="#FEBE10"/><circle cx="14" cy="44" r="5" fill="#FEBE10"/><circle cx="106" cy="44" r="5" fill="#FEBE10"/>
-            <path d="M8 104H22V150H8ZM98 104H112V150H98Z" fill="#8a6606"/>
-          </svg>
+          
           <div class="podio p2"><span class="num">2</span><span class="nom" id="n2"></span><span class="pts" id="pt2"></span></div>
           <div class="podio p1"><span class="num">1</span><span class="nom" id="n1"></span><span class="pts" id="pt1"></span></div>
           <div class="podio p3"><span class="num">3</span><span class="nom" id="n3"></span><span class="pts" id="pt3"></span></div>
@@ -160,10 +154,10 @@
           <div class="actor a3" id="actor3"></div>
           <div class="actor a1" id="actor1"></div>
           <div class="destello" id="destello"></div>
-          <div class="burbuja oculto" id="burbuja"></div>
           <div class="piso"></div>
           <div class="vacio-escenario oculto" id="vacioEscenario">El podio está vacío<br>Escanea el código y sé el primero en sentarte en el trono</div>
         </div>
+        <div class="rango" id="rango">Lugares 4 al 10</div>
         <div class="filas" id="filas"></div>
       </div>
     </div>
@@ -178,7 +172,6 @@
   <p class="tenue" id="audiosInfo" style="font-size:12px"></p>
   <div class="fila-b">
     <button class="btn chico" id="probarVoz"><i data-ico="volume" data-t="16"></i>Probar voz</button>
-    <button class="btn chico naranja" id="probarShow"><i data-ico="crown" data-t="16"></i>Show del 1er lugar</button>
     <button class="btn chico fantasma" id="pantallaCompleta"><i data-ico="fullscreen" data-t="16"></i>Pantalla completa</button>
   </div>
 </div>
@@ -191,7 +184,7 @@
   const espera = ms => new Promise(r => setTimeout(r, ms));
   const tiempo = ms => ms == null ? '–' : ms >= 60000 ? Math.floor(ms / 60000) + ':' + String(Math.floor(ms / 1000) % 60).padStart(2, '0') : (ms / 1000).toFixed(1) + ' s';
   const URL_JUEGO = location.origin + '/';
-  let topActual = [], firmaTop = '', showActivo = false, anunciando = false, pendienteRender = null, recientes = new Set();
+  let topActual = [], firmaTop = '', anunciando = false, pendienteRender = null, recientes = new Set();
   let cola = Promise.resolve();
   const enCola = fn => (cola = cola.then(fn).catch(() => {}));
 
@@ -215,119 +208,80 @@
     firmaTop = top.map(r => r.id + ':' + r.puntos).join('|');
     const t = i => top[i];
     $('#vacioEscenario').classList.toggle('oculto', !!top.length);
-    $('#trono').classList.toggle('fuera', !t(0));
     for (let i = 0; i < 3; i++) {
       const r = t(i);
       $('#n' + (i + 1)).textContent = r ? r.nombre : '';
       $('#pt' + (i + 1)).textContent = r ? `${r.puntos} pts · ${tiempo(r.ms)}` : '';
       const actor = $('#actor' + (i + 1));
-      actor.innerHTML = r ? Avatar.svg(r.avatar, i === 0 ? 'anim-idle anim-sentado con-corona' : 'anim-idle') : '';
+      actor.innerHTML = r ? Avatar.svg(r.avatar, i === 0 ? 'anim-idle con-corona anim-presume' : 'anim-idle') : '';
     }
+    // lugares 4 al 100 (si son más de 7, la lista sube sola)
+    const filas = $('#filas');
+    const alto = Math.max(28, (filas.clientHeight - 6 * 6) / 7);
     let html = '';
-    for (let i = 3; i < 10; i++) {
+    const ultimo = Math.max(10, Math.min(100, top.length));
+    for (let i = 3; i < ultimo; i++) {
       const r = t(i);
-      html += r ? `<div class="fila ${recientes.has(r.id) ? 'nueva' : ''}" data-id="${r.id}"><span class="lugar">${r.lugar}</span><span class="avf">${Avatar.mini(r.avatar, 28)}</span><span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pts">${r.puntos}</span><span class="tiempo">${tiempo(r.ms)}</span></div>`
-        : `<div class="fila vacia"><span class="lugar">${i + 1}</span><span></span><span class="nom tenue">Este lugar puede ser tuyo</span><span></span><span></span></div>`;
+      html += r ? `<div class="fila ${recientes.has(r.id) ? 'nueva' : ''}" style="height:${alto}px" data-id="${r.id}"><span class="lugar">${r.lugar}</span><span class="avf">${Avatar.mini(r.avatar, 26)}</span><span class="nom">${esc(r.nombre)}${r.carrera ? `<small>${esc(r.carrera)}</small>` : ''}</span><span class="pts">${r.puntos}</span><span class="tiempo">${tiempo(r.ms)}</span></div>`
+        : `<div class="fila vacia" style="height:${alto}px"><span class="lugar">${i + 1}</span><span></span><span class="nom tenue">Este lugar puede ser tuyo</span><span></span><span></span></div>`;
     }
-    $('#filas').innerHTML = html;
+    filas.innerHTML = `<div class="lista" id="lista">${html}</div>`;
+    desplazar.pos = 0; desplazar.alto = alto + 6;
+    $('#lista').style.transform = 'translateY(0)';
+    $('#rango').textContent = top.length > 10 ? `Lugares 4 al ${Math.min(100, top.length)}` : 'Lugares 4 al 10';
   }
+  // la lista de lugares sube de uno en uno y regresa al inicio
+  const desplazar = { pos: 0, alto: 40, pausa: 0 };
+  setInterval(() => {
+    const lista = $('#lista'); if (!lista) return;
+    const total = lista.children.length;
+    if (total <= 7) return;
+    if (desplazar.pausa > 0) { desplazar.pausa--; return; }
+    desplazar.pos++;
+    if (desplazar.pos > total - 7) { desplazar.pos = 0; desplazar.pausa = 2; }
+    else if (desplazar.pos === total - 7) desplazar.pausa = 2;
+    lista.style.transform = `translateY(-${desplazar.pos * desplazar.alto}px)`;
+  }, 2200);
   function recibirTop(top) {
     const firma = top.map(r => r.id + ':' + r.puntos).join('|');
     if (firma === firmaTop) return;
-    if (showActivo || anunciando) { pendienteRender = top; return; }
+    if (anunciando) { pendienteRender = top; return; }
     pintarTop(top);
   }
+  let tTop = null;
+  function pedirTop100() {
+    clearTimeout(tTop);
+    tTop = setTimeout(async () => { try { recibirTop((await (await fetch('/api/ranking?n=100', { cache: 'no-store' })).json()).top); } catch { /* */ } }, 600);
+  }
+  setInterval(pedirTop100, 15000);
 
   // ---------- vida en el Top: todos se mueven un poco
+  // El primer lugar se queda en su lugar con su corona: mira a los lados y hacia abajo, presumido. No habla.
   const svgDe = el => el && el.querySelector('svg.av');
   setInterval(() => {
-    if (showActivo) return;
     const filas = [...document.querySelectorAll('#filas .av')];
     if (filas.length) Avatar.animar(filas[Math.random() * filas.length | 0], ['saluda', 'mira-abajo', 'brinca', 'mira-izq', 'mira-der', 'mira-arriba'][Math.random() * 6 | 0], 1900);
   }, 1100);
-  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor2')), Math.random() < .6 ? 'aplaude' : 'saluda', 2100); }, 5200);
-  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor3')), Math.random() < .5 ? 'brinca' : 'saluda', 1900); }, 4300);
-  setInterval(() => { if (!showActivo) Avatar.animar(svgDe($('#actor1')), Math.random() < .5 ? 'mira-izq' : 'mira-der', 1600); }, 3700);
+  setInterval(() => Avatar.animar(svgDe($('#actor2')), Math.random() < .6 ? 'aplaude' : 'saluda', 2100), 5200);
+  setInterval(() => Avatar.animar(svgDe($('#actor3')), Math.random() < .5 ? 'brinca' : 'saluda', 1900), 4300);
+  let ladoPrimero = 0;
+  setInterval(() => {
+    const s = svgDe($('#actor1')); if (!s) return;
+    const mov = ['mira-izq', 'mira-abajo', 'mira-der', 'mira-abajo'][ladoPrimero++ % 4];
+    Avatar.animar(s, mov, 1700);
+  }, 2300);
 
-  // ---------- SHOW DEL PRIMER LUGAR
-  // Camina a la derecha, busca a alguien mejor, no encuentra a nadie, se pone la corona y se sienta en el trono.
-  // Mientras tanto, todos los demás voltean a verlo.
-  function mirar(clase) {
-    const todos = [svgDe($('#actor2')), svgDe($('#actor3')), ...document.querySelectorAll('#filas .av')].filter(Boolean);
-    for (const s of todos) { s.classList.remove('anim-mira-der', 'anim-mira-izq', 'anim-mira-arriba', 'anim-mira-abajo', 'anim-saluda', 'anim-brinca'); if (clase) s.classList.add(clase(s)); }
-  }
-  function burbuja(texto, izquierda) {
-    const b = $('#burbuja');
-    if (!texto) { b.classList.add('oculto'); return; }
-    b.textContent = texto;
-    b.style.left = izquierda; b.style.bottom = '83%';
-    b.classList.remove('oculto');
-  }
-  async function showPrimerLugar() {
-    const actor = $('#actor1'), s = svgDe(actor);
-    if (!s || showActivo) return;
-    showActivo = true;
-    const lado = (el, der) => el === svgDe($('#actor2')) ? 'anim-mira-der' : el === svgDe($('#actor3')) ? (der ? 'anim-mira-der' : 'anim-mira-izq') : 'anim-mira-arriba';
-    // se levanta, guarda la corona y el trono se esconde
-    s.classList.remove('anim-sentado', 'con-corona');
-    $('#trono').classList.add('fuera');
-    mirar(el => lado(el, false));
-    await espera(800);
-    // camina a la derecha
-    s.classList.add('anim-camina');
-    actor.style.left = '88%';
-    burbuja('', '');
-    await espera(2300);
-    mirar(el => lado(el, true));
-    s.classList.remove('anim-camina');
-    // busca a alguien mejor
-    s.classList.add('anim-busca');
-    burbuja('¿Hay alguien mejor?', '78%');
-    if (Voz.tiene('trono')) Voz.secuencia([{ evento: 'trono' }]);
-    await espera(2800);
-    s.classList.remove('anim-busca');
-    // no hay nadie
-    s.classList.add('anim-nada');
-    burbuja('¡Nadie!', '84%');
-    await espera(2100);
-    s.classList.remove('anim-nada');
-    burbuja('', '');
-    // regresa al centro
-    s.classList.add('anim-camina');
-    actor.style.left = '50%';
-    mirar(el => lado(el, false));
-    await espera(2300);
-    s.classList.remove('anim-camina');
-    // la corona brillante
-    $('#destello').classList.remove('on'); void $('#destello').offsetWidth; $('#destello').classList.add('on');
-    s.classList.add('con-corona');
-    Voz.fanfarria();
-    await espera(900);
-    // el trono aparece y se sienta
-    $('#trono').classList.remove('fuera');
-    await espera(500);
-    s.classList.add('anim-sentado');
-    burbuja('¡Sigo siendo el rey!', '50%');
-    mirar(() => 'anim-aplaude');
-    await espera(2200);
-    burbuja('', '');
-    mirar(null);
-    actor.style.left = '';
-    showActivo = false;
-    if (pendienteRender) { const t = pendienteRender; pendienteRender = null; pintarTop(t); }
-  }
-  setInterval(() => { if (topActual.length) enCola(showPrimerLugar); }, 70000);
-
-  // ---------- anuncios
+  // ---------- anuncios (solo para quien entra al Top 10)
   async function anunciar(n) {
+    if (n.lugar > 10) return;
     anunciando = true;
     const quien = (n.desplazados || []).map(x => (topActual.find(r => r.id === x.id) || {}).nombre).filter(Boolean)[0];
     $('#aK').innerHTML = n.lugar === 1 ? `${Icono('crown', 34)} ¡Nuevo primer lugar!` : `${Icono('trophy', 34)} ¡Entra al Top 10 en el lugar ${n.lugar}!`;
     $('#aN').textContent = n.nombre;
     $('#aP').textContent = `${n.puntos} puntos · ${tiempo(n.ms)}`;
     $('#aD').textContent = quien ? `Le ganó el lugar a ${quien}` : '';
-    $('#aAv').innerHTML = Avatar.svg(n.avatar, 'anim-idle' + (n.lugar === 1 ? ' con-corona' : ''));
-    setTimeout(() => Avatar.animar($('#aAv'), n.lugar === 1 ? 'brinca' : 'saluda', 1900), 300);
+    $('#aAv').innerHTML = Avatar.svg(n.avatar, 'anim-idle' + (n.lugar === 1 ? ' con-corona anim-presume' : ''));
+    setTimeout(() => Avatar.animar($('#aAv'), n.lugar === 1 ? 'mira-abajo' : 'saluda', 1900), 300);
     $('#anuncio').classList.remove('oculto');
     if (n.lugar === 1) { Voz.fanfarria(); await espera(500); await Voz.secuencia([{ evento: 'nuevo_primero' }]); }
     else { Voz.ding(); await espera(300); await Voz.secuencia([{ evento: 'entra_top' }, { lugar: n.lugar }]); }
@@ -335,14 +289,14 @@
     $('#anuncio').classList.add('oculto');
     anunciando = false;
     if (pendienteRender) { const t = pendienteRender; pendienteRender = null; pintarTop(t); }
-    if (n.lugar === 1) { await espera(600); await showPrimerLugar(); }
+    if (n.lugar === 1) { $('#destello').classList.remove('on'); void $('#destello').offsetWidth; $('#destello').classList.add('on'); }
   }
 
   function conectar() {
     const es = new EventSource('/eventos');
     es.onopen = () => { $('#estadoCon').textContent = 'En vivo'; };
     es.onerror = () => { $('#estadoCon').textContent = 'Reconectando…'; };
-    es.addEventListener('estado', ev => { const d = JSON.parse(ev.data); pintarStats(d.stats); recibirTop(d.top); });
+    es.addEventListener('estado', ev => { const d = JSON.parse(ev.data); pintarStats(d.stats); pedirTop100(); });
     es.addEventListener('nuevoTop', ev => {
       const n = JSON.parse(ev.data);
       recientes.add(n.id); setTimeout(() => recientes.delete(n.id), 6000);
@@ -359,7 +313,6 @@
     enCola(() => Voz.secuencia([{ evento: 'bienvenida' }]));
   });
   $('#probarVoz').addEventListener('click', () => enCola(() => Voz.secuencia([{ evento: 'dijeron' }])));
-  $('#probarShow').addEventListener('click', () => enCola(showPrimerLugar));
   $('#engrane').addEventListener('click', () => $('#ajustes').classList.toggle('oculto'));
   $('#pantallaCompleta').addEventListener('click', () => { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); });
   let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pintarQR, 300); });

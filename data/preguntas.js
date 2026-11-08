@@ -1,30 +1,31 @@
-// Generado a partir de los Excel "Reportes de Riesgo" (Ciudadanía + Servicios/Dependencias), SOLO municipio de Tijuana.
-// Cada tablero = colonias con más reportes para esa pregunta. puntos = % de los reportes del tablero (suman 100).
-// exp = lo que dicen los datos (se muestra al final); tip = consejo de prevención.
-// Se pueden ajustar desde el panel de administración (pestaña Preguntas).
+// Preguntas del juego (cortas, se contestan tocando opciones). Salen de los Excel "Reportes de Riesgo", SOLO Tijuana.
+// tablero = respuestas correctas (puntos = % de los reportes del tablero). distractores = opciones que NO están en el tablero.
+// exp = lo que dicen los datos; tip = consejo de prevención. Se pueden cambiar en /admin → Preguntas y respuestas.
 module.exports = {
   "meta": {
     "fuente": "Reportes de Riesgo (Ciudadanía y Servicios/Dependencias) — solo municipio de Tijuana",
-    "reportes": 187,
-    "colonias": 109
+    "reportes": 187
   },
   "preguntas": [
     {
       "id": "q1",
-      "texto": "¿Qué colonia de Tijuana crees que se va a inundar primero con las próximas lluvias?",
-      "dato": "Colonias con más reportes de incidentes por lluvia",
+      "tipo": "colonia",
+      "texto": "¿Qué colonia tiene más reportes por lluvias?",
+      "dato": "Todos los reportes de incidentes por lluvia",
+      "exp": "La Morita, Terrazas del Valle y Ribera del Bosque tienen más reportes. Casi todas están en el este de la ciudad, no en el centro",
+      "tip": "Antes de que llueva, limpia las coladeras de tu calle y no tires basura",
       "totalReportes": 183,
       "tablero": [
         {
           "texto": "La Morita",
           "reportes": 9,
-          "puntos": 22,
+          "puntos": 28,
           "alias": []
         },
         {
           "texto": "Terrazas del Valle",
           "reportes": 7,
-          "puntos": 17,
+          "puntos": 21,
           "alias": [
             "terrazas valle"
           ]
@@ -32,7 +33,7 @@ module.exports = {
         {
           "texto": "Ribera del Bosque",
           "reportes": 7,
-          "puntos": 17,
+          "puntos": 21,
           "alias": [
             "riberas del bosque",
             "rivera del bosque"
@@ -41,44 +42,39 @@ module.exports = {
         {
           "texto": "Villa del Real Décima Sección",
           "reportes": 5,
-          "puntos": 12,
+          "puntos": 15,
           "alias": [
-            "villa del real",
-            "villa real 10"
+            "villa del real"
           ]
         },
         {
           "texto": "Palma Real",
           "reportes": 5,
-          "puntos": 12,
-          "alias": []
-        },
-        {
-          "texto": "Las Torres",
-          "reportes": 4,
-          "puntos": 10,
-          "alias": []
-        },
-        {
-          "texto": "Camino Verde",
-          "reportes": 4,
-          "puntos": 10,
+          "puntos": 15,
           "alias": []
         }
       ],
-      "exp": "La Morita, Terrazas del Valle y Ribera del Bosque son las colonias con más reportes de incidentes por lluvia en Tijuana. Casi todas las colonias de este tablero están en el este de la ciudad, lejos del centro: muchas veces pensamos en las zonas que salen en las noticias, pero los reportes señalan otras.",
-      "tip": "Antes de que llueva, limpia las coladeras y canaletas de tu calle y no tires basura: la basura tapa el drenaje y provoca inundaciones."
+      "distractores": [
+        "Zona Río",
+        "El Florido",
+        "Sánchez Taboada",
+        "Zona Centro",
+        "Camino Verde"
+      ]
     },
     {
       "id": "q2",
-      "texto": "¿Qué zona de Tijuana evitarías cruzar cuando llueve fuerte?",
-      "dato": "Calles inundadas, arroyos desbordados, pasos a desnivel y personas o autos arrastrados",
-      "totalReportes": 63,
+      "tipo": "colonia",
+      "texto": "¿Qué zona es más peligrosa de cruzar cuando llueve?",
+      "dato": "Calles inundadas, arroyos desbordados y autos o personas arrastradas",
+      "exp": "En Ribera del Bosque, La Morita y Villa del Real se reportaron más calles inundadas y arrastres",
+      "tip": "Nunca cruces agua con corriente: unos 15 cm pueden tumbar a una persona y unos 30 cm pueden mover un carro",
+      "totalReportes": 88,
       "tablero": [
         {
           "texto": "Ribera del Bosque",
-          "reportes": 6,
-          "puntos": 23,
+          "reportes": 7,
+          "puntos": 27,
           "alias": [
             "riberas del bosque",
             "rivera del bosque"
@@ -86,8 +82,8 @@ module.exports = {
         },
         {
           "texto": "La Morita",
-          "reportes": 5,
-          "puntos": 19,
+          "reportes": 6,
+          "puntos": 23,
           "alias": []
         },
         {
@@ -95,48 +91,42 @@ module.exports = {
           "reportes": 4,
           "puntos": 15,
           "alias": [
-            "villa del real",
-            "villa real 10"
+            "villa del real"
           ]
         },
         {
           "texto": "Baja California",
           "reportes": 3,
-          "puntos": 11,
-          "alias": []
-        },
-        {
-          "texto": "El Refugio Quintas Campestres",
-          "reportes": 2,
-          "puntos": 8,
-          "alias": []
-        },
-        {
-          "texto": "Los Girasoles",
-          "reportes": 2,
-          "puntos": 8,
-          "alias": []
-        },
-        {
-          "texto": "Delicias",
-          "reportes": 2,
-          "puntos": 8,
+          "puntos": 12,
           "alias": []
         },
         {
           "texto": "Las Torres",
-          "reportes": 2,
-          "puntos": 8,
+          "reportes": 3,
+          "puntos": 12,
+          "alias": []
+        },
+        {
+          "texto": "Fidel Velázquez",
+          "reportes": 3,
+          "puntos": 11,
           "alias": []
         }
       ],
-      "exp": "En Ribera del Bosque, La Morita y Villa del Real se reportaron más calles inundadas, arroyos desbordados, pasos a desnivel con agua y personas o autos arrastrados por la corriente.",
-      "tip": "Nunca cruces una calle o un arroyo con corriente, ni a pie ni en carro: unos 15 cm de agua en movimiento pueden tumbar a una persona y unos 30 cm pueden hacer flotar un carro. Si el agua corre, date la vuelta."
+      "distractores": [
+        "Zona Río",
+        "El Florido",
+        "Sánchez Taboada",
+        "Zona Centro"
+      ]
     },
     {
       "id": "q3",
-      "texto": "¿En qué colonia de Tijuana se han inundado más casas por las lluvias?",
-      "dato": "Reportes de viviendas inundadas",
+      "tipo": "colonia",
+      "texto": "¿Dónde se han inundado más casas?",
+      "dato": "Reportes de casas inundadas",
+      "exp": "Palma Real, Campestre Murua y Terrazas del Valle tienen más casas inundadas reportadas",
+      "tip": "Si vives en zona baja, sube aparatos y documentos y ten lista una mochila de emergencia",
       "totalReportes": 30,
       "tablero": [
         {
@@ -185,13 +175,20 @@ module.exports = {
           "alias": []
         }
       ],
-      "exp": "Palma Real, Campestre Murua y Terrazas del Valle son las colonias con más reportes de casas inundadas por lluvia.",
-      "tip": "Si vives en una zona baja: ten costales de arena para las puertas, sube aparatos y documentos importantes y deja lista una mochila de emergencia con linterna, agua y medicinas."
+      "distractores": [
+        "Zona Río",
+        "El Florido",
+        "Sánchez Taboada",
+        "Zona Centro"
+      ]
     },
     {
       "id": "q4",
-      "texto": "¿En qué colonia de Tijuana ha habido más derrumbes o deslizamientos de tierra?",
-      "dato": "Reportes de derrumbes, deslizamientos y erosión",
+      "tipo": "colonia",
+      "texto": "¿Dónde hay más derrumbes?",
+      "dato": "Derrumbes, deslizamientos y tierra desgastada",
+      "exp": "Terrazas del Valle, La Joya, Altiplano y Cañadas del Florido tienen más derrumbes reportados",
+      "tip": "Si ves grietas nuevas en paredes o en el terreno, sal de la casa y repórtalo al 911",
       "totalReportes": 18,
       "tablero": [
         {
@@ -223,8 +220,103 @@ module.exports = {
           ]
         }
       ],
-      "exp": "Terrazas del Valle, La Joya, Altiplano y Cañadas del Florido son las colonias con más reportes de derrumbes, deslizamientos o erosión de tierra.",
-      "tip": "Si ves grietas nuevas en paredes, pisos o en el terreno, o puertas que de pronto ya no cierran, sal de la casa y repórtalo al 911 o a Protección Civil."
+      "distractores": [
+        "Zona Río",
+        "El Florido",
+        "Sánchez Taboada",
+        "Zona Centro",
+        "Camino Verde",
+        "Libertad"
+      ]
+    },
+    {
+      "id": "q5",
+      "tipo": "opcion",
+      "texto": "¿Qué problema se reporta más cuando llueve?",
+      "dato": "Tipos de incidente en los reportes de Tijuana",
+      "exp": "Lo que más se reporta son calles inundadas, seguido de casas y negocios con agua",
+      "tip": "Si la calle se inunda, no salgas ni manejes: espera a que baje el agua",
+      "totalReportes": 190,
+      "tablero": [
+        {
+          "texto": "Calles inundadas",
+          "reportes": 70,
+          "puntos": 41,
+          "alias": []
+        },
+        {
+          "texto": "Casas y negocios inundados",
+          "reportes": 34,
+          "puntos": 20,
+          "alias": []
+        },
+        {
+          "texto": "Personas atrapadas o arrastradas",
+          "reportes": 28,
+          "puntos": 16,
+          "alias": []
+        },
+        {
+          "texto": "Derrumbes y tierra desgastada",
+          "reportes": 21,
+          "puntos": 12,
+          "alias": []
+        },
+        {
+          "texto": "Choques y carros atrapados",
+          "reportes": 18,
+          "puntos": 11,
+          "alias": []
+        }
+      ],
+      "distractores": [
+        "Postes y árboles caídos",
+        "Arroyos desbordados",
+        "Agua contaminada",
+        "Apagones",
+        "Granizo"
+      ]
+    },
+    {
+      "id": "q6",
+      "tipo": "colonia",
+      "texto": "¿Dónde ha habido más personas en peligro por el agua?",
+      "dato": "Personas atrapadas, arrastradas o ahogadas",
+      "exp": "En Granjas Sección Tecolote, Delicias y Altiplano se reportaron más personas en peligro por el agua",
+      "tip": "Si alguien es arrastrado por el agua, no te metas: llama al 911 y avisa dónde está",
+      "totalReportes": 27,
+      "tablero": [
+        {
+          "texto": "Granjas Sección Tecolote",
+          "reportes": 3,
+          "puntos": 43,
+          "alias": [
+            "tecolote",
+            "granjas tecolote"
+          ]
+        },
+        {
+          "texto": "Delicias",
+          "reportes": 2,
+          "puntos": 29,
+          "alias": []
+        },
+        {
+          "texto": "Altiplano",
+          "reportes": 2,
+          "puntos": 28,
+          "alias": []
+        }
+      ],
+      "distractores": [
+        "Zona Río",
+        "El Florido",
+        "Sánchez Taboada",
+        "Zona Centro",
+        "Camino Verde",
+        "Libertad",
+        "Playas de Tijuana"
+      ]
     }
   ]
 };

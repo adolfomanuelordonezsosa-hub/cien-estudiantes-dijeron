@@ -165,8 +165,23 @@
         <h2 class="sec"><i data-ico="mic" data-t="24"></i>La voz de Victor</h2>
         <p class="nota">Cada frase del juego puede tener <b>varias versiones</b>; el juego elige una al azar para que no suene repetido. Graba aquí mismo con el micrófono o sube un audio (.mp3, .m4a, notas de voz). Se guardan en la base de datos: <b>no hay que subir nada a GitHub</b>. Los celulares y la TV las usan al momento.</p>
         <p class="nota">Los nombres de los jugadores no se pueden grabar por adelantado: <b>aparecen en pantalla</b> mientras suena la frase. El lugar sí se dice con su voz usando las grabaciones "Lugar 1" a "Lugar 10" (al final de esta página).</p>
-        <label style="display:flex;gap:.5rem;align-items:center;color:var(--gis);font-size:.95rem"><input type="checkbox" id="vTTS" style="width:auto"> Si una frase no tiene grabación, que la diga la voz de computadora</label>
+        <p class="nota"><b>El juego nunca usa voz de computadora:</b> si una frase no tiene grabación, simplemente no suena nada. Graba todas para que siempre se escuche la voz de Victor.</p>
         <p class="nota" id="vFormato"></p>
+      </div>
+      <div class="tarjeta marca-agua" style="margin-bottom:1rem">
+        <h2 class="sec"><i data-ico="drop" data-t="24"></i>Recortar un audio con varias frases</h2>
+        <p class="nota">Sube el audio largo donde Victor dice todas las frases. El sistema lo corta solo en las pausas; escucha cada pedazo, elige a qué frase va y presiona <b>Guardar</b>. Si un pedazo quedó partido, únelo con el siguiente; si trae dos frases, divídelo.</p>
+        <div class="fila">
+          <label class="btn" style="margin:0"><i data-ico="upload" data-t="18"></i>Elegir audio largo<input type="file" accept="audio/*" id="rcArchivo" hidden></label>
+          <label style="margin:0;display:flex;align-items:center;gap:.5rem">Pausa mínima entre frases <input type="range" id="rcPausa" min="0.15" max="1" step="0.05" value="0.4" style="width:140px"> <b id="rcPausaTxt">0.40 s</b></label>
+        </div>
+        <canvas id="rcOnda" height="90" style="width:100%;margin-top:.8rem;border-radius:10px;background:var(--verde-claro);display:none"></canvas>
+        <div id="rcLista" style="margin-top:.6rem"></div>
+        <div class="fila oculto" id="rcAcciones">
+          <label style="margin:0;display:flex;align-items:center;gap:.4rem;color:var(--texto)"><input type="checkbox" id="rcReemplazar" checked style="width:auto"> Reemplazar las grabaciones que ya tenga cada frase</label>
+          <span style="flex:1"></span>
+          <button class="btn naranja" id="rcGuardar"><i data-ico="check" data-t="18"></i>Guardar las frases elegidas</button>
+        </div>
       </div>
       <div class="tarjeta"><h2 class="sec">Frases</h2><div id="vLista"></div></div>
       <div class="tarjeta" style="margin-top:1rem"><h2 class="sec">Lugares (para "¡Quedaste en el… lugar 3!")</h2><div class="lugares" id="vLugares"></div></div>
@@ -371,21 +386,19 @@
   let vocesData = { lista: [], tts: true };
   async function cargarVoces() {
     try { vocesData = await api('voces'); } catch (e) { return aviso(e.message, true); }
-    $('#vTTS').checked = vocesData.tts;
     const porEvento = ev => vocesData.lista.filter(v => v.evento === ev);
     const bloque = e => {
       const gs = porEvento(e.id);
       return `<div class="voz" data-ev="${e.id}">
         <div><h3>${esc(e.titulo)}</h3><div class="donde">${esc(e.donde)} · ${esc(e.cuando)}</div>
           ${e.numero ? '' : `<ul class="sug">${e.sugerencias.map(s => `<li>"${esc(s)}"</li>`).join('')}</ul>`}</div>
-        <div>${gs.length ? gs.map(g => `<div class="grab"><audio controls preload="none" src="${g.url}"></audio><button class="btn chico fantasma" data-borrar="${g.id}" title="Borrar">${Icono('trash', 16)}</button></div>`).join('') : `<div class="sin">Sin grabación${vocesData.tts ? ' (usa la voz de computadora)' : ' (no suena nada)'}</div>`}
+        <div>${gs.length ? gs.map(g => `<div class="grab"><audio controls preload="none" src="${g.url}"></audio><button class="btn chico fantasma" data-borrar="${g.id}" title="Borrar">${Icono('trash', 16)}</button></div>`).join('') : `<div class="sin" style="color:var(--rojo);font-weight:700">Falta grabar (no suena nada)</div>`}
           <div class="fila" style="margin-top:.4rem">${FORMATO != null ? `<button class="btn chico" data-grabar="${e.id}">${Icono('mic', 16)}Grabar</button>` : ''}<label class="btn chico fantasma" style="margin:0">${Icono('upload', 16)}Subir audio<input type="file" accept="audio/*" data-subir="${e.id}" hidden></label></div>
           <div class="prev"></div></div></div>`;
     };
     $('#vLista').innerHTML = Voz.EVENTOS.filter(e => !e.numero).map(bloque).join('');
     $('#vLugares').innerHTML = Voz.EVENTOS.filter(e => e.numero).map(bloque).join('');
   }
-  $('#vTTS').addEventListener('change', async e => { try { await api('voces/opciones', { tts: e.target.checked }); aviso('Guardado'); cargarVoces(); } catch (er) { aviso(er.message, true); } });
   const aBase64 = blob => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = mal; r.readAsDataURL(blob); });
   async function subirVoz(evento, blob, mime) {
     try { await api('voces', { evento, mime: (mime || blob.type || 'audio/mpeg').split(';')[0], data: await aBase64(blob) }); aviso('Grabación guardada ✔'); cargarVoces(); } catch (e) { aviso(e.message, true); }
@@ -425,6 +438,108 @@
     const mime = f.type || { mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg', opus: 'audio/ogg', webm: 'audio/webm', mpeg: 'audio/mpeg', aac: 'audio/aac' }[ext] || 'audio/mpeg';
     subirVoz(inp.dataset.subir, f, mime);
     inp.value = '';
+  });
+
+
+  // ================= RECORTADOR DE AUDIO =================
+  const RC = { buf: null, ctx: null, segs: [], energia: [], paso: 0.02, fuente: null };
+  function rcOpciones(sel) {
+    return '<option value="">— ¿Qué frase es? —</option>' + Voz.EVENTOS.map(e => `<option value="${e.id}" ${sel === e.id ? 'selected' : ''}>${esc(e.titulo)}${e.numero ? '' : ' · ' + esc(e.sugerencias[0].slice(0, 38))}</option>`).join('') + '<option value="__no">No usar</option>';
+  }
+  function rcDetectar() {
+    const e = RC.energia, paso = RC.paso, minP = Number($('#rcPausa').value);
+    const orden = e.slice().sort((a, b) => a - b);
+    const umbral = orden[Math.floor(orden.length * .2)] + (orden[Math.floor(orden.length * .6)] - orden[Math.floor(orden.length * .2)]) * .35;
+    const silencios = []; let ini = null;
+    e.forEach((v, i) => { if (v < umbral) { if (ini == null) ini = i; } else { if (ini != null && (i - ini) * paso >= minP) silencios.push([ini * paso, i * paso]); ini = null; } });
+    const dur = RC.buf.duration, segs = []; let desde = 0;
+    for (const [a, b] of silencios) { if (a - desde > .3) segs.push({ a: desde, b: a }); desde = b; }
+    if (dur - desde > .3) segs.push({ a: desde, b: dur });
+    // quita silencio al principio/fin de cada pedazo
+    RC.segs = segs.map(s => ({ ...s, ev: '' }));
+    rcPintar();
+  }
+  function rcPintar() {
+    const c = $('#rcOnda'), g = c.getContext('2d'), w = c.width = c.clientWidth * 2, h = c.height = 180;
+    g.clearRect(0, 0, w, h);
+    const e = RC.energia, max = Math.max(...e), dur = RC.buf.duration;
+    RC.segs.forEach((s, i) => { g.fillStyle = i % 2 ? 'rgba(221,151,26,.22)' : 'rgba(0,114,63,.18)'; g.fillRect(s.a / dur * w, 0, (s.b - s.a) / dur * w, h); g.fillStyle = '#003D24'; g.font = 'bold 22px DM Sans, sans-serif'; g.fillText(i + 1, s.a / dur * w + 4, 22); });
+    g.fillStyle = '#00723F';
+    e.forEach((v, i) => { const x = i / e.length * w, y = (v / max) * (h - 30); g.fillRect(x, h - y, Math.max(1, w / e.length), y); });
+    $('#rcLista').innerHTML = `<table><thead><tr><th>#</th><th>Tiempo</th><th></th><th>¿Qué frase es?</th><th></th></tr></thead><tbody>${RC.segs.map((s, i) => `
+      <tr data-i="${i}"><td><b>${i + 1}</b></td><td class="nota">${s.a.toFixed(1)}–${s.b.toFixed(1)} s</td>
+      <td><button class="btn chico" data-rc="oir">${Icono('volume', 15)}Escuchar</button></td>
+      <td><select data-rc="ev">${rcOpciones(s.ev)}</select></td>
+      <td style="white-space:nowrap">${i < RC.segs.length - 1 ? `<button class="btn chico fantasma" data-rc="unir" title="Unir con el siguiente">Unir ↓</button>` : ''} <button class="btn chico fantasma" data-rc="dividir" title="Dividir en dos">Dividir</button></td></tr>`).join('')}</tbody></table>`;
+    $('#rcAcciones').classList.toggle('oculto', !RC.segs.length);
+  }
+  function rcOir(s) {
+    try { RC.fuente && RC.fuente.stop(); } catch { /* */ }
+    const src = RC.ctx.createBufferSource(); src.buffer = RC.buf; src.connect(RC.ctx.destination);
+    src.start(0, Math.max(0, s.a - .05), (s.b - s.a) + .15); RC.fuente = src;
+  }
+  $('#rcPausa').addEventListener('input', e => { $('#rcPausaTxt').textContent = Number(e.target.value).toFixed(2) + ' s'; if (RC.buf) rcDetectar(); });
+  $('#rcArchivo').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      RC.ctx = RC.ctx || new (window.AudioContext || window.webkitAudioContext)();
+      RC.buf = await RC.ctx.decodeAudioData(await f.arrayBuffer());
+      const datos = RC.buf.getChannelData(0), sr = RC.buf.sampleRate, n = Math.floor(sr * RC.paso);
+      RC.energia = [];
+      for (let i = 0; i + n <= datos.length; i += n) { let s = 0; for (let j = i; j < i + n; j++) s += datos[j] * datos[j]; RC.energia.push(Math.sqrt(s / n)); }
+      $('#rcOnda').style.display = 'block';
+      rcDetectar();
+      aviso(`Audio de ${RC.buf.duration.toFixed(0)} s cortado en ${RC.segs.length} pedazos`);
+    } catch { aviso('No se pudo leer ese audio', true); }
+    e.target.value = '';
+  });
+  $('#rcLista').addEventListener('change', e => { if (e.target.dataset.rc === 'ev') RC.segs[+e.target.closest('tr').dataset.i].ev = e.target.value; });
+  $('#rcLista').addEventListener('click', e => {
+    const b = e.target.closest('[data-rc]'); if (!b || b.tagName === 'SELECT') return;
+    const i = +b.closest('tr').dataset.i, s = RC.segs[i];
+    if (b.dataset.rc === 'oir') rcOir(s);
+    if (b.dataset.rc === 'unir') { RC.segs.splice(i, 2, { a: s.a, b: RC.segs[i + 1].b, ev: s.ev || RC.segs[i + 1].ev }); rcPintar(); }
+    if (b.dataset.rc === 'dividir') {
+      // corta en la parte más callada del pedazo (lejos de las orillas)
+      const e0 = Math.floor((s.a + (s.b - s.a) * .2) / RC.paso), e1 = Math.floor((s.a + (s.b - s.a) * .8) / RC.paso);
+      let mejor = e0; for (let k = e0; k < e1; k++) if (RC.energia[k] < RC.energia[mejor]) mejor = k;
+      const m = mejor * RC.paso;
+      RC.segs.splice(i, 1, { a: s.a, b: m, ev: s.ev }, { a: m, b: s.b, ev: '' }); rcPintar();
+    }
+  });
+  function rcWav(s) {
+    const sr = RC.buf.sampleRate, datos = RC.buf.getChannelData(0);
+    const ini = Math.max(0, Math.floor((s.a - .06) * sr)), fin = Math.min(datos.length, Math.ceil((s.b + .12) * sr));
+    const sal = 22050, factor = sr / sal, n = Math.floor((fin - ini) / factor);
+    const pcm = new Int16Array(n), fade = Math.floor(sal * .015);
+    for (let i = 0; i < n; i++) {
+      let v = datos[ini + Math.floor(i * factor)] || 0;
+      if (i < fade) v *= i / fade; if (i > n - fade) v *= (n - i) / fade;
+      pcm[i] = Math.max(-1, Math.min(1, v)) * 32767;
+    }
+    const buf = new ArrayBuffer(44 + n * 2), d = new DataView(buf);
+    const txt = (o, s2) => { for (let k = 0; k < s2.length; k++) d.setUint8(o + k, s2.charCodeAt(k)); };
+    txt(0, 'RIFF'); d.setUint32(4, 36 + n * 2, true); txt(8, 'WAVE'); txt(12, 'fmt '); d.setUint32(16, 16, true); d.setUint16(20, 1, true); d.setUint16(22, 1, true);
+    d.setUint32(24, sal, true); d.setUint32(28, sal * 2, true); d.setUint16(32, 2, true); d.setUint16(34, 16, true); txt(36, 'data'); d.setUint32(40, n * 2, true);
+    new Int16Array(buf, 44).set(pcm);
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+  $('#rcGuardar').addEventListener('click', async () => {
+    const elegidos = RC.segs.filter(s => s.ev && s.ev !== '__no');
+    if (!elegidos.length) return aviso('Elige a qué frase va cada pedazo', true);
+    const btn = $('#rcGuardar'); btn.disabled = true;
+    try {
+      if ($('#rcReemplazar').checked) {
+        const eventos = new Set(elegidos.map(s => s.ev));
+        const actuales = (await api('voces')).lista.filter(v => eventos.has(v.evento));
+        for (const v of actuales) await api('voces/borrar', { id: v.id });
+      }
+      let n = 0;
+      for (const s of elegidos) { await api('voces', { evento: s.ev, mime: 'audio/wav', data: await aBase64(rcWav(s)) }); n++; btn.textContent = `Guardando ${n}/${elegidos.length}`; }
+      aviso(`${n} frases guardadas ✔`);
+      cargarVoces();
+    } catch (e) { aviso(e.message, true); }
+    btn.disabled = false; btn.innerHTML = Icono('check', 18) + 'Guardar las frases elegidas';
   });
 
   // ================= CREADORES =================
@@ -483,6 +598,8 @@
         <textarea data-i="${i}" data-k="tip" maxlength="600">${esc(q.tip || '')}</textarea>
         <label>Tablero (respuestas correctas)</label>
         <textarea class="tab-txt" data-i="${i}" data-k="tablero">${esc(tabATexto(q.tablero))}</textarea>
+        <label>Opciones que NO están en el tablero (separadas por coma) · el jugador ve todas juntas y revueltas</label>
+        <input data-i="${i}" data-k="distractores" value="${esc((q.distractores || []).join(', '))}">
       </div>`).join('');
     preguntasEdit.forEach((_, i) => sumar(i));
   }
@@ -500,7 +617,7 @@
     if (k === 'tablero') { preguntasEdit[i].tablero = parseTab(e.target.value); sumar(i); } else preguntasEdit[i][k] = e.target.value;
   });
   $('#pLista').addEventListener('click', e => { const i = e.target.dataset.del; if (i != null && confirm('¿Quitar esta pregunta?')) { preguntasEdit.splice(Number(i), 1); pintarPreguntas(); } });
-  $('#pAgregar').addEventListener('click', () => { preguntasEdit.push({ texto: '', dato: '', exp: '', tip: '', tablero: [] }); pintarPreguntas(); });
+  $('#pAgregar').addEventListener('click', () => { preguntasEdit.push({ tipo: 'colonia', texto: '', dato: '', exp: '', tip: '', tablero: [], distractores: [] }); pintarPreguntas(); });
   $('#pGuardar').addEventListener('click', async () => {
     try { const d = await api('preguntas', { preguntas: preguntasEdit }); estado.config = d.config; cargarPreguntas(); aviso('Preguntas guardadas'); } catch (e) { aviso(e.message, true); }
   });

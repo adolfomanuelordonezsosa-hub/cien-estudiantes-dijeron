@@ -1,6 +1,5 @@
-// Número de reportes por colonia para cada pregunta (histórico de Tijuana, Excel Reportes de Riesgo).
-// Se usa para explicarle a cada jugador por qué su respuesta no estaba en el tablero.
-// q1 = todos los reportes; q2 = calles/arroyos/arrastres; q3 = casas inundadas; q4 = derrumbes y deslizamientos.
+// Reportes por colonia (o por tipo de problema en q5) para cada pregunta. Histórico de Tijuana.
+// Se usa para explicar por qué una respuesta no estaba en el tablero.
 module.exports = {
  "q1": {
   "La Morita": 9,
@@ -212,5 +211,42 @@ module.exports = {
   "Alemán": 1,
   "Praderas de la Mesa": 1,
   "Zona Centro": 1
+ },
+ "q6": {
+  "Granjas Sección Tecolote": 3,
+  "Delicias": 2,
+  "Altiplano": 2,
+  "Los Laureles": 1,
+  "Cuauhtémoc": 1,
+  "Praderas de la Mesa": 1,
+  "Madero": 1,
+  "Cañón de la Pedrera": 1,
+  "Cañón de las Palmeras": 1,
+  "México Lindo": 1,
+  "Nueva Aurora Sección B": 1,
+  "Independencia": 1,
+  "Tejamen": 1,
+  "Chihuahua": 1,
+  "Cañón Altamira Guerrero": 1,
+  "Leandro Valle": 1,
+  "San Antonio": 1,
+  "Villa Cruz": 1,
+  "El Venado": 1,
+  "La Herradura Norte": 1,
+  "Camino Verde": 1,
+  "La Cima": 1,
+  "Guaycura": 1
+ },
+ "q5": {
+  "Calles inundadas": 70,
+  "Casas y negocios inundados": 34,
+  "Personas atrapadas o arrastradas": 28,
+  "Derrumbes y tierra desgastada": 21,
+  "Choques y carros atrapados": 18,
+  "Postes y árboles caídos": 10,
+  "Arroyos desbordados": 7,
+  "Agua contaminada": 1,
+  "Apagones": 1,
+  "Granizo": 0
  }
 };

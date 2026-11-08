@@ -19,6 +19,8 @@ const ADMIN_KEY = process.env.ADMIN_KEY || 'nino2026';
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const AUDIO_DIR = path.join(PUBLIC_DIR, 'audio');
 const MAX_TACHAS = 3;
+const SEG_POR_VIDA = 10;      // segundos para contestar antes de perder una vida
+const VERSION_PREGUNTAS = 2;  // al subir este número se cargan las preguntas nuevas de data/preguntas.js
 const TOP = 10;
 const C_CONFIG = 'juego_config', C_PARTIDAS = 'partidas', C_JUGADAS = 'jugadas', C_VOCES = 'voces';
 const AVATAR_OK = /^([MHA][0-7]{10}|[0-7]{6})$/;
@@ -39,11 +41,12 @@ function configInicial() {
   return {
     titulo: '100 estudiantes dijeron',
     fuente: DATOS.meta.fuente, reportes: DATOS.meta.reportes,
-    vozTTS: true,      // usar voz de computadora cuando un evento no tiene grabación
     creadores: [],
+    versionPreguntas: VERSION_PREGUNTAS,
     preguntas: DATOS.preguntas.map(q => ({
-      id: q.id, texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', totalReportes: q.totalReportes,
-      tablero: q.tablero.map(t => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, alias: t.alias || [] }))
+      id: q.id, tipo: q.tipo || 'colonia', texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', totalReportes: q.totalReportes,
+      tablero: q.tablero.map(t => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, alias: t.alias || [] })),
+      distractores: q.distractores || []
     }))
   };
 }
@@ -97,6 +100,10 @@ function contarEn(mapa, texto) {
 }
 function explicarError(q, colonia) {
   const s = n => (n === 1 ? '' : 's');
+  if (q.tipo === 'opcion') {
+    const n = contarEn(HIST[q.id], colonia) || 0;
+    return n > 0 ? `Sí pasa (${n} reporte${s(n)}), pero se reporta menos que las respuestas del tablero` : 'Casi no se reporta en Tijuana cuando llueve';
+  }
   const minTab = Math.min(...q.tablero.map(t => t.reportes || 0));
   const nTipo = contarEn(HIST[q.id], colonia);
   const nTotal = contarEn(HIST.q1, colonia);
@@ -114,12 +121,34 @@ function nombreColonia(texto) {
   return c ? c.nombre : titleCase(texto);
 }
 
+// ---------------------------------------------------------------- opciones (barajadas igual para cada partida)
+function semilla(texto) { let h = 2166136261; for (const c of texto) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function opcionesDe(p, q) {
+  const lista = [...q.tablero.map(t => t.texto), ...(q.distractores || [])];
+  let s = semilla(p.id + q.id);
+  const azar = () => { s = (s + 0x6D2B79F5) | 0; let x = Math.imul(s ^ (s >>> 15), 1 | s); x ^= x + Math.imul(x ^ (x >>> 7), 61 | x); return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+  for (let i = lista.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [lista[i], lista[j]] = [lista[j], lista[i]]; }
+  return lista;
+}
+const pausaActual = p => (p.pausaMs || 0) + (p.revisionDesde ? Date.now() - p.revisionDesde : 0);
+// Retroalimentación de una pregunta al terminarla (se muestra ahí mismo)
+function revisionDe(p, q, numero) {
+  const pr = p.progreso[q.id] || { encontrados: [], puntos: 0, tachas: 0 };
+  return {
+    numero, total: config.preguntas.length, texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', puntos: pr.puntos,
+    maxPuntos: q.tablero.reduce((a, t) => a + t.puntos, 0), sinTiempo: pr.sinTiempo || 0,
+    tablero: q.tablero.map((t, i) => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, acerto: pr.encontrados.includes(i) })),
+    errores: (pr.fallidas || []).map(c => ({ texto: c, motivo: explicarError(q, c) })),
+    ultima: !!p.terminada
+  };
+}
+
 // ---------------------------------------------------------------- partidas
 function crearPartida(datos) {
   const p = {
     id: crypto.randomUUID(), nombre: datos.nombre, apellido: datos.apellido, avatar: datos.avatar,
     estudiante: datos.estudiante, carrera: datos.carrera, colonia: datos.colonia,
-    inicio: Date.now(), fin: null, ms: null, qIndex: 0, puntos: 0, terminada: false,
+    inicio: Date.now(), fin: null, ms: null, qIndex: 0, puntos: 0, terminada: false, pausaMs: 0, revisionDesde: null,
     progreso: {}, creada: ahora()
   };
   partidas.set(p.id, p);
@@ -127,18 +156,22 @@ function crearPartida(datos) {
   return p;
 }
 function progresoDe(p, qid) {
-  return p.progreso[qid] || (p.progreso[qid] = { encontrados: [], tachas: 0, puntos: 0, terminada: false });
+  return p.progreso[qid] || (p.progreso[qid] = { encontrados: [], tachas: 0, puntos: 0, terminada: false, ultimo: Date.now() });
 }
 function terminarPregunta(p) {
   const q = config.preguntas[p.qIndex];
   if (q) progresoDe(p, q.id).terminada = true;
   p.qIndex++;
   if (p.qIndex >= config.preguntas.length) {
-    const antes = top().map(r => r.id);
+    const antes = ranking().slice(0, 100).map(r => r.id);
     p.terminada = true;
     p.fin = Date.now();
-    p.ms = p.fin - p.inicio;
+    p.ms = p.fin - p.inicio - (p.pausaMs || 0);
+    p.revisionDesde = null;
     anunciarSiTop(p, antes);
+  } else {
+    // mientras lee la retroalimentación no corre el reloj
+    p.revisionDesde = Date.now();
   }
   pendientes.add(p.id);
 }
@@ -151,7 +184,13 @@ function posicion(p) {
   return i >= 0 ? i + 1 : null;
 }
 const filaRanking = (p, i) => ({ lugar: i + 1, id: p.id, nombre: nombrePublico(p), avatar: p.avatar || '', puntos: p.puntos, ms: p.ms, carrera: carreraDe(p), fecha: p.creada });
-function top() { return ranking().slice(0, TOP).map(filaRanking); }
+function top(n) { return ranking().slice(0, n || TOP).map(filaRanking); }
+function continuar(p) {
+  if (p.revisionDesde) { p.pausaMs = (p.pausaMs || 0) + (Date.now() - p.revisionDesde); p.revisionDesde = null; }
+  const q = config.preguntas[p.qIndex];
+  if (q && !p.terminada) progresoDe(p, q.id).ultimo = Date.now();
+  pendientes.add(p.id);
+}
 
 function vistaPartida(p) {
   const total = config.preguntas.length;
@@ -160,10 +199,11 @@ function vistaPartida(p) {
     const q = config.preguntas[p.qIndex];
     const pr = progresoDe(p, q.id);
     return {
-      ...base, transcurrido: Date.now() - p.inicio,
+      ...base, transcurrido: Date.now() - p.inicio - pausaActual(p), enRevision: !!p.revisionDesde,
       pregunta: {
-        id: q.id, numero: p.qIndex + 1, texto: q.texto, respuestas: q.tablero.length,
-        tachas: pr.tachas, maxTachas: MAX_TACHAS, puntos: pr.puntos,
+        id: q.id, numero: p.qIndex + 1, texto: q.texto, respuestas: q.tablero.length, tipo: q.tipo || 'colonia',
+        tachas: pr.tachas, maxTachas: MAX_TACHAS, puntos: pr.puntos, segundos: SEG_POR_VIDA,
+        opciones: opcionesDe(p, q), fallidas: pr.fallidas || [],
         encontradas: pr.encontrados.map(i => ({ indice: i, texto: q.tablero[i].texto, puntos: q.tablero[i].puntos }))
       }
     };
@@ -177,13 +217,13 @@ function vistaPartida(p) {
         texto: q.texto, dato: q.dato, exp: q.exp || '', tip: q.tip || '', totalReportes: q.totalReportes, puntos: pr.puntos,
         maxPuntos: q.tablero.reduce((a, t) => a + t.puntos, 0),
         tablero: q.tablero.map((t, i) => ({ texto: t.texto, reportes: t.reportes, puntos: t.puntos, acerto: pr.encontrados.includes(i) })),
-        errores: (pr.fallidas || []).slice(0, 3).map(c => ({ texto: c, motivo: explicarError(q, c) }))
+        errores: (pr.fallidas || []).slice(0, 3).map(c => ({ texto: c, motivo: explicarError(q, c) })), sinTiempo: pr.sinTiempo || 0
       };
     })
   };
 }
 
-function responder(id, texto) {
+function responder(id, texto, tiempo) {
   const p = partidas.get(id);
   if (!p) return { status: 404, error: 'Tu partida ya no existe, vuelve a empezar' };
   if (p.terminada) return { status: 409, error: 'Ya terminaste tu partida', partida: vistaPartida(p) };
@@ -192,13 +232,24 @@ function responder(id, texto) {
   ultimoIntento.set(id, t);
   const q = config.preguntas[p.qIndex];
   const pr = progresoDe(p, q.id);
-  const limpio = limpiar(texto, 80);
-  if (!normKey(limpio)) return { status: 400, error: 'Escribe una colonia' };
-  if (esOfensivo(limpio)) return { status: 400, error: 'Escribe una colonia sin groserías 🙂' };
-
-  const idx = buscarEnTablero(q.tablero, limpio);
-  let resultado;
-  if (idx >= 0 && pr.encontrados.includes(idx)) {
+  const numero = p.qIndex + 1;
+  let limpio = '', idx = -1, resultado;
+  if (tiempo) {
+    // se acabó el tiempo de una vida (se acepta solo si de verdad pasaron los segundos)
+    if (t - (pr.ultimo || 0) < (SEG_POR_VIDA - 2) * 1000) return { status: 409, error: 'Todavía tienes tiempo', partida: vistaPartida(p) };
+    pr.tachas++;
+    pr.sinTiempo = (pr.sinTiempo || 0) + 1;
+    resultado = { tipo: 'tiempo', tachas: pr.tachas };
+  } else {
+    limpio = limpiar(texto, 80);
+    if (!normKey(limpio)) return { status: 400, error: 'Elige una opción' };
+    const opciones = opcionesDe(p, q);
+    if (opciones.length > q.tablero.length && !opciones.some(o => normKey(o) === normKey(limpio))) return { status: 400, error: 'Elige una de las opciones' };
+    if (esOfensivo(limpio)) return { status: 400, error: 'Elige una opción' };
+    if ((pr.fallidas || []).some(f => normKey(f) === normKey(limpio))) return { status: 409, error: 'Esa ya la intentaste', partida: vistaPartida(p) };
+    idx = buscarEnTablero(q.tablero, limpio);
+  }
+  if (resultado) { /* tiempo */ } else if (idx >= 0 && pr.encontrados.includes(idx)) {
     resultado = { tipo: 'repetida', texto: q.tablero[idx].texto };
   } else if (idx >= 0) {
     pr.encontrados.push(idx);
@@ -208,19 +259,24 @@ function responder(id, texto) {
   } else {
     pr.tachas++;
     pr.fallidas = pr.fallidas || [];
-    pr.fallidas.push(nombreColonia(limpio));
+    pr.fallidas.push(q.tipo === 'opcion' ? limpio : nombreColonia(limpio));
     resultado = { tipo: 'tache', tachas: pr.tachas };
   }
+  pr.ultimo = t;
   const jug = {
-    partida: id, nombre: nombreCompleto(p), qid: q.id, pregunta: p.qIndex + 1, texto: limpio, colonia: nombreColonia(limpio),
+    partida: id, nombre: nombreCompleto(p), qid: q.id, pregunta: p.qIndex + 1, texto: tiempo ? '(se acabó el tiempo)' : limpio, colonia: tiempo ? '' : (q.tipo === 'opcion' ? limpio : nombreColonia(limpio)),
     resultado: resultado.tipo, respuestaTablero: idx >= 0 ? q.tablero[idx].texto : '',
-    puntos: resultado.tipo === 'acierto' ? resultado.puntos : 0, msDesdeInicio: t - p.inicio, fecha: ahora()
+    puntos: resultado.tipo === 'acierto' ? resultado.puntos : 0, msDesdeInicio: t - p.inicio - pausaActual(p), fecha: ahora()
   };
   jugadas.push(jug);
   almacen.insert(C_JUGADAS, jug).catch(e => console.error('jugada', e.message));
 
   const fin = pr.tachas >= MAX_TACHAS || pr.encontrados.length >= q.tablero.length;
-  if (fin) { resultado.finPregunta = true; resultado.completo = pr.encontrados.length >= q.tablero.length; terminarPregunta(p); }
+  if (fin) {
+    resultado.finPregunta = true; resultado.completo = pr.encontrados.length >= q.tablero.length;
+    terminarPregunta(p);
+    resultado.revision = revisionDe(p, q, numero);
+  }
   pendientes.add(id);
   return { ok: true, resultado, partida: vistaPartida(p) };
 }
@@ -350,7 +406,7 @@ function exportar(tipo) {
 function listaVoces() {
   const eventos = {};
   for (const v of [...voces.values()].sort((a, b) => a.creado.localeCompare(b.creado))) (eventos[v.evento] = eventos[v.evento] || []).push('/voz/' + v.id);
-  return { eventos, tts: config.vozTTS !== false };
+  return { eventos, tts: false };   // nunca voz de computadora: solo las grabaciones
 }
 async function guardarVoz(evento, mime, buf, origen) {
   const id = crypto.randomBytes(8).toString('hex');
@@ -377,10 +433,10 @@ async function importarAudiosIniciales() {
 // ---------------------------------------------------------------- tiempo real
 const clientes = new Set();
 function enviar(c, ev, data) { try { c.res.write(`event: ${ev}\ndata: ${JSON.stringify(data)}\n\n`); } catch { /* cerrado */ } }
-function publico() {
+function publico(n) {
   const lista = [...partidas.values()].filter(p => !p.oculta);
   return {
-    titulo: config.titulo, top: top(), totalPreguntas: config.preguntas.length,
+    titulo: config.titulo, top: top(n), totalPreguntas: config.preguntas.length,
     stats: {
       personas: personas(lista), partidas: lista.length,
       jugando: lista.filter(p => !p.terminada && Date.now() - p.inicio < 30 * 60000).length,
@@ -399,8 +455,8 @@ function avisarCambios() {
 }
 function anunciarSiTop(p, topAntes) {
   const lugar = posicion(p);
-  if (!lugar || lugar > TOP) return;
-  const ahoraTop = top();
+  if (!lugar || lugar > 100) return;
+  const ahoraTop = top(100);
   // a quién rebasó: los que estaban en el top y ahora bajaron de lugar o salieron
   const desplazados = topAntes.map((id, i) => ({ id, antes: i + 1, despues: (ahoraTop.find(r => r.id === id) || {}).lugar || null })).filter(x => x.despues == null || x.despues > x.antes);
   const datos = { id: p.id, nombre: nombrePublico(p), avatar: p.avatar || '', puntos: p.puntos, ms: p.ms, lugar, desplazados };
@@ -484,7 +540,7 @@ async function manejar(req, res) {
   }
   if (p === '/api/voces' && m === 'GET') return json(res, 200, listaVoces());
   if (p === '/api/creadores' && m === 'GET') return json(res, 200, creadoresPublicos());
-  if (p === '/api/ranking' && m === 'GET') return json(res, 200, publico());
+  if (p === '/api/ranking' && m === 'GET') return json(res, 200, publico(Math.min(100, Math.max(1, Number(url.searchParams.get('n')) || TOP))));
   if (p === '/api/partida' && m === 'GET') {
     const pa = partidas.get(url.searchParams.get('id') || '');
     return pa ? json(res, 200, vistaPartida(pa)) : json(res, 404, { error: 'No existe' });
@@ -513,14 +569,26 @@ async function manejar(req, res) {
   }
   if (p === '/api/responder' && m === 'POST') {
     const b = await leerCuerpo(req, 1e5);
-    const r = responder(b.id, b.texto);
+    const r = responder(b.id, b.texto, !!b.tiempo);
     return json(res, r.status || 200, r);
   }
   if (p === '/api/pasar' && m === 'POST') {
     const b = await leerCuerpo(req, 1e5);
     const pa = partidas.get(b.id);
     if (!pa) return json(res, 404, { error: 'Tu partida ya no existe, vuelve a empezar' });
-    if (!pa.terminada && Number(b.numero) === pa.qIndex + 1) terminarPregunta(pa);
+    let revision = null;
+    if (!pa.terminada && Number(b.numero) === pa.qIndex + 1) {
+      const q = config.preguntas[pa.qIndex];
+      terminarPregunta(pa);
+      revision = revisionDe(pa, q, Number(b.numero));
+    }
+    return json(res, 200, { partida: vistaPartida(pa), revision });
+  }
+  if (p === '/api/continuar' && m === 'POST') {
+    const b = await leerCuerpo(req, 1e5);
+    const pa = partidas.get(b.id);
+    if (!pa) return json(res, 404, { error: 'Tu partida ya no existe, vuelve a empezar' });
+    continuar(pa);
     return json(res, 200, { partida: vistaPartida(pa) });
   }
 
@@ -531,7 +599,7 @@ async function manejar(req, res) {
     if (m === 'GET' && accion === 'estado') return json(res, 200, { ...publico(), config, almacen: almacen.tipo });
     if (m === 'GET' && accion === 'analisis') return json(res, 200, analisis());
     if (m === 'GET' && accion === 'voces') {
-      return json(res, 200, { tts: config.vozTTS !== false, lista: [...voces.values()].map(v => ({ id: v.id, evento: v.evento, mime: v.mime, bytes: v.bytes, creado: v.creado, origen: v.origen, url: '/voz/' + v.id })) });
+      return json(res, 200, { tts: false, lista: [...voces.values()].map(v => ({ id: v.id, evento: v.evento, mime: v.mime, bytes: v.bytes, creado: v.creado, origen: v.origen, url: '/voz/' + v.id })) });
     }
     if (m === 'GET' && accion === 'partidas') {
       const lugar = new Map(ranking().map((x, i) => [x.id, i + 1]));
@@ -593,7 +661,8 @@ async function manejar(req, res) {
           texto: limpiar(t.texto, 60), reportes: Math.max(0, Number(t.reportes) || 0), puntos: Math.max(0, Math.round(Number(t.puntos) || 0)),
           alias: (Array.isArray(t.alias) ? t.alias : String(t.alias || '').split(',')).map(a => limpiar(a, 60)).filter(Boolean)
         })).filter(t => t.texto).slice(0, 8);
-        return { id: /^[\w-]{1,20}$/.test(q.id || '') ? q.id : 'q' + (qi + 1) + crypto.randomBytes(2).toString('hex'), texto: limpiar(q.texto, 200), dato: limpiar(q.dato, 200), exp: limpiar(q.exp, 600), tip: limpiar(q.tip, 600), totalReportes: Number(q.totalReportes) || 0, tablero };
+        const distractores = (Array.isArray(q.distractores) ? q.distractores : String(q.distractores || '').split(',')).map(d => limpiar(d, 60)).filter(Boolean).slice(0, 10);
+        return { id: /^[\w-]{1,20}$/.test(q.id || '') ? q.id : 'q' + (qi + 1) + crypto.randomBytes(2).toString('hex'), tipo: q.tipo === 'opcion' ? 'opcion' : 'colonia', texto: limpiar(q.texto, 200), dato: limpiar(q.dato, 200), exp: limpiar(q.exp, 600), tip: limpiar(q.tip, 600), totalReportes: Number(q.totalReportes) || 0, tablero, distractores };
       }).filter(q => q.texto && q.tablero.length);
       if (!nuevas.length) return json(res, 400, { error: 'Debe haber al menos una pregunta con respuestas' });
       config.preguntas = nuevas;
@@ -635,6 +704,8 @@ async function iniciar() {
   const c = await almacen.get(C_CONFIG, 'principal');
   if (c && Array.isArray(c.preguntas) && c.preguntas.length) {
     config = { ...configInicial(), ...c };
+    // preguntas de una versión anterior del juego: se cambian por las nuevas
+    if (c.versionPreguntas !== VERSION_PREGUNTAS) { config.preguntas = configInicial().preguntas; config.versionPreguntas = VERSION_PREGUNTAS; configPendiente = true; }
     const base = configInicial().preguntas;
     for (const q of config.preguntas) {
       const d = base.find(x => x.id === q.id);

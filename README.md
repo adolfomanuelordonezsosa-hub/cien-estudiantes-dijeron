@@ -13,12 +13,10 @@ Las respuestas correctas salen de los **reportes históricos de Tijuana** (Excel
 
 ## Cómo se juega
 
-1. **Bienvenida**: el jugador crea su **avatar** (mujer, hombre o uno de 8 animales: perro, gato, conejo, oso, panda, zorro, ajolote y mapache; con peinado, ropa, abajo, sombrero y accesorios), escribe **nombre y apellido reales** (en público se ve "Ana G."), dice si es estudiante (si sí, elige su carrera de la lista o la escribe; se unifica sola) y opcionalmente su delegación o colonia. Todo lleva filtro de groserías.
-2. **Juego**: 4 preguntas, una a la vez. Escribe colonias de Tijuana (con autocompletado). Tiene 3 oportunidades (✕) por pregunta y puede pasar a la siguiente cuando quiera. El reloj corre desde que empieza.
-3. **¡Gracias!**: su avatar, puntos, tiempo y lugar mientras suena la voz (mínimo 4 s); luego pasa solo a los resultados.
-4. **Resultados y retroalimentación**: Top 10 con avatares, todas las respuestas correctas con su número de reportes y, por cada pregunta: por qué no estaban sus respuestas (con el número real de reportes de esa colonia), lo que dicen los datos y un consejo de prevención.
-
-Puntos: cada pregunta reparte 100 puntos entre las colonias del tablero según cuántos reportes tiene cada una. Ranking: más puntos gana; si hay empate, gana el más rápido.
+1. **Bienvenida**: crea tu avatar, escribe nombre y apellido reales, dice si es estudiante y su delegación o colonia (opcional). Abajo está el aviso de parodia educativa sin fines de lucro
+2. **Juego**: 6 preguntas cortas. Se contesta **tocando opciones** (10 por pregunta). 3 vidas por pregunta y **10 segundos por vida**: si se acaba el tiempo, pierde una vida. Puede tocar "No sé, pasar a la siguiente"
+3. **Retroalimentación al terminar cada pregunta**: las respuestas correctas con sus reportes, por qué no era correcta cada respuesta, lo que dicen los datos y un consejo. El reloj no corre mientras lee
+4. **¡Gracias!** y **Resultados** con Top 10 y botón para ver el **Top 100**
 
 ## Preguntas y respuestas (del histórico de Tijuana)
 

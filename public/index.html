@@ -765,6 +765,15 @@
   }
   $('#btnOtra').addEventListener('click', olvidar);
 
+  // ================= DENTRO DE OTRA PÁGINA (/embed) =================
+  // Cuando se ve la pestaña del ranking, el juego se calla
+  addEventListener('message', e => {
+    if (e.origin !== location.origin || !e.data || e.data.tipo !== 'silencio') return;
+    Voz.pausado = !!e.data.valor;
+    if (Voz.pausado) Voz.detener();
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) Voz.detener(); });
+
   // ================= TOP 100 =================
   document.addEventListener('click', async e => {
     if (!e.target.closest('[data-top100]')) return;

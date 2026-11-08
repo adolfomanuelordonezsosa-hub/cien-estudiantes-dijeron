@@ -30,7 +30,7 @@
 
   const Voz = {
     EVENTOS, activo: true, clave: 'voz_activa', urls: {}, tts: true, crudos: {}, buffers: {}, ctx: null, listo: null, ultima: {},
-    token: 0, fuente: null, audioEl: null, vozTTS: null, desbloqueado: false,
+    token: 0, fuente: null, audioEl: null, vozTTS: null, desbloqueado: false, pausado: false,
 
     async iniciar(opciones = {}) {
       this.clave = opciones.clave || this.clave;
@@ -135,14 +135,14 @@
       });
     },
     async evento(id, tk) {
-      if (!this.activo || tk !== this.token) return;
+      if (!this.activo || this.pausado || tk !== this.token) return;
       const u = this.elegir(id);
       if (u) return this.tocarUrl(u, tk);
       // sin grabación: silencio (nunca voz robótica)
     },
     // efectos de sonido
     tono(f, t0, d, tipo = 'triangle', vol = .2) {
-      if (!this.activo || !this.ctx) return;
+      if (!this.activo || this.pausado || !this.ctx) return;
       const c = this.ctx, o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
       o.type = tipo; o.frequency.value = f;
       g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
@@ -157,7 +157,7 @@
       if (!opciones.encolar) this.detener();
       const tk = this.token;
       for (const p of pasos) {
-        if (tk !== this.token || !this.activo) return;
+        if (tk !== this.token || !this.activo || this.pausado) return;
         if (p.efecto) { this[p.efecto](); await espera(p.pausa || 250); }
         else if (p.evento) await this.evento(p.evento, tk);
         else if (p.lugar) { if (p.lugar >= 1 && p.lugar <= 10) await this.evento('lugar_' + p.lugar, tk); }

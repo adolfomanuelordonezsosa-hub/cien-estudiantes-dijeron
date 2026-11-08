@@ -9,7 +9,8 @@ Las respuestas correctas salen de los **reportes históricos de Tijuana** (Excel
 |---|---|---|
 | `/` | Jugadores (celular, por QR) | Bienvenida → Juego → Resultados con Top 10 |
 | `/tv` | Pantalla del stand | QR para jugar + Top 10 en vivo con voz cuando alguien entra al top |
-| `/admin` | Equipo OCUN | Ranking, ocultar nombres, análisis, editar respuestas, descargar datos |
+| `/embed` | Página de otro equipo | Dos pestañas: **Jugar** y **Top 10 en vivo**. Solo suena la pestaña del juego; el ranking va sin sonido |
+| `/admin` | Equipo OCUN (privado) | Ranking, ocultar nombres, análisis, editar respuestas, descargar datos. No se puede meter dentro de otra página |
 
 ## Cómo se juega
 
@@ -58,6 +59,20 @@ Ranking y partidas · 📊 Dashboard (lo que creen vs. lo que es real por pregun
 - Cimarrón guía (`public/img/cimarron.webp`): uno por pantalla, a la izquierda de lo que presenta, entra deslizándose y flota 5 px, con globo de 2 a 4 palabras
 - Silueta del Cimarrón como marca de agua en tarjetas (8 %) y encabezados verdes (blanco 10 %)
 - Iconos de línea en `public/iconos.js`
+
+## Poner el juego en otra página
+
+Pega esto donde quieras que aparezca el juego:
+
+```html
+<iframe src="https://cien-estudiantes-dijeron-production.up.railway.app/embed"
+        style="width:100%;height:900px;border:0;border-radius:16px"
+        allow="autoplay; fullscreen" title="100 estudiantes dijeron"></iframe>
+```
+
+- Pestaña **Jugar**: el juego completo, con la voz de Victor
+- Pestaña **Top 10 en vivo**: el podio y los lugares 4 al 100, **sin ningún sonido**. Al abrirla, el juego también se calla. Tiene un botón "¡Jugar ahora!" que regresa a la pestaña del juego
+- El panel `/admin` no se comparte: se queda con el equipo OCUN y su clave `ADMIN_KEY`
 
 ## Variables en Railway
 

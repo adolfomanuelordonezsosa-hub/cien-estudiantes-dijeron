@@ -482,7 +482,7 @@ const MIME = {
   '.json': 'application/json; charset=utf-8', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon'
 };
-const RUTAS_PAGINA = { '/': 'index.html', '/tv': 'tablero.html', '/tablero': 'tablero.html', '/ranking': 'tablero.html', '/admin': 'admin.html' };
+const RUTAS_PAGINA = { '/': 'index.html', '/tv': 'tablero.html', '/tablero': 'tablero.html', '/ranking': 'tablero.html', '/embed': 'embed.html', '/jugar-y-ranking': 'embed.html', '/admin': 'admin.html' };
 
 function json(res, status, data) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -501,7 +501,10 @@ function archivoEstatico(res, rel) {
   if (!ruta.startsWith(PUBLIC_DIR)) { res.writeHead(403); return res.end(); }
   fs.stat(ruta, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('No encontrado'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(ruta).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+    const cab = { 'Content-Type': MIME[path.extname(ruta).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-cache' };
+    // el panel de administración nunca se puede meter dentro de otra página
+    if (path.basename(ruta) === 'admin.html') { cab['X-Frame-Options'] = 'DENY'; cab['Content-Security-Policy'] = "frame-ancestors 'none'"; cab['Referrer-Policy'] = 'no-referrer'; }
+    res.writeHead(200, cab);
     fs.createReadStream(ruta).pipe(res);
   });
 }
